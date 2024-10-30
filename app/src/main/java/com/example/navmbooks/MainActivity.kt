@@ -16,6 +16,7 @@ import com.example.navmbooks.ui.theme.NAVMBooksTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Book.print()
         enableEdgeToEdge()
         setContent {
             NAVMBooksTheme {
