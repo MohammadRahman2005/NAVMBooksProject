@@ -47,7 +47,7 @@ fun MainScreen() {
     scope.launch(Dispatchers.IO) {
         try
         {
-            context.assets.open("pg8710-images.html").use { inputStream ->
+            context.assets.open("pg8710-h/pg8710-images.html").use { inputStream ->
                 val book = Book.readBook(inputStream)
                 Log.d("MainScreen", "Book parsed: $book")
             }

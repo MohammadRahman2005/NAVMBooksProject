@@ -25,24 +25,27 @@ public class Book {
         String title="";
         String author="";
         ArrayList<Chapter> chapters = new ArrayList<Chapter>();
-//        File input = new File(fileName);
-//        if (!input.exists()){
-//            throw new IOException("file not found at: " + input);
-//        }
         Document doc = Jsoup.parse(inputStream, "UTF-8", "");
         title=doc.getElementsByTag("h1").get(0).text();
         author = Objects.requireNonNull(doc.getElementById("pg-header-authlist")).getElementsByTag("p").get(0).text();
 
         Chapter chapter = null;
         Elements body = doc.body().children();
-        Integer i=0;
+        Integer i=1;
         for (Element e:body) {
             if(e.tagName().equals("h2")){
                 String chapterTitle = e.text();
                 chapter = new Chapter(chapterTitle,i);
                 i++;
+                chapters.add(chapter);
+            }else if(e.tagName().equals("p") && chapter!=null){
+                StringBuilder text = new StringBuilder();
+                if (e.children().isEmpty()){
+                    text.append(e.text()).append(" ");
+                }
+                chapter.setText(text.toString().trim());
+//                chapter.setText(e.text());
             }
-            chapters.add(chapter);
         }
         return new Book(title, author, chapters);
     }
