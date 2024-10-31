@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import kotlinx.coroutines.channels.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.navmbooks.ui.theme.NAVMBooksTheme
 import kotlinx.coroutines.Dispatchers
@@ -41,11 +42,16 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainScreen() {
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     scope.launch(Dispatchers.IO) {
         try
         {
-            Book.readBook("test.html")
+            context.assets.open("pg8710-images.html").use { inputStream ->
+                val book = Book.readBook(inputStream)
+                Log.d("MainScreen", "Book parsed: $book")
+            }
+//            Book.readBook("file://android_asset/Books/pg8710-h/pg8710-images.html")
         } catch (e: IOException)
         {
             Log.e("MainScreen", "Error reading book", e)

@@ -29,7 +29,7 @@ public class Book {
 //        if (!input.exists()){
 //            throw new IOException("file not found at: " + input);
 //        }
-        Document doc = Jsoup.parse(inputStream, "UTF-8", "");
+        Document doc = Jsoup.parse(inputStream, "UTF-8");
         title=doc.getElementsByTag("h1").get(0).text();
         author = Objects.requireNonNull(doc.getElementById("pg-header-authlist")).getElementsByTag("p").get(0).text();
 
