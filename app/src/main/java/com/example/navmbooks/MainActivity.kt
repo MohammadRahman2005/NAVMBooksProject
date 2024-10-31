@@ -83,7 +83,7 @@ fun BookReadingApp(
             Column(Modifier.padding(padding)) {
                 NavigationHost(navController = navController)
             } },
-        bottomBar = {  }
+        bottomBar = { BottomNavigationBar(navController = navController) }
     )
 
 }
@@ -121,6 +121,16 @@ fun NAVMAppBar(
 }
 
 @Composable
+fun Logo(modifier: Modifier = Modifier) {
+    Image(
+        painter = painterResource(R.drawable.placeholder),
+        contentDescription = "App Logo",
+        modifier = modifier,
+        contentScale = ContentScale.Crop
+    )
+}
+
+@Composable
 fun NavigationHost(navController: NavHostController) {
     NavHost(
         navController = navController,
@@ -146,13 +156,70 @@ fun NavigationHost(navController: NavHostController) {
 }
 
 @Composable
-fun Logo(modifier: Modifier = Modifier) {
-    Image(
-        painter = painterResource(R.drawable.placeholder),
-        contentDescription = "App Logo",
-        modifier = modifier,
-        contentScale = ContentScale.Crop
+fun BottomNavigationBar(navController: NavHostController) {
+    NavigationBar {
+        val backStackEntry by navController.currentBackStackEntryAsState()
+        val currentRoutes = backStackEntry?.destination?.route
+
+        navBarItems().forEach { navItem ->
+            NavigationBarItem(
+                selected = currentRoutes == navItem.route,
+                onClick = {
+                    navController.navigate(navItem.route) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+
+                icon = {
+                    Icon(
+                        imageVector = navItem.image,
+                        contentDescription = navItem.title
+                    )
+                },
+                label = {
+                    Text(text = navItem.title)
+                },
+            )
+        }
+    }
+}
+
+@Composable
+fun navBarItems() : List<BarItem> {
+    val  barItems = listOf(
+        BarItem(
+            title = stringResource(id = R.string.home),
+            image = Icons.Filled.ShoppingCart,
+            route = stringResource(id = R.string.home_screen)
+        ),
+        BarItem(
+            title = stringResource(id = R.string.library),
+            image = Icons.Filled.Check,
+            route = stringResource(id = R.string.library_screen)
+        ),
+        BarItem(
+            title = stringResource(id = R.string.search),
+            image = Icons.Filled.Email,
+            route = stringResource(id = R.string.search_screen)
+        ),
+        BarItem(
+            title = stringResource(id = R.string.content),
+            image = Icons.Filled.Email,
+            route = stringResource(id = R.string.content_screen)
+        ),
+        BarItem(
+            title = stringResource(id = R.string.reading),
+            image = Icons.Filled.Email,
+            route = stringResource(id = R.string.reading_screen)
+        )
+
     )
+
+    return barItems
 }
 
 
