@@ -45,7 +45,7 @@ fun MainScreen() {
     scope.launch(Dispatchers.IO) {
         try
         {
-            Book.readBook("C:\\SCHOOL\\SEMESTER 5\\Mobile Dev\\mobile-project\\Books\\pg8710-h\\pg8710-images.html")
+            Book.readBook("test.html")
         } catch (e: IOException)
         {
             Log.e("MainScreen", "Error reading book", e)
