@@ -22,8 +22,8 @@ public class Chapter {
     public void setText(String text){
         if (this.text==null){
             this.text = text;
-        }else {
-            this.text += text;
+        }else{
+            this.text+=text;
         }
     }
 

@@ -33,18 +33,20 @@ public class Book {
         Elements body = doc.body().children();
         Integer i=1;
         for (Element e:body) {
-            if(e.tagName().equals("h2")){
+            if(e.tagName().equals("h2") || e.tagName().equals("h3")){
                 String chapterTitle = e.text();
                 chapter = new Chapter(chapterTitle,i);
                 i++;
                 chapters.add(chapter);
             }else if(e.tagName().equals("p") && chapter!=null){
-                StringBuilder text = new StringBuilder();
-                if (e.children().isEmpty()){
-                    text.append(e.text()).append(" ");
-                }
-                chapter.setText(text.toString().trim());
 //                chapter.setText(e.text());
+                if (e.children().isEmpty() || e.child(0).equals("i")){
+                    chapter.setText(e.text().trim()+" ");
+                }
+//                else if(chapter.getText() == null){
+//                    chapters.remove(chapter);
+//                    i = chapters.size()+1;
+//                }
             }
         }
         return new Book(title, author, chapters);
