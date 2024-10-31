@@ -1,5 +1,10 @@
 package com.example.navmbooks
 
+import ContentScreen
+import HomeScreen
+import LibraryScreen
+import ReadingScreen
+import SearchScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,6 +18,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -56,22 +66,6 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    NAVMBooksTheme {
-        Greeting("Android")
-    }
-}
-
-@Composable
 fun BookReadingApp(
     navController: NavHostController = rememberNavController(),
     locale: Locale
@@ -99,7 +93,7 @@ fun NAVMAppBar(
             Text(
                 stringResource(R.string.app_name),
                 style = MaterialTheme.typography.headlineLarge,
-                modifier = Modifier.padding(top = 8.dp, start = 72.dp)
+                modifier = Modifier.padding(top = 8.dp, start = 50.dp)
             )
         },
         colors = TopAppBarDefaults.mediumTopAppBarColors(
@@ -138,19 +132,29 @@ fun NavigationHost(navController: NavHostController) {
         modifier = Modifier.fillMaxSize()
     ) {
         composable(route = NavRoutes.HomeScreen.route) {
-
+            HomeScreen(
+                navController = navController
+            )
         }
         composable(route = NavRoutes.LibraryScreen.route) {
-
+            LibraryScreen(
+                navController = navController
+            )
         }
         composable(route = NavRoutes.SearchScreen.route) {
-
+            SearchScreen(
+                navController = navController
+            )
         }
         composable(route = NavRoutes.ContentScreen.route) {
-
+            ContentScreen(
+                navController = navController
+            )
         }
         composable(route = NavRoutes.ReadingScreen.route) {
-
+            ReadingScreen(
+                navController = navController
+            )
         }
     }
 }
@@ -193,27 +197,27 @@ fun navBarItems() : List<BarItem> {
     val  barItems = listOf(
         BarItem(
             title = stringResource(id = R.string.home),
-            image = Icons.Filled.ShoppingCart,
+            image = Icons.Filled.Home,
             route = stringResource(id = R.string.home_screen)
         ),
         BarItem(
             title = stringResource(id = R.string.library),
-            image = Icons.Filled.Check,
+            image = Icons.Filled.Menu,
             route = stringResource(id = R.string.library_screen)
         ),
         BarItem(
             title = stringResource(id = R.string.search),
-            image = Icons.Filled.Email,
+            image = Icons.Filled.Search,
             route = stringResource(id = R.string.search_screen)
         ),
         BarItem(
             title = stringResource(id = R.string.content),
-            image = Icons.Filled.Email,
+            image = Icons.Filled.PlayArrow,
             route = stringResource(id = R.string.content_screen)
         ),
         BarItem(
             title = stringResource(id = R.string.reading),
-            image = Icons.Filled.Email,
+            image = Icons.Filled.Info,
             route = stringResource(id = R.string.reading_screen)
         )
 
