@@ -17,14 +17,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -38,15 +35,17 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import kotlinx.coroutines.channels.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -59,15 +58,19 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.util.Locale
-import java.util.Locale.US
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            var isReadingMode by rememberSaveable { mutableStateOf(false) }
             NAVMBooksTheme {
-                BookReadingApp(locale = US)
+                BookReadingApp(
+                    locale = Locale.US,
+                    isReadingMode = isReadingMode,
+                    onReadingModeChanged = { isReadingMode = it }
+                )
             }
         }
     }
@@ -99,21 +102,33 @@ fun MainScreen() {
 @Composable
 fun BookReadingApp(
     navController: NavHostController = rememberNavController(),
-    locale: Locale
+    locale: Locale,
+    isReadingMode: Boolean,
+    onReadingModeChanged: (Boolean) -> Unit
 ) {
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = backStackEntry?.destination?.route
 
     Scaffold(
-        topBar = { NAVMAppBar( navigateUp = { navController.navigateUp() }) },
-        content = {padding ->
+        topBar = {
+            if (currentRoute != NavRoutes.ContentScreen.route && currentRoute != NavRoutes.ReadingScreen.route) {
+                NAVMAppBar(navigateUp = { navController.navigateUp() })
+            }
+        },
+        content = { padding ->
             Column(Modifier.padding(padding)) {
-                NavigationHost(navController = navController)
-            } 
+                NavigationHost(navController = navController, onReadingModeChanged = onReadingModeChanged)
+            }
             MainScreen()
-            },
-        bottomBar = { BottomNavigationBar(navController = navController) }
+        },
+        bottomBar = {
+            if (!isReadingMode) {
+                BottomNavigationBar(navController = navController)
+            }
+        }
     )
-
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -158,39 +173,36 @@ fun Logo(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun NavigationHost(navController: NavHostController) {
+fun NavigationHost(
+    navController: NavHostController,
+    onReadingModeChanged: (Boolean) -> Unit
+) {
     NavHost(
         navController = navController,
         startDestination = NavRoutes.HomeScreen.route,
         modifier = Modifier.fillMaxSize()
     ) {
         composable(route = NavRoutes.HomeScreen.route) {
-            HomeScreen(
-                navController = navController
-            )
+            HomeScreen(navController = navController)
         }
         composable(route = NavRoutes.LibraryScreen.route) {
-            LibraryScreen(
-                navController = navController
-            )
+            LibraryScreen(navController = navController)
         }
         composable(route = NavRoutes.SearchScreen.route) {
-            SearchScreen(
-                navController = navController
-            )
+            SearchScreen(navController = navController)
         }
         composable(route = NavRoutes.ContentScreen.route) {
-            ContentScreen(
-                navController = navController
-            )
+            ContentScreen(navController = navController)
         }
         composable(route = NavRoutes.ReadingScreen.route) {
             ReadingScreen(
-                navController = navController
+                navController = navController,
+                onReadingModeChanged = onReadingModeChanged
             )
         }
     }
 }
+
 
 @Composable
 fun BottomNavigationBar(navController: NavHostController) {
