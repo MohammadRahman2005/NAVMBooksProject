@@ -74,7 +74,7 @@ public class Book {
         String author="";
         StringBuilder allContent= new StringBuilder();
         ArrayList<Chapter> chapters = new ArrayList<Chapter>();
-        Document doc = Jsoup.connect("https://www.gutenberg.org/cache/epub/8710/pg8710-images.html").get();
+        Document doc = Jsoup.connect(URL).get();
         title=doc.getElementsByTag("h1").get(0).text();
         author = Objects.requireNonNull(doc.getElementById("pg-header-authlist")).getElementsByTag("p").get(0).text();
 
