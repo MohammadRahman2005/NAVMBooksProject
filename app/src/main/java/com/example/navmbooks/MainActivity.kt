@@ -31,6 +31,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -49,18 +52,26 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.navmbooks.ui.theme.NAVMBooksTheme
 import java.util.Locale
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Companion.Compact
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Companion.Expanded
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Companion.Medium
+import com.example.navmbooks.utils.AdaptiveNavigationType
+
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             var isReadingMode by rememberSaveable { mutableStateOf(false) }
             NAVMBooksTheme {
+                val windowSize = calculateWindowSizeClass(this)
                 BookReadingApp(
                     locale = Locale.US,
                     isReadingMode = isReadingMode,
-                    onReadingModeChanged = { isReadingMode = it }
+                    onReadingModeChanged = { isReadingMode = it },
+                    windowSizeClass = windowSize.widthSizeClass
                 )
             }
         }
@@ -72,10 +83,16 @@ fun BookReadingApp(
     navController: NavHostController = rememberNavController(),
     locale: Locale,
     isReadingMode: Boolean,
-    onReadingModeChanged: (Boolean) -> Unit
+    onReadingModeChanged: (Boolean) -> Unit,
+    windowSizeClass: WindowWidthSizeClass
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry?.destination?.route
+    val adaptiveNavigationType = when (windowSizeClass) {
+        Compact -> AdaptiveNavigationType.BOTTOM_NAVIGATION
+        Medium -> AdaptiveNavigationType.NAVIGATION_RAIL
+        else -> AdaptiveNavigationType.PERMANENT_NAVIGATION_DRAWER
+    }
 
     Scaffold(
         topBar = {
