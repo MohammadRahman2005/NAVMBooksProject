@@ -81,14 +81,18 @@ fun MainScreen() {
     scope.launch(Dispatchers.IO) {
         try
         {
-            context.assets.open("pg20195-h/pg20195-images.html").use { inputStream ->
-                val book = Book.readBook(inputStream)
-                Log.d("MainScreen", "Book parsed: $book")
-            }
-        } catch (e: IOException)
-        {
+//            context.assets.open("pg20195-h/pg20195-images.html").use { inputStream ->
+//                val book = Book.readBook(inputStream)
+//                Log.d("MainScreen", "Book parsed: $book")
+//            }
+            val book = Book.readBookURL("https://www.gutenberg.org/cache/epub/8710/pg8710-images.html")
+            val book2 = Book.readBookURL("https://www.gutenberg.org/cache/epub/20195/pg20195-images.html")
+            val book3 = Book.readBookURL("https://www.gutenberg.org/cache/epub/40367/pg40367-images.html")
+            Log.d("MainScreen", "Book parsed: $book3")
+        } catch (e: IOException) {
             Log.e("MainScreen", "Error reading book", e)
         }
+
     }
 }
 
