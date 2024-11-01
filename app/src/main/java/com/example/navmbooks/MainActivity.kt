@@ -41,7 +41,6 @@ import kotlinx.coroutines.channels.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -93,6 +92,7 @@ fun MainScreen() {
     }
 }
 
+@Composable
 fun BookReadingApp(
     navController: NavHostController = rememberNavController(),
     locale: Locale
