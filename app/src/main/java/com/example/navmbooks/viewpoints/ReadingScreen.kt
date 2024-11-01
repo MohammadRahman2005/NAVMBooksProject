@@ -26,7 +26,7 @@ fun ReadingScreen(
 
     Column {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text("Reading Mode", modifier = Modifier.padding(end = 16.dp))
+            Text("Reading Mode", modifier = Modifier.padding(end = 8.dp))
             Switch(
                 checked = isReadingMode,
                 onCheckedChange = {

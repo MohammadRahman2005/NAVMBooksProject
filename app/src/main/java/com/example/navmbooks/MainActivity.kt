@@ -74,9 +74,11 @@ fun BookReadingApp(
     isReadingMode: Boolean,
     onReadingModeChanged: (Boolean) -> Unit
 ) {
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = backStackEntry?.destination?.route
     Scaffold(
         topBar = {
-            if (!isReadingMode) {
+            if (currentRoute != NavRoutes.ContentScreen.route && currentRoute != NavRoutes.ReadingScreen.route) {
                 NAVMAppBar(navigateUp = { navController.navigateUp() })
             }
         },
