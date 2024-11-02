@@ -6,6 +6,7 @@ import LibraryScreen
 import ReadingScreen
 import SearchScreen
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -32,11 +33,15 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.channels.*
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -48,6 +53,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.navmbooks.ui.theme.NAVMBooksTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.IOException
 import java.util.Locale
 
 class MainActivity : ComponentActivity() {
@@ -64,6 +73,29 @@ class MainActivity : ComponentActivity() {
                 )
             }
         }
+    }
+}
+
+@Composable
+fun MainScreen() {
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+
+    scope.launch(Dispatchers.IO) {
+        try
+        {
+            context.assets.open("pg20195-h/pg20195-images.html").use { inputStream ->
+                val book = Book.readBook(inputStream)
+//                Log.d("MainScreen", "Book parsed: $book")
+            }
+            val book = Book.readBookURL("https://www.gutenberg.org/cache/epub/8710/pg8710-images.html")
+            val book2 = Book.readBookURL("https://www.gutenberg.org/cache/epub/20195/pg20195-images.html")
+            val book3 = Book.readBookURL("https://www.gutenberg.org/cache/epub/40367/pg40367-images.html")
+            Log.d("MainScreen", "Book parsed: $book")
+        } catch (e: IOException) {
+            Log.e("MainScreen", "Error reading book", e)
+        }
+
     }
 }
 
@@ -87,6 +119,7 @@ fun BookReadingApp(
             Column(Modifier.padding(padding)) {
                 NavigationHost(navController = navController, onReadingModeChanged = onReadingModeChanged)
             }
+            MainScreen()
         },
         bottomBar = {
             if (!isReadingMode) {
