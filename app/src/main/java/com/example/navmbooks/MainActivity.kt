@@ -2,11 +2,6 @@
 
 package com.example.navmbooks
 
-import ContentScreen
-import HomeScreen
-import LibraryScreen
-import ReadingScreen
-import SearchScreen
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -46,11 +41,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
-<<<<<<< HEAD
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Companion.Compact
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Companion.Medium
-=======
->>>>>>> da275ad2ab36ac9a0bc7b1a3523f04fdc77984e9
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -64,6 +56,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -72,15 +65,15 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.navmbooks.ui.theme.NAVMBooksTheme
 import com.example.navmbooks.utils.AdaptiveNavigationType
+import com.example.navmbooks.viewpoints.HomeScreen
+import com.example.navmbooks.viewpoints.LibraryScreen
+import com.example.navmbooks.viewpoints.SearchScreen
+import com.example.navmbooks.viewpoints.ReadingScreen
+import com.example.navmbooks.viewpoints.ContentScreen
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.IOException
 import java.util.Locale
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Companion.Compact
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Companion.Expanded
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Companion.Medium
-import com.example.navmbooks.utils.AdaptiveNavigationType
-
 
 
 class MainActivity : ComponentActivity() {
@@ -89,13 +82,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            var isReadingMode by rememberSaveable { mutableStateOf(false) }
             NAVMBooksTheme {
                 val windowSize = calculateWindowSizeClass(this)
                 BookReadingApp(
                     locale = Locale.US,
-                    isReadingMode = isReadingMode,
-                    onReadingModeChanged = { isReadingMode = it },
                     windowSizeClass = windowSize.widthSizeClass
                 )
             }
@@ -130,10 +120,9 @@ fun MainScreen() {
 fun BookReadingApp(
     navController: NavHostController = rememberNavController(),
     locale: Locale,
-    isReadingMode: Boolean,
-    onReadingModeChanged: (Boolean) -> Unit,
     windowSizeClass: WindowWidthSizeClass
 ) {
+    val bookViewModel: BookViewModel = viewModel()
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry?.destination?.route
     val adaptiveNavigationType = when (windowSizeClass) {
@@ -149,7 +138,7 @@ fun BookReadingApp(
             }
         },
         bottomBar = {
-            if (!isReadingMode && adaptiveNavigationType == AdaptiveNavigationType.BOTTOM_NAVIGATION) {
+            if (!bookViewModel.isReadingMode.value && adaptiveNavigationType == AdaptiveNavigationType.BOTTOM_NAVIGATION) {
                 BottomNavigationBar(navController = navController)
             }
         }
@@ -157,8 +146,7 @@ fun BookReadingApp(
         AdaptiveNavigationBars(
             padding = padding,
             navController = navController,
-            isReadingMode = isReadingMode,
-            onReadingModeChanged = onReadingModeChanged,
+            bookViewModel = bookViewModel,
             adaptiveNavigationType = adaptiveNavigationType
         )
         MainScreen()
@@ -169,22 +157,20 @@ fun BookReadingApp(
 fun AdaptiveNavigationBars(
     padding: PaddingValues,
     navController: NavHostController,
-    isReadingMode: Boolean,
-    onReadingModeChanged: (Boolean) -> Unit,
+    bookViewModel: BookViewModel,
     adaptiveNavigationType: AdaptiveNavigationType
 ) {
     Column(Modifier.padding(padding)) {
         NavigationHost(
             navController = navController,
-            isReadingMode = isReadingMode,
-            onReadingModeChanged = onReadingModeChanged
+            bookViewModel = bookViewModel
         )
     }
     Row(modifier = Modifier.padding(padding)) {
-        if (!isReadingMode && adaptiveNavigationType == AdaptiveNavigationType.PERMANENT_NAVIGATION_DRAWER) {
-            PermanentNavigationDrawerComponent(navController = navController, isReadingMode = isReadingMode, onReadingModeChanged = onReadingModeChanged)
+        if (!bookViewModel.isReadingMode.value && adaptiveNavigationType == AdaptiveNavigationType.PERMANENT_NAVIGATION_DRAWER) {
+            PermanentNavigationDrawerComponent(navController = navController, bookViewModel = bookViewModel)
         }
-        if (!isReadingMode && adaptiveNavigationType == AdaptiveNavigationType.NAVIGATION_RAIL) {
+        if (!bookViewModel.isReadingMode.value && adaptiveNavigationType == AdaptiveNavigationType.NAVIGATION_RAIL) {
             NavigationRailComponent(navController = navController)
         }
     }
@@ -215,8 +201,7 @@ fun NavigationRailComponent(
 @Composable
 fun PermanentNavigationDrawerComponent(
     navController: NavHostController,
-    isReadingMode: Boolean,
-    onReadingModeChanged: (Boolean) -> Unit
+    bookViewModel: BookViewModel
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoutes = backStackEntry?.destination?.route
@@ -241,7 +226,7 @@ fun PermanentNavigationDrawerComponent(
             } },
         content = {
             Box(modifier = Modifier.fillMaxSize()) {
-                NavigationHost(navController = navController, isReadingMode = isReadingMode, onReadingModeChanged = onReadingModeChanged)
+                NavigationHost(navController = navController, bookViewModel = bookViewModel)
             }
         }
     )
@@ -292,8 +277,7 @@ fun Logo(modifier: Modifier = Modifier) {
 @Composable
 fun NavigationHost(
     navController: NavHostController,
-    isReadingMode: Boolean,
-    onReadingModeChanged: (Boolean) -> Unit,
+    bookViewModel: BookViewModel,
     modifier: Modifier = Modifier
 ) {
     NavHost(
@@ -316,8 +300,7 @@ fun NavigationHost(
         composable(route = NavRoutes.ReadingScreen.route) {
             ReadingScreen(
                 navController = navController,
-                isReadingMode = isReadingMode,
-                onReadingModeChanged = onReadingModeChanged
+                bookViewModel = bookViewModel
             )
         }
     }
