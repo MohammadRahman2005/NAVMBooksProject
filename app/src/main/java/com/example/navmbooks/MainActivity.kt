@@ -1,10 +1,10 @@
 package com.example.navmbooks
 
-import ContentScreen
-import HomeScreen
-import LibraryScreen
-import ReadingScreen
-import SearchScreen
+import com.example.navmbooks.viewpoints.ContentScreen
+import com.example.navmbooks.viewpoints.HomeScreen
+import com.example.navmbooks.viewpoints.LibraryScreen
+import com.example.navmbooks.viewpoints.ReadingScreen
+import com.example.navmbooks.viewpoints.SearchScreen
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity

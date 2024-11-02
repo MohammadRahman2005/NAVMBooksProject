@@ -1,3 +1,5 @@
+package com.example.navmbooks.viewpoints
+
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
