@@ -20,18 +20,16 @@ import androidx.navigation.NavHostController
 @Composable
 fun ReadingScreen(
     navController: NavHostController,
+    isReadingMode: Boolean,
     onReadingModeChanged: (Boolean) -> Unit
 ) {
-    var isReadingMode by rememberSaveable { mutableStateOf(false) }
-
     Column {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text("Reading Mode", modifier = Modifier.padding(end = 8.dp))
             Switch(
                 checked = isReadingMode,
                 onCheckedChange = {
-                    isReadingMode = it
-                    onReadingModeChanged(isReadingMode)
+                    onReadingModeChanged(it)
                 }
             )
         }

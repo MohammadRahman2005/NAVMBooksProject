@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.example.navmbooks
 
 import ContentScreen
@@ -11,8 +13,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -28,24 +35,29 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.NavigationRail
+import androidx.compose.material3.NavigationRailItem
+import androidx.compose.material3.PermanentDrawerSheet
+import androidx.compose.material3.PermanentNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Companion.Compact
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Companion.Medium
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
-import kotlinx.coroutines.channels.*
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -56,15 +68,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.navmbooks.ui.theme.NAVMBooksTheme
+import com.example.navmbooks.utils.AdaptiveNavigationType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.util.Locale
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Companion.Compact
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Companion.Expanded
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Companion.Medium
-import com.example.navmbooks.utils.AdaptiveNavigationType
 
 
 class MainActivity : ComponentActivity() {
@@ -132,20 +140,104 @@ fun BookReadingApp(
                 NAVMAppBar(navigateUp = { navController.navigateUp() })
             }
         },
-        content = { padding ->
-            Column(Modifier.padding(padding)) {
-                NavigationHost(navController = navController, onReadingModeChanged = onReadingModeChanged)
-            }
-            MainScreen()
-        },
         bottomBar = {
-            if (!isReadingMode) {
+            if (!isReadingMode && adaptiveNavigationType == AdaptiveNavigationType.BOTTOM_NAVIGATION) {
                 BottomNavigationBar(navController = navController)
+            }
+        }
+    ) { padding ->
+        AdaptiveNavigationBars(
+            padding = padding,
+            navController = navController,
+            isReadingMode = isReadingMode,
+            onReadingModeChanged = onReadingModeChanged,
+            adaptiveNavigationType = adaptiveNavigationType
+        )
+        MainScreen()
+    }
+}
+
+@Composable
+fun AdaptiveNavigationBars(
+    padding: PaddingValues,
+    navController: NavHostController,
+    isReadingMode: Boolean,
+    onReadingModeChanged: (Boolean) -> Unit,
+    adaptiveNavigationType: AdaptiveNavigationType
+) {
+    Column(Modifier.padding(padding)) {
+        NavigationHost(
+            navController = navController,
+            isReadingMode = isReadingMode,
+            onReadingModeChanged = onReadingModeChanged
+        )
+    }
+    Row(modifier = Modifier.padding(padding)) {
+        if (!isReadingMode && adaptiveNavigationType == AdaptiveNavigationType.PERMANENT_NAVIGATION_DRAWER) {
+            PermanentNavigationDrawerComponent(navController = navController, isReadingMode = isReadingMode, onReadingModeChanged = onReadingModeChanged)
+        }
+        if (!isReadingMode && adaptiveNavigationType == AdaptiveNavigationType.NAVIGATION_RAIL) {
+            NavigationRailComponent(navController = navController)
+        }
+    }
+}
+
+@Composable
+fun NavigationRailComponent(
+    navController: NavHostController,
+) {
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoutes = backStackEntry?.destination?.route
+    NavigationRail {
+        navBarItems().forEach { navItem ->
+            NavigationRailItem(
+                selected = currentRoutes == navItem.route,
+                onClick = {
+                    navController.navigate(navItem.route)
+                },
+                icon = {
+                    Icon(navItem.image, contentDescription = navItem.title)
+                },
+                label = { Text(text = navItem.title) }
+            )
+        }
+    }
+}
+
+@Composable
+fun PermanentNavigationDrawerComponent(
+    navController: NavHostController,
+    isReadingMode: Boolean,
+    onReadingModeChanged: (Boolean) -> Unit
+) {
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoutes = backStackEntry?.destination?.route
+    PermanentNavigationDrawer(
+        drawerContent = {
+            PermanentDrawerSheet {
+                Column {
+                    Spacer(Modifier.height(12.dp))
+                    navBarItems().forEach { navItem ->
+                        NavigationDrawerItem(
+                            selected = currentRoutes == navItem.route,
+                            onClick = {
+                                navController.navigate(navItem.route)
+                            },
+                            icon = {
+                                Icon(navItem.image, contentDescription = navItem.title)
+                            },
+                            label = { Text(text = navItem.title) }
+                        )
+                    }
+                }
+            } },
+        content = {
+            Box(modifier = Modifier.fillMaxSize()) {
+                NavigationHost(navController = navController, isReadingMode = isReadingMode, onReadingModeChanged = onReadingModeChanged)
             }
         }
     )
 }
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -192,7 +284,9 @@ fun Logo(modifier: Modifier = Modifier) {
 @Composable
 fun NavigationHost(
     navController: NavHostController,
-    onReadingModeChanged: (Boolean) -> Unit
+    isReadingMode: Boolean,
+    onReadingModeChanged: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     NavHost(
         navController = navController,
@@ -214,6 +308,7 @@ fun NavigationHost(
         composable(route = NavRoutes.ReadingScreen.route) {
             ReadingScreen(
                 navController = navController,
+                isReadingMode = isReadingMode,
                 onReadingModeChanged = onReadingModeChanged
             )
         }
