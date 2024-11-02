@@ -1,5 +1,6 @@
 package com.example.navmbooks
 
+import android.annotation.SuppressLint
 import com.example.navmbooks.viewpoints.ContentScreen
 import com.example.navmbooks.viewpoints.HomeScreen
 import com.example.navmbooks.viewpoints.LibraryScreen
@@ -74,6 +75,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun MainScreen() {
     val scope = rememberCoroutineScope()

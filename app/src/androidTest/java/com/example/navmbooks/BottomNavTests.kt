@@ -107,11 +107,10 @@ class BottomNavigationBarTest {
             SetUp(navController)
         }
 
-        val firstNavItem = navBarItems().first()
-        val secondNavItem = navBarItems()[1]
-        composeTestRule.onNodeWithText(firstNavItem.title).performClick()
+        val navItem = navBarItems()[1]
+        composeTestRule.onNodeWithText(navItem.title).performClick()
         composeTestRule.waitForIdle()
-        composeTestRule.onNodeWithText(secondNavItem.title).assertIsDisplayed()
+        composeTestRule.onNodeWithText(navItem.title).assertIsDisplayed()
     }
 }
 
