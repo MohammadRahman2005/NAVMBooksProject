@@ -34,18 +34,14 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
-import kotlinx.coroutines.channels.*
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -55,7 +51,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.navmbooks.ui.theme.NAVMBooksTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.util.Locale
 
@@ -64,12 +59,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            var isReadingMode by rememberSaveable { mutableStateOf(false) }
             NAVMBooksTheme {
+                val bookViewModel: BookViewModel = viewModel()
                 BookReadingApp(
-                    locale = Locale.US,
-                    isReadingMode = isReadingMode,
-                    onReadingModeChanged = { isReadingMode = it }
+                    bookViewModel = bookViewModel,
+                    locale = Locale.US
                 )
             }
         }
@@ -101,11 +95,11 @@ fun MainScreen() {
 
 @Composable
 fun BookReadingApp(
+    bookViewModel: BookViewModel,
     navController: NavHostController = rememberNavController(),
     locale: Locale,
-    isReadingMode: Boolean,
-    onReadingModeChanged: (Boolean) -> Unit
 ) {
+    val isReadingMode = bookViewModel.isReadingMode.value
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry?.destination?.route
 
@@ -117,7 +111,7 @@ fun BookReadingApp(
         },
         content = { padding ->
             Column(Modifier.padding(padding)) {
-                NavigationHost(navController = navController, onReadingModeChanged = onReadingModeChanged)
+                NavigationHost(navController = navController, bookViewModel = bookViewModel)
             }
             MainScreen()
         },
@@ -175,7 +169,7 @@ fun Logo(modifier: Modifier = Modifier) {
 @Composable
 fun NavigationHost(
     navController: NavHostController,
-    onReadingModeChanged: (Boolean) -> Unit
+    bookViewModel: BookViewModel
 ) {
     NavHost(
         navController = navController,
@@ -197,7 +191,7 @@ fun NavigationHost(
         composable(route = NavRoutes.ReadingScreen.route) {
             ReadingScreen(
                 navController = navController,
-                onReadingModeChanged = onReadingModeChanged
+                bookViewModel = bookViewModel
             )
         }
     }
