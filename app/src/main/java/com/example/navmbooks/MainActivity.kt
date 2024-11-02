@@ -2,6 +2,11 @@
 
 package com.example.navmbooks
 
+import com.example.navmbooks.viewpoints.ContentScreen
+import com.example.navmbooks.viewpoints.HomeScreen
+import com.example.navmbooks.viewpoints.LibraryScreen
+import com.example.navmbooks.viewpoints.ReadingScreen
+import com.example.navmbooks.viewpoints.SearchScreen
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -51,6 +56,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -84,9 +93,12 @@ class MainActivity : ComponentActivity() {
         setContent {
             NAVMBooksTheme {
                 val windowSize = calculateWindowSizeClass(this)
+                val bookViewModel: BookViewModel = viewModel()
                 BookReadingApp(
                     locale = Locale.US,
-                    windowSizeClass = windowSize.widthSizeClass
+                    windowSizeClass = windowSize.widthSizeClass,
+                    bookViewModel = bookViewModel,
+                    locale = Locale.US
                 )
             }
         }
@@ -118,11 +130,14 @@ fun MainScreen() {
 
 @Composable
 fun BookReadingApp(
+    bookViewModel: BookViewModel,
     navController: NavHostController = rememberNavController(),
     locale: Locale,
     windowSizeClass: WindowWidthSizeClass
 ) {
     val bookViewModel: BookViewModel = viewModel()
+) {
+    val isReadingMode = bookViewModel.isReadingMode.value
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry?.destination?.route
     val adaptiveNavigationType = when (windowSizeClass) {
@@ -136,6 +151,12 @@ fun BookReadingApp(
             if (currentRoute != NavRoutes.ContentScreen.route && currentRoute != NavRoutes.ReadingScreen.route) {
                 NAVMAppBar(navigateUp = { navController.navigateUp() })
             }
+        },
+        content = { padding ->
+            Column(Modifier.padding(padding)) {
+                NavigationHost(navController = navController, bookViewModel = bookViewModel)
+            }
+            MainScreen()
         },
         bottomBar = {
             if (!bookViewModel.isReadingMode.value && adaptiveNavigationType == AdaptiveNavigationType.BOTTOM_NAVIGATION) {
