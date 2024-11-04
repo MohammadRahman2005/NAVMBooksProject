@@ -157,12 +157,21 @@ fun AdaptiveNavigationBars(
     padding: PaddingValues,
     navController: NavHostController,
     bookViewModel: BookViewModel,
-    adaptiveNavigationType: AdaptiveNavigationType
+    adaptiveNavigationType: AdaptiveNavigationType,
+    modifier: Modifier = Modifier
 ) {
     Column(Modifier.padding(padding)) {
+        val padding = if (adaptiveNavigationType == AdaptiveNavigationType.NAVIGATION_RAIL) {
+            PaddingValues(start = 100.dp)
+        } else {
+            PaddingValues(0.dp)
+        }
+
         NavigationHost(
             navController = navController,
             bookViewModel = bookViewModel,
+            modifier = modifier,
+            padding = padding
         )
     }
     Row(modifier = Modifier.padding(padding)) {
@@ -228,6 +237,8 @@ fun PermanentNavigationDrawerComponent(
                 NavigationHost(
                     navController = navController,
                     bookViewModel = bookViewModel,
+                    modifier = Modifier,
+                    padding = PaddingValues(0.dp)
                 )
             }
         }
@@ -280,7 +291,8 @@ fun Logo(modifier: Modifier = Modifier) {
 fun NavigationHost(
     navController: NavHostController,
     bookViewModel: BookViewModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    padding: PaddingValues
 ) {
     NavHost(
         navController = navController,
@@ -288,21 +300,23 @@ fun NavigationHost(
         modifier = Modifier.fillMaxSize()
     ) {
         composable(route = NavRoutes.HomeScreen.route) {
-            HomeScreen(navController = navController)
+            HomeScreen(navController = navController, modifier, padding)
         }
         composable(route = NavRoutes.LibraryScreen.route) {
-            LibraryScreen(navController = navController)
+            LibraryScreen(navController = navController, modifier, padding)
         }
         composable(route = NavRoutes.SearchScreen.route) {
-            SearchScreen(navController = navController)
+            SearchScreen(navController = navController, modifier, padding)
         }
         composable(route = NavRoutes.ContentScreen.route) {
-            ContentScreen(navController = navController)
+            ContentScreen(navController = navController, modifier, padding)
         }
         composable(route = NavRoutes.ReadingScreen.route) {
             ReadingScreen(
                 navController = navController,
-                bookViewModel = bookViewModel
+                bookViewModel = bookViewModel,
+                modifier = modifier,
+                padding = padding
             )
         }
     }
