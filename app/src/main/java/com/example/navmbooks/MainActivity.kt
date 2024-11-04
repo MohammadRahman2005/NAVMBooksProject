@@ -2,6 +2,12 @@
 
 package com.example.navmbooks
 
+import android.annotation.SuppressLint
+import com.example.navmbooks.viewpoints.ContentScreen
+import com.example.navmbooks.viewpoints.HomeScreen
+import com.example.navmbooks.viewpoints.LibraryScreen
+import com.example.navmbooks.viewpoints.ReadingScreen
+import com.example.navmbooks.viewpoints.SearchScreen
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -30,11 +36,13 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+<<<<<<< app/src/main/java/com/example/navmbooks/MainActivity.kt
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.PermanentDrawerSheet
 import androidx.compose.material3.PermanentNavigationDrawer
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -44,6 +52,8 @@ import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Companion.Compact
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Companion.Medium
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+import androidx.compose.material3.lightColorScheme
+import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -53,6 +63,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -92,6 +103,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun MainScreen() {
     val scope = rememberCoroutineScope()
@@ -255,25 +267,29 @@ fun NAVMAppBar(
         title = {
             Text(
                 stringResource(R.string.app_name),
-                style = MaterialTheme.typography.headlineLarge,
-                modifier = Modifier.padding(top = 8.dp, start = 50.dp)
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.padding(top = 8.dp, start = 50.dp),
+                color = MaterialTheme.colorScheme.onPrimary
             )
         },
-        colors = TopAppBarDefaults.mediumTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer
-        ),
         modifier = modifier,
         navigationIcon = {
             IconButton(onClick = navigateUp) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = stringResource(R.string.back_button)
+                    contentDescription = stringResource(R.string.back_button),
+                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
         },
         actions = {
             Logo(modifier = Modifier.size(48.dp))
-        }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            titleContentColor = MaterialTheme.colorScheme.onPrimary,
+            actionIconContentColor = MaterialTheme.colorScheme.onPrimary
+        )
     )
 }
 
@@ -325,7 +341,10 @@ fun NavigationHost(
 
 @Composable
 fun BottomNavigationBar(navController: NavHostController) {
-    NavigationBar {
+    NavigationBar(
+        containerColor = MaterialTheme.colorScheme.surface,
+        contentColor = MaterialTheme.colorScheme.onSurface
+    ) {
         val backStackEntry by navController.currentBackStackEntryAsState()
         val currentRoutes = backStackEntry?.destination?.route
 

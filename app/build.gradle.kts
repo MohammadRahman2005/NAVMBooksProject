@@ -19,6 +19,7 @@ android {
             useSupportLibrary = true
         }
     }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -46,7 +47,6 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-
 }
 
 dependencies {
@@ -63,17 +63,17 @@ dependencies {
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.material3.window.size)
     testImplementation(libs.junit)
+    testImplementation(libs.androidx.ui.test.junit4.android)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
-    implementation ("androidx.appcompat:appcompat:1.6.1")
-    implementation("androidx.navigation:navigation-compose:2.5.3")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.6")
-    implementation ("androidx.compose.material:material:1.7.2")
-    implementation ("androidx.compose.material3:material3-window-size-class")
+    implementation(libs.zxing.android.embedded)
+    implementation (libs.androidx.appcompat)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation (libs.androidx.material)
     implementation ("org.jsoup:jsoup:1.10.3")
 }
