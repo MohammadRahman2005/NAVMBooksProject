@@ -52,9 +52,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -73,7 +73,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.IOException
 import java.util.Locale
-
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
@@ -165,9 +164,9 @@ fun AdaptiveNavigationBars(
 ) {
     Column(Modifier.padding(padding)) {
         val padding = if (adaptiveNavigationType == AdaptiveNavigationType.NAVIGATION_RAIL) {
-            PaddingValues(start = 100.dp)
+            PaddingValues(start = dimensionResource(R.dimen.small_padding))
         } else {
-            PaddingValues(0.dp)
+            PaddingValues(dimensionResource(R.dimen.zero_padding))
         }
 
         NavigationHost(
@@ -220,7 +219,7 @@ fun PermanentNavigationDrawerComponent(
         drawerContent = {
             PermanentDrawerSheet {
                 Column {
-                    Spacer(Modifier.height(12.dp))
+                    Spacer(Modifier.height(dimensionResource(R.dimen.large_size)))
                     navBarItems().forEach { navItem ->
                         NavigationDrawerItem(
                             selected = currentRoutes == navItem.route,
@@ -241,7 +240,7 @@ fun PermanentNavigationDrawerComponent(
                     navController = navController,
                     bookViewModel = bookViewModel,
                     modifier = Modifier,
-                    padding = PaddingValues(0.dp)
+                    padding = PaddingValues(dimensionResource(R.dimen.zero_padding))
                 )
             }
         }
@@ -259,7 +258,7 @@ fun NAVMAppBar(
             Text(
                 stringResource(R.string.app_name),
                 style = MaterialTheme.typography.displaySmall,
-                modifier = Modifier.padding(top = 8.dp, start = 50.dp),
+                modifier = Modifier.padding(top = dimensionResource(R.dimen.small_padding), start = dimensionResource(R.dimen.large_padding)),
                 color = MaterialTheme.colorScheme.primary
             )
         },
@@ -269,12 +268,12 @@ fun NAVMAppBar(
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = stringResource(R.string.back_button),
-                    tint = MaterialTheme.colorScheme.primary
+                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
         },
         actions = {
-            Logo(modifier = Modifier.size(48.dp))
+            Logo(modifier = Modifier.size(dimensionResource(R.dimen.large_size)))
         },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
