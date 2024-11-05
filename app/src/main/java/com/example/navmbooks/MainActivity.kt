@@ -2,9 +2,7 @@
 
 package com.example.navmbooks
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -21,9 +19,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -47,10 +43,8 @@ import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Companion
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -58,10 +52,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.navmbooks.ui.theme.NAVMBooksTheme
 import com.example.navmbooks.utils.AdaptiveNavigationType
 import com.example.navmbooks.viewpoints.ContentScreen
@@ -69,9 +65,6 @@ import com.example.navmbooks.viewpoints.HomeScreen
 import com.example.navmbooks.viewpoints.LibraryScreen
 import com.example.navmbooks.viewpoints.ReadingScreen
 import com.example.navmbooks.viewpoints.SearchScreen
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import java.io.IOException
 import java.util.Locale
 
 class MainActivity : ComponentActivity() {
@@ -93,29 +86,35 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@SuppressLint("CoroutineCreationDuringComposition")
-@Composable
-fun MainScreen() {
-    val scope = rememberCoroutineScope()
-    val context = LocalContext.current
-
-    scope.launch(Dispatchers.IO) {
-        try
-        {
-            context.assets.open("pg20195-h/pg20195-images.html").use { inputStream ->
-                val book = Book.readBook(inputStream)
-//                Log.d("MainScreen", "Book parsed: $book")
-            }
-            val book = Book.readBookURL("https://www.gutenberg.org/cache/epub/8710/pg8710-images.html")
-            val book2 = Book.readBookURL("https://www.gutenberg.org/cache/epub/20195/pg20195-images.html")
-            val book3 = Book.readBookURL("https://www.gutenberg.org/cache/epub/40367/pg40367-images.html")
-            Log.d("MainScreen", "Book parsed: $book")
-        } catch (e: IOException) {
-            Log.e("MainScreen", "Error reading book", e)
-        }
-
-    }
-}
+//@SuppressLint("CoroutineCreationDuringComposition")
+//@Composable
+//fun MainScreen() {
+//    val context = LocalContext.current
+//    var book by remember { mutableStateOf<Book?>(null) }
+//
+//    LaunchedEffect(Unit){
+//            try
+//            {
+////            context.assets.open("pg20195-h/pg20195-images.html").use { inputStream ->
+////                val book = Book.readBook(inputStream)
+////             Log.d("MainScreen", "Book parsed: $book")
+////            }
+//                withContext(Dispatchers.IO) {
+//                    book = Book.readBookURL("https://www.gutenberg.org/cache/epub/8710/pg8710-images.html")
+//                    val book2 = Book.readBookURL("https://www.gutenberg.org/cache/epub/20195/pg20195-images.html")
+//                    val book3 = Book.readBookURL("https://www.gutenberg.org/cache/epub/40367/pg40367-images.html")
+//                }
+////                Log.d("MainScreen", "Book parsed: $book")
+//            } catch (e: IOException) {
+//                Log.e("MainScreen", "Error reading book", e)
+//            }
+//    }
+//    if (book!=null){
+//        Text(text= "Book: ${book!!.chapters}")
+//    }else {
+//        Text(text = "No book")
+//    }
+//}
 
 @Composable
 fun BookReadingApp(
@@ -150,7 +149,7 @@ fun BookReadingApp(
             bookViewModel = bookViewModel,
             adaptiveNavigationType = adaptiveNavigationType
         )
-        MainScreen()
+
     }
 }
 
@@ -298,6 +297,7 @@ fun NavigationHost(
     modifier: Modifier = Modifier,
     padding: PaddingValues
 ) {
+    val books = bookViewModel.bookList
     NavHost(
         navController = navController,
         startDestination = NavRoutes.HomeScreen.route,
@@ -307,21 +307,29 @@ fun NavigationHost(
             HomeScreen(navController = navController, modifier, padding)
         }
         composable(route = NavRoutes.LibraryScreen.route) {
-            LibraryScreen(navController = navController, modifier, padding)
+            LibraryScreen(navController = navController, modifier, padding, viewModel = BookViewModel(), books = books)
         }
         composable(route = NavRoutes.SearchScreen.route) {
             SearchScreen(navController = navController, modifier, padding)
         }
-        composable(route = NavRoutes.ContentScreen.route) {
-            ContentScreen(navController = navController, modifier, padding)
+        composable(route = NavRoutes.ContentScreen.route, arguments = listOf(navArgument("bookIndex") { type = NavType.IntType })) {
+            backStackEntry ->
+            val bookIndex = backStackEntry.arguments?.getInt("bookIndex") ?: 0
+            ContentScreen(navController = navController, modifier, padding, bookViewModel, books = books, bookIndex = bookIndex)
         }
-        composable(route = NavRoutes.ReadingScreen.route) {
-            ReadingScreen(
-                navController = navController,
-                bookViewModel = bookViewModel,
-                modifier = modifier,
-                padding = padding
-            )
+        composable(route = NavRoutes.ReadingScreen.route, arguments = listOf(navArgument("chapterIndex") { type = NavType.StringType }, navArgument("bookIndex") { type = NavType.IntType })) {
+            backStackEntry ->
+            val bookIndex = backStackEntry.arguments?.getInt("bookIndex") ?: 0
+            val chapterIndex = backStackEntry.arguments?.getString("chapterIndex")?.toIntOrNull()
+            chapterIndex?.let { books[bookIndex]?.chapters?.get(it) }?.let {
+                ReadingScreen(
+                    navController = navController,
+                    bookViewModel = bookViewModel,
+                    modifier = modifier,
+                    padding = padding,
+                    it
+                )
+            }
         }
     }
 }
@@ -341,11 +349,7 @@ fun BottomNavigationBar(navController: NavHostController) {
                 selected = currentRoutes == navItem.route,
                 onClick = {
                     navController.navigate(navItem.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
+                        popUpTo(navController.graph.findStartDestination().id)
                     }
                 },
 

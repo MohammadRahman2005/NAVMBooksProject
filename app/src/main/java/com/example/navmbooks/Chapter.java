@@ -1,9 +1,11 @@
 package com.example.navmbooks;
 
+import java.util.Objects;
+
 public class Chapter {
     private final String chapTitle;
     private final Integer chapNum;
-    private String text=null;
+    private String text="No Text";
 
     public Chapter(String title, Integer chapNum){
         chapTitle = title;
@@ -20,7 +22,7 @@ public class Chapter {
         return text;
     }
     public void setText(String text){
-        if (this.text==null){
+        if (Objects.equals(this.text, "No Text")){
             this.text = text;
         }else{
             this.text+=text;
