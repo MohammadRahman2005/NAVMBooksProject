@@ -315,17 +315,17 @@ fun NavigationHost(
         composable(route = NavRoutes.SearchScreen.route) {
             SearchScreen(navController = navController, modifier, padding)
         }
-        composable(route = NavRoutes.ContentScreen.route) {
-            ContentScreen(navController = navController, modifier, padding)
-        }
-        composable(route = NavRoutes.ReadingScreen.route) {
-            ReadingScreen(
-                navController = navController,
-                bookViewModel = bookViewModel,
-                modifier = modifier,
-                padding = padding
-            )
-        }
+//        composable(route = NavRoutes.ContentScreen.route) {
+//            ContentScreen(navController = navController, modifier, padding)
+//        }
+//        composable(route = NavRoutes.ReadingScreen.route) {
+//            ReadingScreen(
+//                navController = navController,
+//                bookViewModel = bookViewModel,
+//                modifier = modifier,
+//                padding = padding
+//            )
+//        }
     }
 }
 
@@ -383,18 +383,7 @@ fun navBarItems() : List<BarItem> {
             title = stringResource(id = R.string.search),
             image = Icons.Filled.Search,
             route = stringResource(id = R.string.search_screen)
-        ),
-        BarItem(
-            title = stringResource(id = R.string.content),
-            image = Icons.Filled.PlayArrow,
-            route = stringResource(id = R.string.content_screen)
-        ),
-        BarItem(
-            title = stringResource(id = R.string.reading),
-            image = Icons.Filled.Info,
-            route = stringResource(id = R.string.reading_screen)
         )
-
     )
 
     return barItems
