@@ -382,18 +382,7 @@ fun navBarItems() : List<BarItem> {
             title = stringResource(id = R.string.search),
             image = Icons.Filled.Search,
             route = stringResource(id = R.string.search_screen)
-        ),
-        BarItem(
-            title = stringResource(id = R.string.content),
-            image = Icons.Filled.PlayArrow,
-            route = stringResource(id = R.string.content_screen)
-        ),
-        BarItem(
-            title = stringResource(id = R.string.reading),
-            image = Icons.Filled.Info,
-            route = stringResource(id = R.string.reading_screen)
         )
-
     )
 
     return barItems
