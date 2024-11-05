@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.navigation.NavController
+import com.example.navmbooks.BookViewModel
 import com.example.navmbooks.NavRoutes
 
 @Composable
@@ -17,7 +18,11 @@ fun LibraryScreen(
     navController: NavController,
     modifier: Modifier = Modifier,
     padding: PaddingValues,
+    viewModel: BookViewModel
 ) {
+    val book1Title = viewModel.book1?.title
+    val book2Title = viewModel.book2?.title
+
     Column {
         Row(modifier = modifier.padding(padding)){
             Text(text="Library", modifier = Modifier.testTag("LibraryText"))
@@ -27,11 +32,22 @@ fun LibraryScreen(
                 Button(
                     onClick = {
                         navController.navigate(NavRoutes.ContentScreen.route) {
-
                         }
                     }
                 ) {
-                    Text("Book 1 table of contents")
+                    if (book1Title != null) {
+                        Text(book1Title)
+                    }
+                }
+                Button(
+                    onClick = {
+                        navController.navigate(NavRoutes.ContentScreen.route) {
+                        }
+                    }
+                ) {
+                    if (book2Title != null) {
+                        Text(book2Title)
+                    }
                 }
             }
         }

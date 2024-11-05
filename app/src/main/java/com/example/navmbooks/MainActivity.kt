@@ -61,10 +61,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.navmbooks.ui.theme.NAVMBooksTheme
 import com.example.navmbooks.utils.AdaptiveNavigationType
 import com.example.navmbooks.viewpoints.ContentScreen
@@ -98,35 +100,35 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@SuppressLint("CoroutineCreationDuringComposition")
-@Composable
-fun MainScreen() {
-    val context = LocalContext.current
-    var book by remember { mutableStateOf<Book?>(null) }
-
-    LaunchedEffect(Unit){
-            try
-            {
-//            context.assets.open("pg20195-h/pg20195-images.html").use { inputStream ->
-//                val book = Book.readBook(inputStream)
-//             Log.d("MainScreen", "Book parsed: $book")
+//@SuppressLint("CoroutineCreationDuringComposition")
+//@Composable
+//fun MainScreen() {
+//    val context = LocalContext.current
+//    var book by remember { mutableStateOf<Book?>(null) }
+//
+//    LaunchedEffect(Unit){
+//            try
+//            {
+////            context.assets.open("pg20195-h/pg20195-images.html").use { inputStream ->
+////                val book = Book.readBook(inputStream)
+////             Log.d("MainScreen", "Book parsed: $book")
+////            }
+//                withContext(Dispatchers.IO) {
+//                    book = Book.readBookURL("https://www.gutenberg.org/cache/epub/8710/pg8710-images.html")
+//                    val book2 = Book.readBookURL("https://www.gutenberg.org/cache/epub/20195/pg20195-images.html")
+//                    val book3 = Book.readBookURL("https://www.gutenberg.org/cache/epub/40367/pg40367-images.html")
+//                }
+////                Log.d("MainScreen", "Book parsed: $book")
+//            } catch (e: IOException) {
+//                Log.e("MainScreen", "Error reading book", e)
 //            }
-                withContext(Dispatchers.IO) {
-                    book = Book.readBookURL("https://www.gutenberg.org/cache/epub/8710/pg8710-images.html")
-                    val book2 = Book.readBookURL("https://www.gutenberg.org/cache/epub/20195/pg20195-images.html")
-                    val book3 = Book.readBookURL("https://www.gutenberg.org/cache/epub/40367/pg40367-images.html")
-                }
-//                Log.d("MainScreen", "Book parsed: $book")
-            } catch (e: IOException) {
-                Log.e("MainScreen", "Error reading book", e)
-            }
-    }
-    if (book!=null){
-        Text(text= "Book: ${book!!.chapters}")
-    }else {
-        Text(text = "No book")
-    }
-}
+//    }
+//    if (book!=null){
+//        Text(text= "Book: ${book!!.chapters}")
+//    }else {
+//        Text(text = "No book")
+//    }
+//}
 
 @Composable
 fun BookReadingApp(
@@ -320,20 +322,22 @@ fun NavigationHost(
             HomeScreen(navController = navController, modifier, padding)
         }
         composable(route = NavRoutes.LibraryScreen.route) {
-            LibraryScreen(navController = navController, modifier, padding)
+            LibraryScreen(navController = navController, modifier, padding, viewModel = BookViewModel())
         }
         composable(route = NavRoutes.SearchScreen.route) {
             SearchScreen(navController = navController, modifier, padding)
         }
         composable(route = NavRoutes.ContentScreen.route) {
-            ContentScreen(navController = navController, modifier, padding)
+            ContentScreen(navController = navController, modifier, padding, bookViewModel)
         }
-        composable(route = NavRoutes.ReadingScreen.route) {
+        composable(route = NavRoutes.ReadingScreen.route, arguments = listOf(navArgument("chapterIndex") { type = NavType.StringType })) {
+            backStackEntry ->
             ReadingScreen(
                 navController = navController,
                 bookViewModel = bookViewModel,
                 modifier = modifier,
-                padding = padding
+                padding = padding,
+                backStackEntry = backStackEntry
             )
         }
     }
