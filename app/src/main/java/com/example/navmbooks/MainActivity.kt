@@ -257,9 +257,9 @@ fun NAVMAppBar(
         title = {
             Text(
                 stringResource(R.string.app_name),
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.displaySmall,
                 modifier = Modifier.padding(top = dimensionResource(R.dimen.small_padding), start = dimensionResource(R.dimen.large_padding)),
-                color = MaterialTheme.colorScheme.onPrimary
+                color = MaterialTheme.colorScheme.primary
             )
         },
         modifier = modifier,
@@ -276,9 +276,7 @@ fun NAVMAppBar(
             Logo(modifier = Modifier.size(dimensionResource(R.dimen.large_size)))
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary,
-            actionIconContentColor = MaterialTheme.colorScheme.onPrimary
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
         )
     )
 }
@@ -332,8 +330,8 @@ fun NavigationHost(
 @Composable
 fun BottomNavigationBar(navController: NavHostController) {
     NavigationBar(
-        containerColor = MaterialTheme.colorScheme.surface,
-        contentColor = MaterialTheme.colorScheme.onSurface
+        containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+        contentColor = MaterialTheme.colorScheme.primary
     ) {
         val backStackEntry by navController.currentBackStackEntryAsState()
         val currentRoutes = backStackEntry?.destination?.route

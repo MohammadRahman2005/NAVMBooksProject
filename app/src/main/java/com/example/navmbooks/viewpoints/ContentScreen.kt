@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -24,10 +26,18 @@ fun ContentScreen(
         }
         Row (modifier = modifier.padding((padding))){
             Column {
-                Button(onClick = {navController.navigate(NavRoutes.ContentScreen.route)}) {
+                Button(onClick = {navController.navigate(NavRoutes.ContentScreen.route)},
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                        contentColor = MaterialTheme.colorScheme.primary
+                    )) {
                     Text("Book 1 Chapter 1 Reading")
                 }
-                Button(onClick = {navController.navigate(NavRoutes.ReadingScreen.route)}) {
+                Button(onClick = {navController.navigate(NavRoutes.ReadingScreen.route)},
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                        contentColor = MaterialTheme.colorScheme.primary
+                    )) {
                     Text("Book 1 Chapter 2 Reading")
                 }
             }
