@@ -24,7 +24,7 @@ fun ContentScreen(
         }
         Row (modifier = modifier.padding((padding))){
             Column {
-                Button(onClick = {navController.navigate(NavRoutes.ContentScreen.route)}) {
+                Button(onClick = {navController.navigate(NavRoutes.ReadingScreen.route)}) {
                     Text("Book 1 Chapter 1 Reading")
                 }
 //                Button(onClick = {navController.navigate(NavRoutes.ReadingScreen.route)}) {

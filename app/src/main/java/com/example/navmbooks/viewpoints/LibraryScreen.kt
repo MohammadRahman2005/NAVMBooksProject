@@ -24,7 +24,13 @@ fun LibraryScreen(
         }
         Row {
             Column {
-                Button(onClick = {navController.navigate(NavRoutes.ContentScreen.route)}) {
+                Button(
+                    onClick = {
+                        navController.navigate(NavRoutes.ContentScreen.route) {
+
+                        }
+                    }
+                ) {
                     Text("Book 1 table of contents")
                 }
             }
