@@ -315,17 +315,17 @@ fun NavigationHost(
         composable(route = NavRoutes.SearchScreen.route) {
             SearchScreen(navController = navController, modifier, padding)
         }
-//        composable(route = NavRoutes.ContentScreen.route) {
-//            ContentScreen(navController = navController, modifier, padding)
-//        }
-//        composable(route = NavRoutes.ReadingScreen.route) {
-//            ReadingScreen(
-//                navController = navController,
-//                bookViewModel = bookViewModel,
-//                modifier = modifier,
-//                padding = padding
-//            )
-//        }
+        composable(route = NavRoutes.ContentScreen.route) {
+            ContentScreen(navController = navController, modifier, padding)
+        }
+        composable(route = NavRoutes.ReadingScreen.route) {
+            ReadingScreen(
+                navController = navController,
+                bookViewModel = bookViewModel,
+                modifier = modifier,
+                padding = padding
+            )
+        }
     }
 }
 
