@@ -5,19 +5,19 @@
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="NAVMAppBarTest">
+      <SelectionState runConfigName="AppTests">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="navMAppBar_displaysTitleAndLogo()">
+      <SelectionState runConfigName="testRendersReading()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="navMAppBar_navigatesOnClick()">
+      <SelectionState runConfigName="testNavigation()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="bottomNavigationBar_navigatesOnClick()">
+      <SelectionState runConfigName="testBottomNavRender()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="BottomNavigationBarTest">
+      <SelectionState runConfigName="testReadingModeButton()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

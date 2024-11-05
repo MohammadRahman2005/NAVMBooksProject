@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusModifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.navmbooks.BookViewModel
@@ -29,12 +30,13 @@ fun ReadingScreen(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("Reading Mode", modifier = Modifier.padding(end = 8.dp))
+            Text("Reading Mode", modifier = Modifier.padding(end = 8.dp).testTag("ReadingText"))
             Switch(
                 checked = bookViewModel.isReadingMode.value,
-                onCheckedChange = { bookViewModel.toggleReadingMode(it) }
+                onCheckedChange = { bookViewModel.toggleReadingMode(it) },
+                Modifier.testTag("ReadingSwitch")
             )
         }
-        Text("Reading Content Here")
+        Text("Reading Content Here", modifier.testTag("ContentText"))
     }
 }
