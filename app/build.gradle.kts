@@ -76,5 +76,6 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation (libs.androidx.material)
+    implementation("androidx.compose.material3:material3-window-size-class")
     implementation ("org.jsoup:jsoup:1.10.3")
 }
