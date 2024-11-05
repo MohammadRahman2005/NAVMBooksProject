@@ -11,16 +11,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.navmbooks.BookViewModel
+import com.example.navmbooks.R
 
 @Composable
 fun ReadingScreen(
     navController: NavHostController,
     bookViewModel: BookViewModel,
     modifier: Modifier = Modifier,
-    padding: PaddingValues = PaddingValues(0.dp)
+    padding: PaddingValues = PaddingValues(dimensionResource(R.dimen.zero_padding))
 ) {
 
     Column(
@@ -30,7 +33,11 @@ fun ReadingScreen(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("Reading Mode", modifier = Modifier.padding(end = 8.dp).testTag("ReadingText"))
+            Text(stringResource(
+                R.string.reading_button),
+                modifier = Modifier
+                    .padding(end = dimensionResource(R.dimen.small_padding))
+                    .testTag("ReadingText"))
             Switch(
                 checked = bookViewModel.isReadingMode.value,
                 onCheckedChange = { bookViewModel.toggleReadingMode(it) },
