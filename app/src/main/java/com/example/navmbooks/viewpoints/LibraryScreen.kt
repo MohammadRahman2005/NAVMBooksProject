@@ -16,7 +16,7 @@ import com.example.navmbooks.NavRoutes
 fun LibraryScreen(
     navController: NavController,
     modifier: Modifier = Modifier,
-    padding: PaddingValues
+    padding: PaddingValues,
 ) {
     Column {
         Row(modifier = modifier.padding(padding)){

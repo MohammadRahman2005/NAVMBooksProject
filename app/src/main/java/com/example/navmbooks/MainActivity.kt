@@ -21,9 +21,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -46,8 +44,12 @@ import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Companion
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Companion.Medium
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -99,22 +101,27 @@ class MainActivity : ComponentActivity() {
 fun MainScreen() {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
+    var book by rememberSaveable { mutableStateOf<Book?>(null) }
 
-    scope.launch(Dispatchers.IO) {
-        try
-        {
-            context.assets.open("pg20195-h/pg20195-images.html").use { inputStream ->
-                val book = Book.readBook(inputStream)
-//                Log.d("MainScreen", "Book parsed: $book")
+    LaunchedEffect(Unit){
+        scope.launch(Dispatchers.IO) {
+            try
+            {
+//            context.assets.open("pg20195-h/pg20195-images.html").use { inputStream ->
+//                val book = Book.readBook(inputStream)
+//             Log.d("MainScreen", "Book parsed: $book")
+//            }
+                book = Book.readBookURL("https://www.gutenberg.org/cache/epub/8710/pg8710-images.html")
+                val book2 = Book.readBookURL("https://www.gutenberg.org/cache/epub/20195/pg20195-images.html")
+                val book3 = Book.readBookURL("https://www.gutenberg.org/cache/epub/40367/pg40367-images.html")
+                Log.d("MainScreen", "Book parsed: $book")
+            } catch (e: IOException) {
+                Log.e("MainScreen", "Error reading book", e)
             }
-            val book = Book.readBookURL("https://www.gutenberg.org/cache/epub/8710/pg8710-images.html")
-            val book2 = Book.readBookURL("https://www.gutenberg.org/cache/epub/20195/pg20195-images.html")
-            val book3 = Book.readBookURL("https://www.gutenberg.org/cache/epub/40367/pg40367-images.html")
-            Log.d("MainScreen", "Book parsed: $book")
-        } catch (e: IOException) {
-            Log.e("MainScreen", "Error reading book", e)
         }
-
+    }
+    if (book!=null){
+        Text(text= "Book: ${book!!.title}")
     }
 }
 
@@ -151,7 +158,7 @@ fun BookReadingApp(
             bookViewModel = bookViewModel,
             adaptiveNavigationType = adaptiveNavigationType
         )
-        MainScreen()
+
     }
 }
 

@@ -14,13 +14,14 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.navmbooks.BookViewModel
+import com.example.navmbooks.MainScreen
 
 @Composable
 fun ReadingScreen(
     navController: NavHostController,
     bookViewModel: BookViewModel,
     modifier: Modifier = Modifier,
-    padding: PaddingValues = PaddingValues(0.dp)
+    padding: PaddingValues = PaddingValues(0.dp),
 ) {
 
     Column(
@@ -38,5 +39,6 @@ fun ReadingScreen(
             )
         }
         Text("Reading Content Here", modifier.testTag("ContentText"))
+        MainScreen()
     }
 }
