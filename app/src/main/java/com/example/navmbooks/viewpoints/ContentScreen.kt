@@ -23,9 +23,15 @@ fun ContentScreen(
             Text(text="Content Table", modifier = Modifier.testTag("ContentText"))
         }
         Row (modifier = modifier.padding((padding))){
-            Button(onClick = {navController.navigate(NavRoutes.ReadingScreen.route)}) {
-                Text("Book 1 Reading")
+            Column {
+                Button(onClick = {navController.navigate(NavRoutes.ContentScreen.route)}) {
+                    Text("Book 1 Chapter 1 Reading")
+                }
+                Button(onClick = {navController.navigate(NavRoutes.ReadingScreen.route)}) {
+                    Text("Book 1 Chapter 2 Reading")
+                }
             }
+
         }
     }
 }

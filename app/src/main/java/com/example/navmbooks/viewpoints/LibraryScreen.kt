@@ -23,8 +23,10 @@ fun LibraryScreen(
             Text(text="Library", modifier = Modifier.testTag("LibraryText"))
         }
         Row {
-            Button(onClick = {navController.navigate(NavRoutes.ContentScreen.route)}) {
-                Text("Book 1 table of contents")
+            Column {
+                Button(onClick = {navController.navigate(NavRoutes.ContentScreen.route)}) {
+                    Text("Book 1 table of contents")
+                }
             }
         }
     }
