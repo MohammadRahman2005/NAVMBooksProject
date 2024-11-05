@@ -46,9 +46,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -66,7 +66,6 @@ import com.example.navmbooks.viewpoints.LibraryScreen
 import com.example.navmbooks.viewpoints.ReadingScreen
 import com.example.navmbooks.viewpoints.SearchScreen
 import java.util.Locale
-
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
@@ -164,9 +163,9 @@ fun AdaptiveNavigationBars(
 ) {
     Column(Modifier.padding(padding)) {
         val padding = if (adaptiveNavigationType == AdaptiveNavigationType.NAVIGATION_RAIL) {
-            PaddingValues(start = 100.dp)
+            PaddingValues(start = dimensionResource(R.dimen.small_padding))
         } else {
-            PaddingValues(0.dp)
+            PaddingValues(dimensionResource(R.dimen.zero_padding))
         }
 
         NavigationHost(
@@ -219,7 +218,7 @@ fun PermanentNavigationDrawerComponent(
         drawerContent = {
             PermanentDrawerSheet {
                 Column {
-                    Spacer(Modifier.height(12.dp))
+                    Spacer(Modifier.height(dimensionResource(R.dimen.large_size)))
                     navBarItems().forEach { navItem ->
                         NavigationDrawerItem(
                             selected = currentRoutes == navItem.route,
@@ -240,7 +239,7 @@ fun PermanentNavigationDrawerComponent(
                     navController = navController,
                     bookViewModel = bookViewModel,
                     modifier = Modifier,
-                    padding = PaddingValues(0.dp)
+                    padding = PaddingValues(dimensionResource(R.dimen.zero_padding))
                 )
             }
         }
@@ -257,9 +256,9 @@ fun NAVMAppBar(
         title = {
             Text(
                 stringResource(R.string.app_name),
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(top = 8.dp, start = 50.dp),
-                color = MaterialTheme.colorScheme.onPrimary
+                style = MaterialTheme.typography.displaySmall,
+                modifier = Modifier.padding(top = dimensionResource(R.dimen.small_padding), start = dimensionResource(R.dimen.large_padding)),
+                color = MaterialTheme.colorScheme.primary
             )
         },
         modifier = modifier,
@@ -273,12 +272,10 @@ fun NAVMAppBar(
             }
         },
         actions = {
-            Logo(modifier = Modifier.size(48.dp))
+            Logo(modifier = Modifier.size(dimensionResource(R.dimen.large_size)))
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary,
-            actionIconContentColor = MaterialTheme.colorScheme.onPrimary
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
         )
     )
 }
@@ -341,8 +338,8 @@ fun NavigationHost(
 @Composable
 fun BottomNavigationBar(navController: NavHostController) {
     NavigationBar(
-        containerColor = MaterialTheme.colorScheme.surface,
-        contentColor = MaterialTheme.colorScheme.onSurface
+        containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+        contentColor = MaterialTheme.colorScheme.primary
     ) {
         val backStackEntry by navController.currentBackStackEntryAsState()
         val currentRoutes = backStackEntry?.destination?.route
