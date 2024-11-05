@@ -16,6 +16,13 @@ public class Book {
     private final ArrayList<Chapter> chapters;
     private final String allContent;
 
+    public String getTitle(){
+        return title;
+    }
+    public ArrayList<Chapter> getChapters(){
+        return chapters;
+    }
+
     private Book(String title, String author, ArrayList<Chapter> chapters, StringBuilder allContent){
         this.title=title;
         this.author=author;
