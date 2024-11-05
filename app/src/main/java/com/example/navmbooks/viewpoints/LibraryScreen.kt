@@ -33,7 +33,7 @@ fun LibraryScreen(
                         contentColor = MaterialTheme.colorScheme.primary
                     )
                 ) {
-                    Text("Book 1 table of contents")
+                    Text(text="Book 1 table of contents")
                 }
             }
         }

@@ -57,7 +57,9 @@ class AppTests {
     @Test
     fun testRendersContent() {
         composeTestRule.waitForIdle()
-        composeTestRule.onNodeWithText("Content").performClick()
+        composeTestRule.onNodeWithText("Library").performClick()
+        composeTestRule.waitForIdle()
+        composeTestRule.onNodeWithText("Book 1 table of contents").performClick()
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithTag("ContentText").assertIsDisplayed()
     }
@@ -77,8 +79,6 @@ class AppTests {
         composeTestRule.onNodeWithText("Home").assertIsDisplayed()
         composeTestRule.onNodeWithText("Library").assertIsDisplayed()
         composeTestRule.onNodeWithText("Search").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Content").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Read").assertIsDisplayed()
     }
 
     @Test
@@ -94,7 +94,11 @@ class AppTests {
     @Test
     fun testReadingModeButton() {
         composeTestRule.waitForIdle()
-        composeTestRule.onNodeWithText("Read").performClick()
+        composeTestRule.onNodeWithText("Library").performClick()
+        composeTestRule.waitForIdle()
+        composeTestRule.onNodeWithText("Book 1 table of contents").performClick()
+        composeTestRule.waitForIdle()
+        composeTestRule.onNodeWithText("Book 1 Chapter 1 Reading").performClick()
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithTag("ReadingSwitch").assertIsOff()
         composeTestRule.onNodeWithTag("ReadingSwitch").performClick()
