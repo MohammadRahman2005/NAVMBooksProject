@@ -47,6 +47,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -73,6 +74,7 @@ import com.example.navmbooks.viewpoints.ReadingScreen
 import com.example.navmbooks.viewpoints.SearchScreen
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.util.Locale
 
@@ -99,29 +101,30 @@ class MainActivity : ComponentActivity() {
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun MainScreen() {
-    val scope = rememberCoroutineScope()
     val context = LocalContext.current
-    var book by rememberSaveable { mutableStateOf<Book?>(null) }
+    var book by remember { mutableStateOf<Book?>(null) }
 
     LaunchedEffect(Unit){
-        scope.launch(Dispatchers.IO) {
             try
             {
 //            context.assets.open("pg20195-h/pg20195-images.html").use { inputStream ->
 //                val book = Book.readBook(inputStream)
 //             Log.d("MainScreen", "Book parsed: $book")
 //            }
-                book = Book.readBookURL("https://www.gutenberg.org/cache/epub/8710/pg8710-images.html")
-                val book2 = Book.readBookURL("https://www.gutenberg.org/cache/epub/20195/pg20195-images.html")
-                val book3 = Book.readBookURL("https://www.gutenberg.org/cache/epub/40367/pg40367-images.html")
-                Log.d("MainScreen", "Book parsed: $book")
+                withContext(Dispatchers.IO) {
+                    book = Book.readBookURL("https://www.gutenberg.org/cache/epub/8710/pg8710-images.html")
+                    val book2 = Book.readBookURL("https://www.gutenberg.org/cache/epub/20195/pg20195-images.html")
+                    val book3 = Book.readBookURL("https://www.gutenberg.org/cache/epub/40367/pg40367-images.html")
+                }
+//                Log.d("MainScreen", "Book parsed: $book")
             } catch (e: IOException) {
                 Log.e("MainScreen", "Error reading book", e)
             }
-        }
     }
     if (book!=null){
-        Text(text= "Book: ${book!!.title}")
+        Text(text= "Book: ${book!!.chapters}")
+    }else {
+        Text(text = "No book")
     }
 }
 

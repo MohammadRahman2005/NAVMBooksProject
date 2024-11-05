@@ -19,6 +19,9 @@ public class Book {
     public String getTitle(){
         return title;
     }
+    public ArrayList<Chapter> getChapters(){
+        return chapters;
+    }
 
     private Book(String title, String author, ArrayList<Chapter> chapters, StringBuilder allContent){
         this.title=title;
