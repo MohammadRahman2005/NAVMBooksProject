@@ -2,9 +2,7 @@
 
 package com.example.navmbooks
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -44,16 +42,9 @@ import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Companion
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Companion.Medium
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -74,10 +65,6 @@ import com.example.navmbooks.viewpoints.HomeScreen
 import com.example.navmbooks.viewpoints.LibraryScreen
 import com.example.navmbooks.viewpoints.ReadingScreen
 import com.example.navmbooks.viewpoints.SearchScreen
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.io.IOException
 import java.util.Locale
 
 
@@ -313,6 +300,7 @@ fun NavigationHost(
     modifier: Modifier = Modifier,
     padding: PaddingValues
 ) {
+    val books = bookViewModel.bookList
     NavHost(
         navController = navController,
         startDestination = NavRoutes.HomeScreen.route,
@@ -322,23 +310,29 @@ fun NavigationHost(
             HomeScreen(navController = navController, modifier, padding)
         }
         composable(route = NavRoutes.LibraryScreen.route) {
-            LibraryScreen(navController = navController, modifier, padding, viewModel = BookViewModel())
+            LibraryScreen(navController = navController, modifier, padding, viewModel = BookViewModel(), books = books)
         }
         composable(route = NavRoutes.SearchScreen.route) {
             SearchScreen(navController = navController, modifier, padding)
         }
-        composable(route = NavRoutes.ContentScreen.route) {
-            ContentScreen(navController = navController, modifier, padding, bookViewModel)
-        }
-        composable(route = NavRoutes.ReadingScreen.route, arguments = listOf(navArgument("chapterIndex") { type = NavType.StringType })) {
+        composable(route = NavRoutes.ContentScreen.route, arguments = listOf(navArgument("bookIndex") { type = NavType.IntType })) {
             backStackEntry ->
-            ReadingScreen(
-                navController = navController,
-                bookViewModel = bookViewModel,
-                modifier = modifier,
-                padding = padding,
-                backStackEntry = backStackEntry
-            )
+            val bookIndex = backStackEntry.arguments?.getInt("bookIndex") ?: 0
+            ContentScreen(navController = navController, modifier, padding, bookViewModel, books = books, bookIndex = bookIndex)
+        }
+        composable(route = NavRoutes.ReadingScreen.route, arguments = listOf(navArgument("chapterIndex") { type = NavType.StringType }, navArgument("bookIndex") { type = NavType.IntType })) {
+            backStackEntry ->
+            val bookIndex = backStackEntry.arguments?.getInt("bookIndex") ?: 0
+            val chapterIndex = backStackEntry.arguments?.getString("chapterIndex")?.toIntOrNull()
+            chapterIndex?.let { books[bookIndex]?.chapters?.get(it) }?.let {
+                ReadingScreen(
+                    navController = navController,
+                    bookViewModel = bookViewModel,
+                    modifier = modifier,
+                    padding = padding,
+                    it
+                )
+            }
         }
     }
 }
