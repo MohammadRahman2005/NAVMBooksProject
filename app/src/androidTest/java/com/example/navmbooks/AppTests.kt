@@ -3,11 +3,14 @@ package com.example.navmbooks
 import androidx.activity.compose.setContent
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsOff
 import androidx.compose.ui.test.assertIsOn
+import androidx.compose.ui.test.hasTestTag
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.isToggleable
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
@@ -54,20 +57,26 @@ class AppTests {
         composeTestRule.onNodeWithTag("SearchText").assertIsDisplayed()
     }
 
+    @OptIn(ExperimentalTestApi::class)
     @Test
     fun testRendersContent() {
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithText("Library").performClick()
+        composeTestRule.waitUntilAtLeastOneExists(hasText("WOOD-BLOCK PRINTING"), timeoutMillis = 5000)
+        composeTestRule.onNodeWithText("WOOD-BLOCK PRINTING").performClick()
         composeTestRule.waitForIdle()
-        composeTestRule.onNodeWithText("Book 1 table of contents").performClick()
-        composeTestRule.waitForIdle()
-        composeTestRule.onNodeWithTag("ContentText").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Chapter 1").assertIsDisplayed()
     }
 
+    @OptIn(ExperimentalTestApi::class)
     @Test
     fun testRendersReading() {
         composeTestRule.waitForIdle()
-        composeTestRule.onNodeWithText("Read").performClick()
+        composeTestRule.onNodeWithText("Library").performClick()
+        composeTestRule.waitUntilAtLeastOneExists(hasText("WOOD-BLOCK PRINTING"), timeoutMillis = 5000)
+        composeTestRule.onNodeWithText("WOOD-BLOCK PRINTING").performClick()
+        composeTestRule.waitForIdle()
+        composeTestRule.onNodeWithText("Chapter 1").performClick()
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithTag("ReadingText").assertIsDisplayed()
         composeTestRule.onNodeWithTag("ContentText").assertIsDisplayed()
@@ -91,14 +100,15 @@ class AppTests {
         composeTestRule.onNodeWithTag("homeText").assertIsDisplayed()
     }
 
+    @OptIn(ExperimentalTestApi::class)
     @Test
     fun testReadingModeButton() {
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithText("Library").performClick()
+        composeTestRule.waitUntilAtLeastOneExists(hasText("WOOD-BLOCK PRINTING"), timeoutMillis = 5000)
+        composeTestRule.onNodeWithText("WOOD-BLOCK PRINTING").performClick()
         composeTestRule.waitForIdle()
-        composeTestRule.onNodeWithText("Book 1 table of contents").performClick()
-        composeTestRule.waitForIdle()
-        composeTestRule.onNodeWithText("Book 1 Chapter 1 Reading").performClick()
+        composeTestRule.onNodeWithText("Chapter 1").performClick()
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithTag("ReadingSwitch").assertIsOff()
         composeTestRule.onNodeWithTag("ReadingSwitch").performClick()
