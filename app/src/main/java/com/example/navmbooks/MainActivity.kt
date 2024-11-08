@@ -38,12 +38,14 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Companion.Compact
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Companion.Medium
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -396,15 +398,13 @@ fun navBarItems() : List<BarItem> {
 @Preview(showBackground = true, locale = "fr")
 @Composable
 fun NavmBooksPreview() {
-    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     NAVMBooksTheme {
-        val context = LocalContext.current
-        val windowSize = calculateWindowSizeClass(context as Activity)
-        val bookViewModel: BookViewModel = viewModel()
+        val windowSize = Compact
+        val previewBookViewModel = remember { BookViewModel() }
         BookReadingApp(
-            locale = Locale.US,
-            windowSizeClass = windowSize.widthSizeClass,
-            bookViewModel = bookViewModel
+            locale = Locale.FRANCE,
+            windowSizeClass = windowSize,
+            bookViewModel = previewBookViewModel
         )
     }
 }
