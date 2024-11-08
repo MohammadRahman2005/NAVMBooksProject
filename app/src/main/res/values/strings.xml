@@ -15,4 +15,9 @@
 
     <string name="back_button">Back</string>
     <string name="reading_button">Reading Mode</string>
+    <string-array name="books">
+        <item>https://www.gutenberg.org/cache/epub/8710/pg8710-images.html</item>
+        <item>https://www.gutenberg.org/cache/epub/20195/pg20195-images.html</item>
+        <item>https://www.gutenberg.org/cache/epub/40367/pg40367-images.html</item>
+    </string-array>
 </resources>
