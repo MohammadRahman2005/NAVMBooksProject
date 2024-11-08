@@ -2,6 +2,7 @@
 
 package com.example.navmbooks
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -45,10 +46,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -388,4 +391,20 @@ fun navBarItems() : List<BarItem> {
     )
 
     return barItems
+}
+
+@Preview(showBackground = true, locale = "fr")
+@Composable
+fun NavmBooksPreview() {
+    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+    NAVMBooksTheme {
+        val context = LocalContext.current
+        val windowSize = calculateWindowSizeClass(context as Activity)
+        val bookViewModel: BookViewModel = viewModel()
+        BookReadingApp(
+            locale = Locale.US,
+            windowSizeClass = windowSize.widthSizeClass,
+            bookViewModel = bookViewModel
+        )
+    }
 }
