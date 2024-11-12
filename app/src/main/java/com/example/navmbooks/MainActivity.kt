@@ -3,6 +3,7 @@
 package com.example.navmbooks
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -50,7 +51,6 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -68,6 +68,9 @@ import com.example.navmbooks.viewpoints.SearchScreen
 import java.util.Locale
 
 class MainActivity : ComponentActivity() {
+    private val viewModel: BookViewModel by viewModels {
+        BookViewModelFactory(this.applicationContext) // Use application context to prevent memory leaks
+    }
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,7 +82,8 @@ class MainActivity : ComponentActivity() {
                 BookReadingApp(
                     locale = Locale.US,
                     windowSizeClass = windowSize.widthSizeClass,
-                    bookViewModel = bookViewModel
+                    bookViewModel = bookViewModel,
+                    viewModel = viewModel
                 )
             }
         }
@@ -91,7 +95,8 @@ fun BookReadingApp(
     navController: NavHostController = rememberNavController(),
     locale: Locale,
     bookViewModel: BookViewModel,
-    windowSizeClass: WindowWidthSizeClass
+    windowSizeClass: WindowWidthSizeClass,
+    viewModel: BookViewModel
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry?.destination?.route
@@ -117,7 +122,8 @@ fun BookReadingApp(
             padding = padding,
             navController = navController,
             bookViewModel = bookViewModel,
-            adaptiveNavigationType = adaptiveNavigationType
+            adaptiveNavigationType = adaptiveNavigationType,
+            viewModel=viewModel
         )
 
     }
@@ -129,7 +135,8 @@ fun AdaptiveNavigationBars(
     navController: NavHostController,
     bookViewModel: BookViewModel,
     adaptiveNavigationType: AdaptiveNavigationType,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: BookViewModel
 ) {
     Column(Modifier.padding(padding)) {
         val padding = if (adaptiveNavigationType == AdaptiveNavigationType.NAVIGATION_RAIL) {
@@ -142,12 +149,13 @@ fun AdaptiveNavigationBars(
             navController = navController,
             bookViewModel = bookViewModel,
             modifier = modifier,
-            padding = padding
+            padding = padding,
+            viewModel = viewModel
         )
     }
     Row(modifier = Modifier.padding(padding)) {
         if (!bookViewModel.isReadingMode.value && adaptiveNavigationType == AdaptiveNavigationType.PERMANENT_NAVIGATION_DRAWER) {
-            PermanentNavigationDrawerComponent(navController = navController, bookViewModel = bookViewModel)
+            PermanentNavigationDrawerComponent(navController = navController, bookViewModel = viewModel)
         }
         if (!bookViewModel.isReadingMode.value && adaptiveNavigationType == AdaptiveNavigationType.NAVIGATION_RAIL) {
             NavigationRailComponent(navController = navController)
@@ -209,7 +217,8 @@ fun PermanentNavigationDrawerComponent(
                     navController = navController,
                     bookViewModel = bookViewModel,
                     modifier = Modifier,
-                    padding = PaddingValues(dimensionResource(R.dimen.zero_padding))
+                    padding = PaddingValues(dimensionResource(R.dimen.zero_padding)),
+                    bookViewModel
                 )
             }
         }
@@ -260,12 +269,15 @@ fun Logo(modifier: Modifier = Modifier) {
     )
 }
 
+
+
 @Composable
 fun NavigationHost(
     navController: NavHostController,
     bookViewModel: BookViewModel,
     modifier: Modifier = Modifier,
-    padding: PaddingValues
+    padding: PaddingValues,
+    viewModel: BookViewModel
 ) {
     val books = bookViewModel.bookList
     NavHost(
@@ -277,7 +289,7 @@ fun NavigationHost(
             HomeScreen(navController = navController, modifier, padding)
         }
         composable(route = NavRoutes.LibraryScreen.route) {
-            LibraryScreen(navController = navController, modifier, padding, viewModel = BookViewModel(), books = books)
+            LibraryScreen(navController = navController, modifier, padding, viewModel = viewModel, books = books)
         }
         composable(route = NavRoutes.SearchScreen.route) {
             SearchScreen(navController = navController, modifier, padding)

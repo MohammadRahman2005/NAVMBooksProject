@@ -1,17 +1,50 @@
 package com.example.navmbooks
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.navmbooks.data.FileRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.IOException
 
 @SuppressLint("MutableCollectionMutableState")
-class BookViewModel : ViewModel() {
+class BookViewModel(private val repository: FileRepository) : ViewModel() {
+
+    private val _directoryContents = MutableLiveData<List<String>>()
+    val directoryContents: LiveData<List<String>> = _directoryContents
+
+    // Function to set up file download
+    fun setupDownload(url: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val fileName = url.substringAfterLast("/")
+            val file = repository.createFile("DownloadedFiles", fileName)
+
+            if (repository.downloadFile(url, file)) {
+                updateDirectoryContents("DownloadedFiles")
+            } else {
+                Log.e("DownloadViewModel", "Failed to download file")
+            }
+        }
+    }
+
+    private fun updateDirectoryContents(directoryName: String) {
+        val contents = repository.listDirectoryContents(directoryName)
+        _directoryContents.postValue(contents)
+    }
+
+    fun confirmDeletion(directoryName: String) {
+        repository.deleteDirectoryContents(directoryName)
+        updateDirectoryContents(directoryName)
+    }
+
+
     var book1 by mutableStateOf<Book?>(null)
         private set
 
