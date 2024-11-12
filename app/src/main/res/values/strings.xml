@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">NAVM Books</string>
+
+    <string name="home">Home</string>
+    <string name="library">Library</string>
+    <string name="search">Search</string>
+    <string name="content">Content</string>
+    <string name="reading">Read</string>
+
+    <string name="home_screen">home_screen</string>
+    <string name="library_screen">library_screen</string>
+    <string name="search_screen">search_screen</string>
+    <string name="content_screen">content_screen</string>
+    <string name="reading_screen">reading_screen</string>
+
+    <string name="back_button">Back</string>
+    <string name="reading_button">Reading Mode</string>
 </resources>
