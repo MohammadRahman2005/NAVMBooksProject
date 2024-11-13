@@ -68,7 +68,7 @@ import com.example.navmbooks.viewpoints.SearchScreen
 import java.util.Locale
 
 class MainActivity : ComponentActivity() {
-    private val viewModel: BookViewModel by viewModels {
+    private val factory by lazy {
         BookViewModelFactory(this.applicationContext) // Use application context to prevent memory leaks
     }
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
@@ -78,12 +78,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             NAVMBooksTheme {
                 val windowSize = calculateWindowSizeClass(this)
-                val bookViewModel: BookViewModel = viewModel()
                 BookReadingApp(
                     locale = Locale.US,
                     windowSizeClass = windowSize.widthSizeClass,
-                    bookViewModel = bookViewModel,
-                    viewModel = viewModel
+                    factory=factory
                 )
             }
         }
@@ -94,10 +92,10 @@ class MainActivity : ComponentActivity() {
 fun BookReadingApp(
     navController: NavHostController = rememberNavController(),
     locale: Locale,
-    bookViewModel: BookViewModel,
     windowSizeClass: WindowWidthSizeClass,
-    viewModel: BookViewModel
+    factory: BookViewModelFactory
 ) {
+    val bookViewModel: BookViewModel = viewModel(factory=factory)
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry?.destination?.route
     val adaptiveNavigationType = when (windowSizeClass) {
@@ -123,7 +121,6 @@ fun BookReadingApp(
             navController = navController,
             bookViewModel = bookViewModel,
             adaptiveNavigationType = adaptiveNavigationType,
-            viewModel=viewModel
         )
 
     }
@@ -136,7 +133,6 @@ fun AdaptiveNavigationBars(
     bookViewModel: BookViewModel,
     adaptiveNavigationType: AdaptiveNavigationType,
     modifier: Modifier = Modifier,
-    viewModel: BookViewModel
 ) {
     Column(Modifier.padding(padding)) {
         val padding = if (adaptiveNavigationType == AdaptiveNavigationType.NAVIGATION_RAIL) {
@@ -150,12 +146,11 @@ fun AdaptiveNavigationBars(
             bookViewModel = bookViewModel,
             modifier = modifier,
             padding = padding,
-            viewModel = viewModel
         )
     }
     Row(modifier = Modifier.padding(padding)) {
         if (!bookViewModel.isReadingMode.value && adaptiveNavigationType == AdaptiveNavigationType.PERMANENT_NAVIGATION_DRAWER) {
-            PermanentNavigationDrawerComponent(navController = navController, bookViewModel = viewModel)
+            PermanentNavigationDrawerComponent(navController = navController, bookViewModel = bookViewModel)
         }
         if (!bookViewModel.isReadingMode.value && adaptiveNavigationType == AdaptiveNavigationType.NAVIGATION_RAIL) {
             NavigationRailComponent(navController = navController)
@@ -218,7 +213,6 @@ fun PermanentNavigationDrawerComponent(
                     bookViewModel = bookViewModel,
                     modifier = Modifier,
                     padding = PaddingValues(dimensionResource(R.dimen.zero_padding)),
-                    bookViewModel
                 )
             }
         }
@@ -277,7 +271,6 @@ fun NavigationHost(
     bookViewModel: BookViewModel,
     modifier: Modifier = Modifier,
     padding: PaddingValues,
-    viewModel: BookViewModel
 ) {
     val books = bookViewModel.bookList
     NavHost(
@@ -289,7 +282,7 @@ fun NavigationHost(
             HomeScreen(navController = navController, modifier, padding)
         }
         composable(route = NavRoutes.LibraryScreen.route) {
-            LibraryScreen(navController = navController, modifier, padding, viewModel = viewModel, books = books)
+            LibraryScreen(navController = navController, modifier, padding, viewModel = bookViewModel, books = books)
         }
         composable(route = NavRoutes.SearchScreen.route) {
             SearchScreen(navController = navController, modifier, padding)
