@@ -25,13 +25,18 @@ class BookViewModel(private val repository: FileRepository) : ViewModel() {
     fun setupDownload(url: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val fileName = url.substringAfterLast("/")
-            val destDir = url.substringBeforeLast(".")
-            val file = repository.createFile("DownloadedFiles", fileName)
-            val destDirFile = repository.createFile("DownloadedFiles", destDir)
+            val destDir = "DownloadedFiles"
+
+            val file = repository.createFile(destDir, fileName)
 
             if (repository.downloadFile(url, file)) {
-                updateDirectoryContents("DownloadedFiles")
-                UnzipUtils.unzip(file, "DownloadedFiles")
+                if (file.exists() && file.length() > 0) {
+                    updateDirectoryContents(destDir)
+                    val destDirFile = repository.createFile(destDir, fileName.substringBeforeLast("."))
+                    UnzipUtils.unzip(file, destDirFile.absolutePath)
+                } else {
+                    Log.e("DownloadViewModel", "File is empty or does not exist.")
+                }
             } else {
                 Log.e("DownloadViewModel", "Failed to download file")
             }
@@ -67,9 +72,9 @@ class BookViewModel(private val repository: FileRepository) : ViewModel() {
     private fun loadBook() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                setupDownload("https://www.gutenberg.org/cache/epub/8710/pg8710-images.html")
-                setupDownload("https://www.gutenberg.org/cache/epub/20195/pg20195-images.html")
-                setupDownload("https://www.gutenberg.org/cache/epub/40367/pg40367-images.html")
+                setupDownload("https://www.gutenberg.org/cache/epub/8710/pg8710-h.zip")
+//                setupDownload("https://www.gutenberg.org/cache/epub/20195/pg20195-images.html")
+//                setupDownload("https://www.gutenberg.org/cache/epub/40367/pg40367-images.html")
 
                 book1 = Book.readBookURL("https://www.gutenberg.org/cache/epub/8710/pg8710-images.html")
                 book2 = Book.readBookURL("https://www.gutenberg.org/cache/epub/20195/pg20195-images.html")
