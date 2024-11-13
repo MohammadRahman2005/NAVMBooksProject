@@ -10,7 +10,7 @@ import okhttp3.Request
 import java.io.IOException
 
 
-class FileRepository(private val context: Context) {
+class FileRepository(val context: Context) {
     fun createFile(directoryName: String, fileName: String): File {
         val downloadFolder = File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), directoryName)
         if (!downloadFolder.exists()) downloadFolder.mkdirs()
