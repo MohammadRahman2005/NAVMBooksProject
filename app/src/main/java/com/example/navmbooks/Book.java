@@ -30,7 +30,7 @@ public class Book {
         this.chapters=chapters;
         this.allContent = String.valueOf(allContent);
     }
-    public static Book readBookFromFIle(File file) throws IOException {
+    public static Book readBookFromFile(File file) throws IOException {
         String title="";
         String author="";
         StringBuilder allContent= new StringBuilder();
