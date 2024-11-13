@@ -5,6 +5,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -29,12 +30,12 @@ public class Book {
         this.chapters=chapters;
         this.allContent = String.valueOf(allContent);
     }
-    public static Book readBook(InputStream inputStream) throws IOException {
+    public static Book readBookFromFIle(File file) throws IOException {
         String title="";
         String author="";
         StringBuilder allContent= new StringBuilder();
         ArrayList<Chapter> chapters = new ArrayList<Chapter>();
-        Document doc = Jsoup.parse(inputStream, "UTF-8", "");
+        Document doc = Jsoup.parse(file, "UTF-8", "");
         title=doc.getElementsByTag("h1").get(0).text();
         author = Objects.requireNonNull(doc.getElementById("pg-header-authlist")).getElementsByTag("p").get(0).text();
 
