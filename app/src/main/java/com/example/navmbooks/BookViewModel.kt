@@ -71,9 +71,10 @@ class BookViewModel(private val repository: FileRepository) : ViewModel() {
     private fun loadBookFromLocalStorage(){
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                setupDownload("https://www.gutenberg.org/cache/epub/8710/pg8710-h.zip")
-                setupDownload("https://www.gutenberg.org/cache/epub/20195/pg20195-h.zip")
-                setupDownload("https://www.gutenberg.org/cache/epub/40367/pg40367-h.zip")
+                val urls = repository.context.resources.getStringArray(R.array.books)
+                urls.forEach { url ->
+                    setupDownload(url)
+                }
                 val htmlFile1 = File(repository.context.getExternalFilesDir(null), "Download/DownloadedFiles/pg8710-h/pg8710-images.html")
                 val htmlFile2 = File(repository.context.getExternalFilesDir(null), "Download/DownloadedFiles/pg20195-h/pg20195-images.html")
                 val htmlFile3 = File(repository.context.getExternalFilesDir(null), "Download/DownloadedFiles/pg40367-h/pg40367-images.html")
