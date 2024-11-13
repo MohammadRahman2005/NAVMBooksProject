@@ -13,6 +13,7 @@ import com.example.navmbooks.data.FileRepository
 import com.example.navmbooks.data.UnzipUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.File
 import java.io.IOException
 
 @SuppressLint("MutableCollectionMutableState")
@@ -56,35 +57,48 @@ class BookViewModel(private val repository: FileRepository) : ViewModel() {
 
     var book1 by mutableStateOf<Book?>(null)
         private set
+    var book2 by mutableStateOf<Book?>(null)
+        private set
+    var book3 by mutableStateOf<Book?>(null)
+        private set
 
     var bookList by mutableStateOf<List<Book?>>(emptyList())
         private set
 
-    var book2 by mutableStateOf<Book?>(null)
-        private set
-
-    var book3 by mutableStateOf<Book?>(null)
-        private set
     init {
-        loadBook()
+        loadBookFromLocalStorage()
     }
-
-    private fun loadBook() {
+    private fun loadBookFromLocalStorage(){
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 setupDownload("https://www.gutenberg.org/cache/epub/8710/pg8710-h.zip")
-//                setupDownload("https://www.gutenberg.org/cache/epub/20195/pg20195-images.html")
-//                setupDownload("https://www.gutenberg.org/cache/epub/40367/pg40367-images.html")
+                setupDownload("https://www.gutenberg.org/cache/epub/20195/pg20195-h.zip")
+                setupDownload("https://www.gutenberg.org/cache/epub/40367/pg40367-h.zip")
+                val htmlFile1 = File(repository.context.getExternalFilesDir(null), "Download/DownloadedFiles/pg8710-h/pg8710-images.html")
+                val htmlFile2 = File(repository.context.getExternalFilesDir(null), "Download/DownloadedFiles/pg20195-h/pg20195-images.html")
+                val htmlFile3 = File(repository.context.getExternalFilesDir(null), "Download/DownloadedFiles/pg40367-h/pg40367-images.html")
 
-                book1 = Book.readBookURL("https://www.gutenberg.org/cache/epub/8710/pg8710-images.html")
-                book2 = Book.readBookURL("https://www.gutenberg.org/cache/epub/20195/pg20195-images.html")
-                book3 = Book.readBookURL("https://www.gutenberg.org/cache/epub/40367/pg40367-images.html")
-                bookList = bookList + book1
-                bookList = bookList + book2
-                bookList = bookList + book3
+                if (htmlFile1.exists()) {
+                    book1 = Book.readBookFromFile(htmlFile1)
+                    bookList = bookList + book1
+                } else {
+                    Log.e("BookViewModel", "The HTML file does not exist at $htmlFile1")
+                }
+                if (htmlFile2.exists()) {
+                    book2 = Book.readBookFromFile(htmlFile2)
+                    bookList = bookList + book2
+                } else {
+                    Log.e("BookViewModel", "The HTML file does not exist at $htmlFile2")
+                }
+                if (htmlFile3.exists()) {
+                    book3 = Book.readBookFromFile(htmlFile3)
+                    bookList = bookList + book3
+                } else {
+                    Log.e("BookViewModel", "The HTML file does not exist at $htmlFile3")
+                }
             } catch (e: IOException) {
-                // Handle the error appropriately
                 e.printStackTrace()
+                Log.e("BookViewModel", "Error reading local book file", e)
             }
         }
     }
