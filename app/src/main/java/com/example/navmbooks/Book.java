@@ -7,7 +7,6 @@ import org.jsoup.select.Elements;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -16,7 +15,6 @@ public class Book {
     private final String author;
     private final ArrayList<Chapter> chapters;
     private final String allContent;
-
     public String getTitle(){
         return title;
     }
@@ -74,7 +72,7 @@ public class Book {
 //                }
             }
         }
-        return new Book(title, author, chapters, allContent);
+        return new Book(title, author, chapters, allContent );
     }
 
     public static Book readBookURL(String URL) throws IOException {
@@ -121,7 +119,7 @@ public class Book {
 //                }
             }
         }
-        return new Book(title, author, chapters, allContent);
+        return new Book(title, author, chapters, allContent );
     }
     @Override
     public String toString(){
