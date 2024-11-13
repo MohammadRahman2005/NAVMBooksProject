@@ -27,21 +27,15 @@ object UnzipUtils {
         ZipFile(zipFilePath).use { zip ->
 
             zip.entries().asSequence().forEach { entry ->
-
-                zip.getInputStream(entry).use { input ->
-
-
-                    val filePath = destDirectory + File.separator + entry.name
-
-                    if (!entry.isDirectory) {
-                        // if the entry is a file, extracts it
+                val filePath = destDirectory + File.separator + entry.name
+                val file = File(filePath)
+                if (entry.isDirectory) {
+                    file.mkdirs()
+                } else {
+                    file.parentFile?.mkdirs()
+                    zip.getInputStream(entry).use { input ->
                         extractFile(input, filePath)
-                    } else {
-                        // if the entry is a directory, make the directory
-                        val dir = File(filePath)
-                        dir.mkdir()
                     }
-
                 }
 
             }
