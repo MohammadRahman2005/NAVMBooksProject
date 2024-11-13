@@ -71,31 +71,19 @@ class BookViewModel(private val repository: FileRepository) : ViewModel() {
     private fun loadBookFromLocalStorage(){
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val urls = repository.context.resources.getStringArray(R.array.books)
+                val urls = repository.context.resources.getStringArray(R.array.booksUrl)
                 urls.forEach { url ->
                     setupDownload(url)
                 }
-                val htmlFile1 = File(repository.context.getExternalFilesDir(null), "Download/DownloadedFiles/pg8710-h/pg8710-images.html")
-                val htmlFile2 = File(repository.context.getExternalFilesDir(null), "Download/DownloadedFiles/pg20195-h/pg20195-images.html")
-                val htmlFile3 = File(repository.context.getExternalFilesDir(null), "Download/DownloadedFiles/pg40367-h/pg40367-images.html")
-
-                if (htmlFile1.exists()) {
-                    book1 = Book.readBookFromFile(htmlFile1)
-                    bookList = bookList + book1
-                } else {
-                    Log.e("BookViewModel", "The HTML file does not exist at $htmlFile1")
-                }
-                if (htmlFile2.exists()) {
-                    book2 = Book.readBookFromFile(htmlFile2)
-                    bookList = bookList + book2
-                } else {
-                    Log.e("BookViewModel", "The HTML file does not exist at $htmlFile2")
-                }
-                if (htmlFile3.exists()) {
-                    book3 = Book.readBookFromFile(htmlFile3)
-                    bookList = bookList + book3
-                } else {
-                    Log.e("BookViewModel", "The HTML file does not exist at $htmlFile3")
+                val files = repository.context.resources.getStringArray(R.array.booksFile)
+                files.forEach {file ->
+                    val htmlFile = File(repository.context.getExternalFilesDir(null), file)
+                    if (htmlFile.exists()) {
+                        val book = Book.readBookFromFile(htmlFile)
+                        bookList= bookList + book
+                    }else{
+                        Log.e("BookViewModel", "The HTML file does not exist at $htmlFile")
+                    }
                 }
             } catch (e: IOException) {
                 e.printStackTrace()
