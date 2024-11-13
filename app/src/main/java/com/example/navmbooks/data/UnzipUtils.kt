@@ -17,7 +17,6 @@ object UnzipUtils {
      */
     @Throws(IOException::class)
     fun unzip(zipFilePath: File, destDirectory: String) {
-
         File(destDirectory).run {
             if (!exists()) {
                 mkdirs()
