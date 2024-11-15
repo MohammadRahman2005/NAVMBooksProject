@@ -402,6 +402,7 @@ fun NavmBooksPreview() {
         val previewBookViewModel = remember { BookViewModel() }
         BookReadingApp(
             locale = Locale.FRANCE,
+            windowSizeClass = Compact,
             bookViewModel = previewBookViewModel
         )
     }

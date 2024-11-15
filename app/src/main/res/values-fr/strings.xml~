@@ -14,5 +14,7 @@
     <string name="reading_screen">Écran de Lecture</string>
 
     <string name="back_button">Retour</string>
-    <string name="reading_button">Reading Mode</string>
+    <string name="reading_button">Mode Lecture</string>
+
+    <string name="loading_book">Loading Livre…</string>
 </resources>

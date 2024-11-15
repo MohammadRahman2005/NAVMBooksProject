@@ -15,4 +15,6 @@
 
     <string name="back_button">Back</string>
     <string name="reading_button">Reading Mode</string>
+
+    <string name="loading_book">Loading book…</string>
 </resources>

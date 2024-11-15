@@ -12,10 +12,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.example.navmbooks.Book
 import com.example.navmbooks.BookViewModel
 import com.example.navmbooks.NavRoutes
+import com.example.navmbooks.R
 
 @Composable
 fun LibraryScreen(
@@ -27,7 +29,7 @@ fun LibraryScreen(
 ) {
     Column {
         Row(modifier = modifier.padding(padding)){
-            Text(text="Library", modifier = Modifier.testTag("LibraryText"))
+            Text(text=stringResource(R.string.library_screen), modifier = Modifier.testTag("LibraryText"))
         }
         books.forEachIndexed { index, book ->
             Button(onClick = {

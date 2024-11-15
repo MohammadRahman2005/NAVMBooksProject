@@ -40,7 +40,7 @@ fun ReadingScreen(
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(stringResource(R.string.reading_screen), modifier = Modifier.padding(end = dimensionResource(R.dimen.small_padding)).testTag("ReadingText"))
+                Text("Reading Mode", modifier = Modifier.padding(end = dimensionResource(R.dimen.small_padding)).testTag("ReadingText"))
                 Switch(
                     checked = bookViewModel.isReadingMode.value,
                     onCheckedChange = { bookViewModel.toggleReadingMode(it) },

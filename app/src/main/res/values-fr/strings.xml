@@ -15,4 +15,6 @@
 
     <string name="back_button">Retour</string>
     <string name="reading_button">Mode Lecture</string>
+
+    <string name="loading_book">Chargement de Livre…</string>
 </resources>

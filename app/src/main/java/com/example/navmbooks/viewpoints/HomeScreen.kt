@@ -7,7 +7,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
+import com.example.navmbooks.R
 
 @Composable
 fun HomeScreen(
@@ -16,6 +18,6 @@ fun HomeScreen(
     padding: PaddingValues
 ) {
     Row(modifier = modifier.padding(padding)){
-        Text(text="Home Page", modifier = Modifier.testTag("homeText"))
+        Text(text=stringResource(R.string.home_screen), modifier = Modifier.testTag("homeText"))
     }
 }
