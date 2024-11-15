@@ -17,18 +17,21 @@ public class Book {
     private final String author;
     private final ArrayList<Chapter> chapters;
     private final String allContent;
+    private final File coverImage;
     public String getTitle(){
         return title;
     }
     public ArrayList<Chapter> getChapters(){
         return chapters;
     }
+    public File getCoverImage() {return coverImage; }
 
-    private Book(String title, String author, ArrayList<Chapter> chapters, StringBuilder allContent){
+    private Book(String title, String author, ArrayList<Chapter> chapters, StringBuilder allContent, File coverImage){
         this.title=title;
         this.author=author;
         this.chapters=chapters;
         this.allContent = String.valueOf(allContent);
+        this.coverImage = coverImage;
     }
     public static Book readBookFromFile(File file, File cover) throws IOException {
         String title="";
@@ -75,7 +78,7 @@ public class Book {
                 }
             }
         }
-        return new Book(title, author, chapters, allContent );
+        return new Book(title, author, chapters, allContent, cover);
     }
 
     public static Book readBookURL(String URL) throws IOException {
@@ -116,13 +119,9 @@ public class Book {
                 if (e.children().isEmpty() || e.child(0).equals("i")){
                     chapter.setText(e.text().trim()+" ");
                 }
-//                else if(chapter.getText() == null){
-//                    chapters.remove(chapter);
-//                    i = chapters.size()+1;
-//                }
             }
         }
-        return new Book(title, author, chapters, allContent );
+        return new Book(title, author, chapters, allContent, null );
     }
     @Override
     public String toString(){
