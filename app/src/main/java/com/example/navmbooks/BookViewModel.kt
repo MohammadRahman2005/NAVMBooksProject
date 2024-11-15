@@ -54,14 +54,6 @@ class BookViewModel(private val repository: FileRepository) : ViewModel() {
         updateDirectoryContents(directoryName)
     }
 
-
-    var book1 by mutableStateOf<Book?>(null)
-        private set
-    var book2 by mutableStateOf<Book?>(null)
-        private set
-    var book3 by mutableStateOf<Book?>(null)
-        private set
-
     var bookList by mutableStateOf<List<Book?>>(emptyList())
         private set
 
