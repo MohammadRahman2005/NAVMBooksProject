@@ -14,6 +14,11 @@
     <string name="content_label">Écran de Contenu</string>
     <string name="reading_label">Écran de Lecture</string>
 
+    <string name="select_chapter">Selectionner un Chapitre</string>
+    <string name="chapter_label">Chapitre %s</string>
+
+    <string name="reading_header">"Chapitre %s, Titre: %s</string>
+
     <string name="back_button">Retour</string>
     <string name="reading_button">Mode Lecture</string>
 

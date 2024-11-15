@@ -22,7 +22,7 @@
     <string name="select_chapter">Select a Chapter</string>
     <string name="chapter_label">Chapter %s</string>
 
-    <string name="reading_header">"Chapter %s, Title: %s</string>
+    <string name="reading_header">"Chapter ${Chapter.chapNum}, Title: ${Chapter.title}</string>
 
     <string name="back_button">Back</string>
     <string name="reading_button">Reading Mode</string>

@@ -64,7 +64,7 @@ fun ContentScreen(
                         .fillMaxWidth()
                         .padding(vertical = 4.dp)
                 ) {
-                    Text(text = stringResource(R.string.chapter_label, index + 1))
+                    Text(text = stringResource(R.string.chapter_label, ${index + 1}))
                 }
             }
         }
