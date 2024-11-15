@@ -126,7 +126,7 @@ fun BookReadingApp(
     navController: NavHostController = rememberNavController(),
     locale: Locale,
     bookViewModel: BookViewModel,
-    windowSizeClass: WindowWidthSizeClass = WindowWidthSizeClass.Compact
+    windowSizeClass: WindowWidthSizeClass
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry?.destination?.route
@@ -402,6 +402,7 @@ fun NavmBooksPreview() {
         val previewBookViewModel = remember { BookViewModel() }
         BookReadingApp(
             locale = Locale.FRANCE,
+            windowSizeClass = Compact,
             bookViewModel = previewBookViewModel
         )
     }

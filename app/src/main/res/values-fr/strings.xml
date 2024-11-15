@@ -7,11 +7,12 @@
     <string name="search">Recherche</string>
     <string name="content">Contenu</string>
     <string name="reading">Lecture</string>
-    <string name="home_screen">Écran Accueil</string>
-    <string name="library_screen">Écran d\'Étagère</string>
-    <string name="search_screen">Écran Recherche</string>
-    <string name="content_screen">Écran de Contenu</string>
-    <string name="reading_screen">Écran de Lecture</string>
+
+    <string name="home_label">Écran Accueil</string>
+    <string name="lib_label">Écran d\'Étagère</string>
+    <string name="search_label">Écran Recherche</string>
+    <string name="content_label">Écran de Contenu</string>
+    <string name="reading_label">Écran de Lecture</string>
 
     <string name="back_button">Retour</string>
     <string name="reading_button">Mode Lecture</string>

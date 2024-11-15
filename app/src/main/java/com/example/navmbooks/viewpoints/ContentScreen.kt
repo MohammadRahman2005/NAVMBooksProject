@@ -17,11 +17,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.navmbooks.Book
 import com.example.navmbooks.BookViewModel
 import com.example.navmbooks.NavRoutes
+import com.example.navmbooks.R
 
 @Composable
 fun ContentScreen(
@@ -36,7 +38,7 @@ fun ContentScreen(
 
     if (book == null){
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text(text = "Loading book...")
+            Text(text = stringResource(R.string.content_label))
         }
     }else{
         Column(

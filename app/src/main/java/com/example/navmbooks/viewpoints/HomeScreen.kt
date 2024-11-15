@@ -18,6 +18,6 @@ fun HomeScreen(
     padding: PaddingValues
 ) {
     Row(modifier = modifier.padding(padding)){
-        Text(text=stringResource(R.string.home_screen), modifier = Modifier.testTag("homeText"))
+        Text(text=stringResource(R.string.home_label), modifier = Modifier.testTag("homeText"))
     }
 }

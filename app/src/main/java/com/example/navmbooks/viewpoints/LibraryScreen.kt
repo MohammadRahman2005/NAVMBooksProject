@@ -29,7 +29,7 @@ fun LibraryScreen(
 ) {
     Column {
         Row(modifier = modifier.padding(padding)){
-            Text(text=stringResource(R.string.library_screen), modifier = Modifier.testTag("LibraryText"))
+            Text(text=stringResource(R.string.lib_label), modifier = Modifier.testTag("LibraryText"))
         }
         books.forEachIndexed { index, book ->
             Button(onClick = {

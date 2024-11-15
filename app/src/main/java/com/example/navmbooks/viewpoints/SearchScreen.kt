@@ -18,6 +18,6 @@ fun SearchScreen(
     padding: PaddingValues
 ) {
     Row(modifier = modifier.padding(padding)){
-        Text(text=stringResource(R.string.search_screen), modifier.testTag("SearchText"))
+        Text(text=stringResource(R.string.search_label), modifier.testTag("SearchText"))
     }
 }

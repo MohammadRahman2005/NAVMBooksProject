@@ -7,11 +7,17 @@
     <string name="content">Content</string>
     <string name="reading">Read</string>
 
-    <string name="home_screen">home_screen</string>
-    <string name="library_screen">library_screen</string>
-    <string name="search_screen">search_screen</string>
-    <string name="content_screen">content_screen</string>
-    <string name="reading_screen">reading_screen</string>
+    <string name="home_screen" translatable="false">home_screen</string>
+    <string name="library_screen" translatable="false">library_screen</string>
+    <string name="search_screen" translatable="false">search_screen</string>
+    <string name="content_screen" translatable="false">content_screen</string>
+    <string name="reading_screen" translatable="false">reading_screen</string>
+
+    <string name="home_label">Home</string>
+    <string name="lib_label">Library</string>
+    <string name="search_label">Search</string>
+    <string name="content_label">Content</string>
+    <string name="reading_label">Reading</string>
 
     <string name="back_button">Back</string>
     <string name="reading_button">Reading Mode</string>
