@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">NAVM Books</string>
+    <string name="logo_desc">Logo Appli</string>
 
     <string name="home">Accueil</string>
     <string name="library">Étagère</string>

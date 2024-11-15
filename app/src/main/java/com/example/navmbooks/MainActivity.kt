@@ -265,7 +265,7 @@ fun NAVMAppBar(
 fun Logo(modifier: Modifier = Modifier) {
     Image(
         painter = painterResource(R.drawable.navm),
-        contentDescription = "App Logo",
+        contentDescription = stringResource(R.string.logo_desc),
         modifier = modifier,
         contentScale = ContentScale.Crop
     )
