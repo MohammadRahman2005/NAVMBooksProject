@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -36,7 +37,7 @@ fun LibraryScreen(
 ) {
     Column {
         Row(modifier = modifier.padding(padding)){
-            Text(text="Library", modifier = Modifier.testTag("LibraryText"))
+            Text(text=stringResource(R.string.lib_label), modifier = Modifier.testTag("LibraryText"))
         }
         books.forEachIndexed { index, book ->
             Button(onClick = {
