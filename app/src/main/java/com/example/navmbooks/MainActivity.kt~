@@ -372,3 +372,16 @@ fun navBarItems() : List<BarItem> {
 
     return barItems
 }
+
+@Preview(showBackground = true, locale = "fr")
+@Composable
+fun NavmBooksPreview() {
+    NAVMBooksTheme {
+        val previewBookViewModel = remember { BookViewModelFactory().create(BookViewModel::class.java) }
+        BookReadingApp(
+            locale = Locale.FRANCE,
+            windowSizeClass = Compact,
+            bookViewModel = previewBookViewModel
+        )
+    }
+}
