@@ -25,4 +25,9 @@
         <item>Download/DownloadedFiles/pg20195-h/pg20195-images.html</item>
         <item>Download/DownloadedFiles/pg40367-h/pg40367-images.html</item>
     </string-array>
+    <string-array name="booksCover">
+        <item>Download/DownloadedFiles/pg8710-h/images/cover.jpg</item>
+        <item>Download/DownloadedFiles/pg20195-h/pg20195-cover.png</item>
+        <item>Download/DownloadedFiles/pg40367-h/images/title.jpg</item>
+    </string-array>
 </resources>
