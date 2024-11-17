@@ -19,8 +19,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.navmbooks.Book
 import com.example.navmbooks.BookViewModel
@@ -41,7 +41,7 @@ fun ContentScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(dimensionResource(R.dimen.medium_padding))
             .verticalScroll(rememberScrollState())
     ) {
         Row(
@@ -49,12 +49,12 @@ fun ContentScreen(
         ) {
             Text(
                 stringResource(R.string.reading_label),
-                modifier = Modifier.padding(end = 8.dp)
+                modifier = Modifier.padding(end = dimensionResource(R.dimen.small_padding))
             )
             Switch(
                 checked = viewModel.isReadingMode.value,
                 onCheckedChange = { viewModel.toggleReadingMode(it) },
-                modifier = Modifier.padding(end = 8.dp)
+                modifier = Modifier.padding(end = dimensionResource(R.dimen.small_padding))
             )
         }
 
@@ -64,7 +64,7 @@ fun ContentScreen(
             }
         } else {
                 Text(text = stringResource(R.string.select_chapter))
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.medium_padding)))
 
                 book.chapters.forEachIndexed { index, chapter ->
                     Button(
@@ -77,7 +77,7 @@ fun ContentScreen(
                         ),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 4.dp)
+                            .padding(vertical = dimensionResource(R.dimen.tiny_padding))
                     ) {
                         Text(text = stringResource(R.string.chapter_label, index + 1))
                     }
