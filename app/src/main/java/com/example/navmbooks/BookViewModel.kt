@@ -69,7 +69,7 @@ class BookViewModel(private val repository: FileRepository) : ViewModel() {
                 }
                 val files = repository.context.resources.getStringArray(R.array.booksFile)
                 val coverImages = repository.context.resources.getStringArray(R.array.booksCover)
-                var i = 0;
+                var i = 0
                 files.forEach {file ->
                     val htmlFile = File(repository.context.getExternalFilesDir(null), file)
                     val cover  = File(repository.context.getExternalFilesDir(null), coverImages[i])
