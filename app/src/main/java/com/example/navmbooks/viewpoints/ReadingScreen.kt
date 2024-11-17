@@ -1,6 +1,5 @@
 package com.example.navmbooks.viewpoints
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -30,7 +29,7 @@ fun ReadingScreen(
     bookViewModel: BookViewModel,
     modifier: Modifier = Modifier,
     padding: PaddingValues = PaddingValues(dimensionResource(R.dimen.zero_padding)),
-    Chapter: Chapter,
+    chapter: Chapter,
 ) {
     Column (modifier = modifier
         .padding(padding)
@@ -55,9 +54,9 @@ fun ReadingScreen(
                 .fillMaxSize()
                 .padding(16.dp)
         ) {
-            Text(text = stringResource(R.string.reading_header, Chapter.chapNum, Chapter.title))
+            Text(text = stringResource(R.string.reading_header, chapter.chapNum, chapter.title))
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = Chapter.text)
+            Text(text = chapter.text)
         }
     }
 }

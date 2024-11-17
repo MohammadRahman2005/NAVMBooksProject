@@ -1,7 +1,6 @@
 package com.example.navmbooks.viewpoints
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -17,14 +16,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
 import com.example.navmbooks.Book
-import com.example.navmbooks.BookViewModel
 import com.example.navmbooks.NavRoutes
 import com.example.navmbooks.R
 
@@ -47,7 +43,7 @@ fun LibraryScreen(
                         contentColor = MaterialTheme.colorScheme.primary
                     )) {
                 if (book != null) {
-                    val coverImage = book.getCoverImage()
+                    val coverImage = book.coverImage
                     val painter = rememberAsyncImagePainter(ImageRequest.Builder(LocalContext.current).data(
                             data = coverImage  // Pass the File directly here
                         ).apply(block = fun ImageRequest.Builder.() {

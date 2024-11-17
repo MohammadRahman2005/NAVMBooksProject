@@ -2,9 +2,7 @@
 
 package com.example.navmbooks
 
-import android.app.Activity
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -39,24 +37,18 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Companion.Compact
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Companion.Medium
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -72,7 +64,6 @@ import com.example.navmbooks.viewpoints.HomeScreen
 import com.example.navmbooks.viewpoints.LibraryScreen
 import com.example.navmbooks.viewpoints.ReadingScreen
 import com.example.navmbooks.viewpoints.SearchScreen
-import kotlinx.coroutines.withContext
 import java.util.Locale
 
 class MainActivity : ComponentActivity() {
@@ -143,7 +134,7 @@ fun AdaptiveNavigationBars(
     modifier: Modifier = Modifier,
 ) {
     Column(Modifier.padding(padding)) {
-        val padding = if (adaptiveNavigationType == AdaptiveNavigationType.NAVIGATION_RAIL) {
+        val paddingVal = if (adaptiveNavigationType == AdaptiveNavigationType.NAVIGATION_RAIL) {
             PaddingValues(start = dimensionResource(R.dimen.small_padding))
         } else {
             PaddingValues(dimensionResource(R.dimen.zero_padding))
@@ -153,7 +144,7 @@ fun AdaptiveNavigationBars(
             navController = navController,
             bookViewModel = bookViewModel,
             modifier = modifier,
-            padding = padding,
+            padding = paddingVal,
         )
     }
     Row(modifier = Modifier.padding(padding)) {

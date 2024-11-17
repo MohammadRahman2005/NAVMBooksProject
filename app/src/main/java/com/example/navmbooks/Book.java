@@ -1,6 +1,5 @@
 package com.example.navmbooks;
 
-import android.util.Log;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -34,13 +33,12 @@ public class Book {
         this.coverImage = coverImage;
     }
     public static Book readBookFromFile(File file, File cover) throws IOException {
-        String title="";
-        String author="";
+
         StringBuilder allContent= new StringBuilder();
         ArrayList<Chapter> chapters = new ArrayList<Chapter>();
         Document doc = Jsoup.parse(file, "UTF-8", "");
-        title=doc.getElementsByTag("h1").get(0).text();
-        author = Objects.requireNonNull(doc.getElementById("pg-header-authlist")).getElementsByTag("p").get(0).text();
+        String title=doc.getElementsByTag("h1").get(0).text();
+        String author = Objects.requireNonNull(doc.getElementById("pg-header-authlist")).getElementsByTag("p").get(0).text();
 
         Chapter chapter = null;
         Elements body = doc.body().children();
@@ -82,13 +80,12 @@ public class Book {
     }
 
     public static Book readBookURL(String URL) throws IOException {
-        String title="";
-        String author="";
+
         StringBuilder allContent= new StringBuilder();
         ArrayList<Chapter> chapters = new ArrayList<Chapter>();
         Document doc = Jsoup.connect(URL).get();
-        title=doc.getElementsByTag("h1").get(0).text();
-        author = Objects.requireNonNull(doc.getElementById("pg-header-authlist")).getElementsByTag("p").get(0).text();
+        String title=doc.getElementsByTag("h1").get(0).text();
+        String author = Objects.requireNonNull(doc.getElementById("pg-header-authlist")).getElementsByTag("p").get(0).text();
 
         Chapter chapter = null;
         Elements body = doc.body().children();
