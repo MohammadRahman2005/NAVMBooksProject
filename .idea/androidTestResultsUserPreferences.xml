@@ -10,6 +10,7 @@
                 <map>
                   <entry key="Duration" value="90" />
                   <entry key="Pixel_6_API_VanillaIceCream" value="120" />
+                  <entry key="Resizable_Experimental_API_VanillaIceCream" value="120" />
                   <entry key="Tests" value="360" />
                 </map>
               </option>
@@ -29,6 +30,45 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="-1714379795">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Resizable_Experimental_API_VanillaIceCream" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="-1663162534">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Resizable_Experimental_API_VanillaIceCream" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="-1452314553">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Resizable_Experimental_API_VanillaIceCream" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="-1391270592">
           <value>
             <AndroidTestResultsTableState>
@@ -36,6 +76,20 @@
                 <map>
                   <entry key="Duration" value="90" />
                   <entry key="Pixel_6_API_VanillaIceCream" value="120" />
+                  <entry key="Resizable_Experimental_API_VanillaIceCream" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="-1326365173">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Resizable_Experimental_API_VanillaIceCream" value="120" />
                   <entry key="Tests" value="360" />
                 </map>
               </option>
@@ -49,7 +103,60 @@
                 <map>
                   <entry key="Duration" value="104" />
                   <entry key="Pixel_6_API_VanillaIceCream" value="133" />
+                  <entry key="Resizable_Experimental_API_VanillaIceCream" value="120" />
                   <entry key="Tests" value="374" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="-1003623136">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Resizable_Experimental_API_VanillaIceCream" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="-958657451">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Resizable_Experimental_API_VanillaIceCream" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="-803683190">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Resizable_Experimental_API_VanillaIceCream" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="-659069944">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Resizable_Experimental_API_VanillaIceCream" value="120" />
+                  <entry key="Tests" value="360" />
                 </map>
               </option>
             </AndroidTestResultsTableState>
@@ -75,6 +182,7 @@
                 <map>
                   <entry key="Duration" value="90" />
                   <entry key="Pixel_6_API_VanillaIceCream" value="120" />
+                  <entry key="Resizable_Experimental_API_VanillaIceCream" value="120" />
                   <entry key="Tests" value="360" />
                 </map>
               </option>
@@ -102,6 +210,7 @@
                   <entry key="Duration" value="90" />
                   <entry key="Pixel_6_API_VanillaIceCream" value="120" />
                   <entry key="Resizable_Experimental_API_35" value="120" />
+                  <entry key="Resizable_Experimental_API_VanillaIceCream" value="120" />
                   <entry key="Tests" value="360" />
                 </map>
               </option>
@@ -115,6 +224,20 @@
                 <map>
                   <entry key="Duration" value="90" />
                   <entry key="Pixel_6_API_VanillaIceCream" value="120" />
+                  <entry key="Resizable_Experimental_API_VanillaIceCream" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="-144942231">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Resizable_Experimental_API_VanillaIceCream" value="120" />
                   <entry key="Tests" value="360" />
                 </map>
               </option>
@@ -160,6 +283,19 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="117123011">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Resizable_Experimental_API_VanillaIceCream" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="183420551">
           <value>
             <AndroidTestResultsTableState>
@@ -186,6 +322,32 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="216941677">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Resizable_Experimental_API_VanillaIceCream" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="243072391">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Resizable_Experimental_API_VanillaIceCream" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="274073683">
           <value>
             <AndroidTestResultsTableState>
@@ -206,6 +368,20 @@
                 <map>
                   <entry key="Duration" value="90" />
                   <entry key="Pixel_6_API_VanillaIceCream" value="120" />
+                  <entry key="Resizable_Experimental_API_VanillaIceCream" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="497450541">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Resizable_Experimental_API_VanillaIceCream" value="120" />
                   <entry key="Tests" value="360" />
                 </map>
               </option>
@@ -265,6 +441,19 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="765754374">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Resizable_Experimental_API_VanillaIceCream" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="1011383545">
           <value>
             <AndroidTestResultsTableState>
@@ -291,6 +480,19 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="1062367198">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Resizable_Experimental_API_VanillaIceCream" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="1417609114">
           <value>
             <AndroidTestResultsTableState>
@@ -298,6 +500,45 @@
                 <map>
                   <entry key="Duration" value="90" />
                   <entry key="Pixel_6_API_VanillaIceCream" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="1634274964">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Resizable_Experimental_API_VanillaIceCream" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="1721906596">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Resizable_Experimental_API_VanillaIceCream" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="1766872281">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Resizable_Experimental_API_VanillaIceCream" value="120" />
                   <entry key="Tests" value="360" />
                 </map>
               </option>
@@ -337,6 +578,32 @@
                 <map>
                   <entry key="Duration" value="90" />
                   <entry key="Pixel_6_API_VanillaIceCream" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="2066459788">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Resizable_Experimental_API_VanillaIceCream" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="2066888105">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Resizable_Experimental_API_VanillaIceCream" value="120" />
                   <entry key="Tests" value="360" />
                 </map>
               </option>

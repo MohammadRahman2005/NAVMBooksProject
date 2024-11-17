@@ -63,7 +63,7 @@ fun LibraryScreen(
                         )
                     Image(
                         painter = painter,
-                        contentDescription = "Book cover image",
+                        contentDescription = book.title,
                         modifier = modifier
                             .size(150.dp)
                             .align(Alignment.CenterVertically)

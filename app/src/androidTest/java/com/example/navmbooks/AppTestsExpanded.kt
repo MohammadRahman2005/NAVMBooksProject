@@ -2,30 +2,51 @@ package com.example.navmbooks
 
 import androidx.activity.compose.setContent
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.ExperimentalTestApi
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsOff
 import androidx.compose.ui.test.assertIsOn
-import androidx.compose.ui.test.hasTestTag
-import androidx.compose.ui.test.hasText
-import androidx.compose.ui.test.isToggleable
+import androidx.compose.ui.test.hasContentDescription
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.test.core.app.ActivityScenario
 import com.example.navmbooks.ui.theme.NAVMBooksTheme
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import java.util.Locale
 
-class AppTests {
-
+class AppTestsExpanded {
+    // Create the ComposeTestRule to test composables
     @get:Rule
     val composeTestRule = createAndroidComposeRule<MainActivity>()
+
+    private lateinit var scenario: ActivityScenario<MainActivity>
+
+    @Before
+    fun setUp() {
+        // Launch the activity and set up content with the Compact window size class for all tests
+        scenario = ActivityScenario.launch(MainActivity::class.java)
+        setContentForTest()
+    }
+
+    private fun setContentForTest() {
+        // Set content for the test, forcing a specific window size class
+        scenario.onActivity { activity ->
+            activity.setContent {
+                NAVMBooksTheme {
+                    BookReadingApp(
+                        locale = Locale.US,
+                        windowSizeClass = WindowWidthSizeClass.Expanded,
+                        factory = BookViewModelFactory(activity.applicationContext)
+                    )
+                }
+            }
+        }
+    }
 
     @Test
     fun testTopBarRenders() {
@@ -38,7 +59,7 @@ class AppTests {
     @Test
     fun testRendersHomeScreen() {
         composeTestRule.waitForIdle()
-        composeTestRule.onNodeWithTag("homeText").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Welcome to NAVMBooks").assertIsDisplayed()
     }
 
     @Test
@@ -57,13 +78,14 @@ class AppTests {
         composeTestRule.onNodeWithTag("SearchText").assertIsDisplayed()
     }
 
+
     @OptIn(ExperimentalTestApi::class)
     @Test
     fun testRendersContent() {
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithText("Library").performClick()
-        composeTestRule.waitUntilAtLeastOneExists(hasText("WOOD-BLOCK PRINTING"), timeoutMillis = 5000)
-        composeTestRule.onNodeWithText("WOOD-BLOCK PRINTING").performClick()
+        composeTestRule.waitUntilAtLeastOneExists(hasContentDescription("WOOD-BLOCK PRINTING"), timeoutMillis = 10000)
+        composeTestRule.onNodeWithContentDescription("WOOD-BLOCK PRINTING").performClick()
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithText("Chapter 1").assertIsDisplayed()
     }
@@ -73,8 +95,8 @@ class AppTests {
     fun testRendersReading() {
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithText("Library").performClick()
-        composeTestRule.waitUntilAtLeastOneExists(hasText("WOOD-BLOCK PRINTING"), timeoutMillis = 5000)
-        composeTestRule.onNodeWithText("WOOD-BLOCK PRINTING").performClick()
+        composeTestRule.waitUntilAtLeastOneExists(hasContentDescription("WOOD-BLOCK PRINTING"), timeoutMillis = 10000)
+        composeTestRule.onNodeWithContentDescription("WOOD-BLOCK PRINTING").performClick()
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithText("Chapter 1").performClick()
         composeTestRule.waitForIdle()
@@ -97,7 +119,7 @@ class AppTests {
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithTag("backButton").performClick()
         composeTestRule.waitForIdle()
-        composeTestRule.onNodeWithTag("homeText").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Welcome to NAVMBooks").assertIsDisplayed()
     }
 
     @OptIn(ExperimentalTestApi::class)
@@ -105,8 +127,8 @@ class AppTests {
     fun testReadingModeButton() {
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithText("Library").performClick()
-        composeTestRule.waitUntilAtLeastOneExists(hasText("WOOD-BLOCK PRINTING"), timeoutMillis = 5000)
-        composeTestRule.onNodeWithText("WOOD-BLOCK PRINTING").performClick()
+        composeTestRule.waitUntilAtLeastOneExists(hasContentDescription("WOOD-BLOCK PRINTING"), timeoutMillis = 10000)
+        composeTestRule.onNodeWithContentDescription("WOOD-BLOCK PRINTING").performClick()
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithText("Chapter 1").performClick()
         composeTestRule.waitForIdle()
