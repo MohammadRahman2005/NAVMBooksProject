@@ -3,6 +3,7 @@ package com.example.navmbooks.viewpoints
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -18,6 +19,6 @@ fun SearchScreen(
     padding: PaddingValues
 ) {
     Row(modifier = modifier.padding(padding)){
-        Text(text=stringResource(R.string.search_label), modifier.testTag("SearchText"))
+        Text(text=stringResource(R.string.search_label), modifier.testTag("SearchText"), style = MaterialTheme.typography.headlineMedium)
     }
 }

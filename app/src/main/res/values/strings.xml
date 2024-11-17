@@ -2,6 +2,11 @@
     <string name="app_name">NAVM Books</string>
     <string name="logo_desc">App Logo</string>
 
+    <string name="welcome_image_desc">Welcome image</string>
+    <string name="welcome_title">Welcome to NAVMBooks</string>
+    <string name="welcome_description">Discover, read, and enjoy our library of books!</string>
+    <string name="get_started">Get Started</string>
+
     <string name="home">Home</string>
     <string name="library">Library</string>
     <string name="search">Search</string>

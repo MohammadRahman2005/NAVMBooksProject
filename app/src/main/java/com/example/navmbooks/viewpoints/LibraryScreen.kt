@@ -5,7 +5,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
@@ -17,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -40,8 +43,9 @@ fun LibraryScreen(
         horizontalAlignment = Alignment.CenterHorizontally, // Center horizontally
         verticalArrangement = Arrangement.Center ) {
         Row(modifier = modifier.padding(padding)){
-            Text(text=stringResource(R.string.lib_label), modifier = Modifier.testTag("LibraryText"))
+            Text(text=stringResource(R.string.lib_label), modifier = Modifier.testTag("LibraryText"), style = MaterialTheme.typography.headlineMedium)
         }
+        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.big_padding)))
         books.forEachIndexed { index, book ->
             Button(onClick = {
                 navController.navigate(NavRoutes.ContentScreen.createRoute(index))
