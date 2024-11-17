@@ -7,7 +7,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -66,6 +65,11 @@ import com.example.navmbooks.viewpoints.ReadingScreen
 import com.example.navmbooks.viewpoints.SearchScreen
 import java.util.Locale
 
+/**
+ * MainActivity is the entry point of the application.
+ * It sets up the content view and determines the navigation style
+ * based on the device's window size.
+ */
 class MainActivity : ComponentActivity() {
     private val factory by lazy {
         BookViewModelFactory(this.applicationContext) // Use application context to prevent memory leaks
@@ -87,6 +91,10 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+/**
+ * BookReadingApp handles the main composable structure of the app,
+ * including navigation and adapting the UI based on the window size class.
+ */
 @Composable
 fun BookReadingApp(
     navController: NavHostController = rememberNavController(),
@@ -105,11 +113,13 @@ fun BookReadingApp(
 
     Scaffold(
         topBar = {
+            // Display the app bar only on specific screens
             if (currentRoute != NavRoutes.ContentScreen.route && currentRoute != NavRoutes.ReadingScreen.route) {
                 NAVMAppBar(navigateUp = { navController.navigateUp() })
             }
         },
         bottomBar = {
+            // Show a bottom navigation bar if the current mode supports it
             if (!bookViewModel.isReadingMode.value && adaptiveNavigationType == AdaptiveNavigationType.BOTTOM_NAVIGATION) {
                 BottomNavigationBar(navController = navController)
             }
@@ -125,6 +135,11 @@ fun BookReadingApp(
     }
 }
 
+
+/**
+ * AdaptiveNavigationBars handles the adaptive navigation structure,
+ * supporting drawer, rail, or bottom navigation based on the device.
+ */
 @Composable
 fun AdaptiveNavigationBars(
     padding: PaddingValues,
@@ -166,7 +181,9 @@ fun AdaptiveNavigationBars(
     }
 }
 
-
+/**
+ * Defines the Navigation Rail for medium-sized screens.
+ */
 @Composable
 fun NavigationRailComponent(
     navController: NavHostController,
@@ -189,6 +206,9 @@ fun NavigationRailComponent(
     }
 }
 
+/**
+ * Defines the Permanent Navigation Drawer for large screens.
+ */
 @Composable
 fun PermanentNavigationDrawerComponent(
     navController: NavHostController,
@@ -227,6 +247,9 @@ fun PermanentNavigationDrawerComponent(
     )
 }
 
+/**
+ * Defines the Top App Bar with a back button and logo.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NAVMAppBar(
@@ -261,6 +284,9 @@ fun NAVMAppBar(
     )
 }
 
+/**
+ * Displays the app logo in the top bar.
+ */
 @Composable
 fun Logo(modifier: Modifier = Modifier) {
     Image(
@@ -272,7 +298,9 @@ fun Logo(modifier: Modifier = Modifier) {
 }
 
 
-
+/**
+ * Hosts the navigation routes and connects screens.
+ */
 @Composable
 fun NavigationHost(
     navController: NavHostController,
@@ -317,7 +345,9 @@ fun NavigationHost(
     }
 }
 
-
+/**
+ * Defines the Bottom Navigation Drawer for phone screens.
+ */
 @Composable
 fun BottomNavigationBar(navController: NavHostController) {
     NavigationBar(
