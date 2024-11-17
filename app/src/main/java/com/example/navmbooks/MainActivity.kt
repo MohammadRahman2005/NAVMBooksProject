@@ -148,30 +148,38 @@ fun AdaptiveNavigationBars(
     adaptiveNavigationType: AdaptiveNavigationType,
     modifier: Modifier = Modifier,
 ) {
-    Column(Modifier.padding(padding)) {
-        val padding = if (adaptiveNavigationType == AdaptiveNavigationType.NAVIGATION_RAIL) {
-            PaddingValues(start = dimensionResource(R.dimen.small_padding))
-        } else {
-            PaddingValues(dimensionResource(R.dimen.zero_padding))
+    when (adaptiveNavigationType) {
+        AdaptiveNavigationType.PERMANENT_NAVIGATION_DRAWER -> {
+            Row(modifier = Modifier.padding(padding)) {
+                PermanentNavigationDrawerComponent(
+                    navController = navController,
+                    bookViewModel = bookViewModel
+                )
+            }
         }
+        else -> {
+            Column(Modifier.padding(padding)) {
+                val paddingVal = if (adaptiveNavigationType == AdaptiveNavigationType.NAVIGATION_RAIL) {
+                    PaddingValues(start = dimensionResource(R.dimen.small_padding))
+                } else {
+                    PaddingValues(dimensionResource(R.dimen.zero_padding))
+                }
 
-        NavigationHost(
-            navController = navController,
-            bookViewModel = bookViewModel,
-            modifier = modifier,
-            padding = padding,
-        )
-    }
-    Row(modifier = Modifier.padding(padding)) {
-        if (!bookViewModel.isReadingMode.value && adaptiveNavigationType == AdaptiveNavigationType.PERMANENT_NAVIGATION_DRAWER) {
-            PermanentNavigationDrawerComponent(navController = navController, bookViewModel = bookViewModel)
-        }
-        if (!bookViewModel.isReadingMode.value && adaptiveNavigationType == AdaptiveNavigationType.NAVIGATION_RAIL) {
-            NavigationRailComponent(navController = navController)
+                NavigationHost(
+                    navController = navController,
+                    bookViewModel = bookViewModel,
+                    modifier = modifier,
+                    padding = paddingVal,
+                )
+            }
+            if (adaptiveNavigationType == AdaptiveNavigationType.NAVIGATION_RAIL) {
+                Row(modifier = Modifier.padding(padding)) {
+                    NavigationRailComponent(navController = navController)
+                }
+            }
         }
     }
 }
-
 
 /**
  * Defines the Navigation Rail for medium-sized screens.
