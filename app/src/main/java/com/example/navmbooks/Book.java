@@ -1,5 +1,7 @@
 package com.example.navmbooks;
 
+import android.util.Log;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -15,20 +17,23 @@ public class Book {
     private final String author;
     private final ArrayList<Chapter> chapters;
     private final String allContent;
+    private final File coverImage;
     public String getTitle(){
         return title;
     }
     public ArrayList<Chapter> getChapters(){
         return chapters;
     }
+    public File getCoverImage() {return coverImage; }
 
-    private Book(String title, String author, ArrayList<Chapter> chapters, StringBuilder allContent){
+    private Book(String title, String author, ArrayList<Chapter> chapters, StringBuilder allContent, File coverImage){
         this.title=title;
         this.author=author;
         this.chapters=chapters;
         this.allContent = String.valueOf(allContent);
+        this.coverImage = coverImage;
     }
-    public static Book readBookFromFile(File file) throws IOException {
+    public static Book readBookFromFile(File file, File cover) throws IOException {
         String title="";
         String author="";
         StringBuilder allContent= new StringBuilder();
@@ -51,8 +56,13 @@ public class Book {
                     allContent.append("table here").append("\n");
                 }
             }
-            if (e.tagName().equals("img")){
-                allContent.append("image here").append("\n");
+            if (e.tagName().equals("div")){
+                for (Element child : e.children()){
+                    if (child.tagName().equals("img")){
+                        allContent.append(child.attr("src"));
+                        allContent.append("image here").append("\n");
+                    }
+                }
             }if(e.tagName().equals("table")) {
                 allContent.append("table here").append("\n");
             }
@@ -66,13 +76,9 @@ public class Book {
                 if (e.children().isEmpty() || e.child(0).equals("i")){
                     chapter.setText(e.text().trim()+" ");
                 }
-//                else if(chapter.getText() == null){
-//                    chapters.remove(chapter);
-//                    i = chapters.size()+1;
-//                }
             }
         }
-        return new Book(title, author, chapters, allContent );
+        return new Book(title, author, chapters, allContent, cover);
     }
 
     public static Book readBookURL(String URL) throws IOException {
@@ -113,13 +119,9 @@ public class Book {
                 if (e.children().isEmpty() || e.child(0).equals("i")){
                     chapter.setText(e.text().trim()+" ");
                 }
-//                else if(chapter.getText() == null){
-//                    chapters.remove(chapter);
-//                    i = chapters.size()+1;
-//                }
             }
         }
-        return new Book(title, author, chapters, allContent );
+        return new Book(title, author, chapters, allContent, null );
     }
     @Override
     public String toString(){

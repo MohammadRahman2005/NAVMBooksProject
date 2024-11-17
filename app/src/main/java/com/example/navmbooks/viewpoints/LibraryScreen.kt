@@ -14,10 +14,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
+import coil.compose.rememberImagePainter
+import coil.request.ImageRequest
 import com.example.navmbooks.Book
 import com.example.navmbooks.BookViewModel
 import com.example.navmbooks.NavRoutes
@@ -32,7 +37,7 @@ fun LibraryScreen(
 ) {
     Column {
         Row(modifier = modifier.padding(padding)){
-            Text(text="Library", modifier = Modifier.testTag("LibraryText"))
+            Text(text=stringResource(R.string.lib_label), modifier = Modifier.testTag("LibraryText"))
         }
         books.forEachIndexed { index, book ->
             Button(onClick = {
@@ -42,10 +47,16 @@ fun LibraryScreen(
                         contentColor = MaterialTheme.colorScheme.primary
                     )) {
                 if (book != null) {
-//                    Text(text = book.title)
+                    val coverImage = book.getCoverImage()
+                    val painter = rememberAsyncImagePainter(ImageRequest.Builder(LocalContext.current).data(
+                            data = coverImage  // Pass the File directly here
+                        ).apply(block = fun ImageRequest.Builder.() {
+                            crossfade(true)  // Optional: Adds a fade effect when the image loads
+                        }).build()
+                        )
                     Image(
-                        painter = painterResource(R.drawable.navm),
-                        contentDescription = "test",
+                        painter = painter,
+                        contentDescription = "Book cover image",
                         modifier = modifier
                             .size(150.dp)
                             .align(Alignment.CenterVertically)

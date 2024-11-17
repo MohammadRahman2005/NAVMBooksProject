@@ -54,14 +54,6 @@ class BookViewModel(private val repository: FileRepository) : ViewModel() {
         updateDirectoryContents(directoryName)
     }
 
-
-    var book1 by mutableStateOf<Book?>(null)
-        private set
-    var book2 by mutableStateOf<Book?>(null)
-        private set
-    var book3 by mutableStateOf<Book?>(null)
-        private set
-
     var bookList by mutableStateOf<List<Book?>>(emptyList())
         private set
 
@@ -76,10 +68,14 @@ class BookViewModel(private val repository: FileRepository) : ViewModel() {
                     setupDownload(url)
                 }
                 val files = repository.context.resources.getStringArray(R.array.booksFile)
+                val coverImages = repository.context.resources.getStringArray(R.array.booksCover)
+                var i = 0;
                 files.forEach {file ->
                     val htmlFile = File(repository.context.getExternalFilesDir(null), file)
-                    if (htmlFile.exists()) {
-                        val book = Book.readBookFromFile(htmlFile)
+                    val cover  = File(repository.context.getExternalFilesDir(null), coverImages[i])
+                    i++
+                    if (htmlFile.exists() && cover.exists()) {
+                        val book = Book.readBookFromFile(htmlFile, cover)
                         bookList= bookList + book
                     }else{
                         Log.e("BookViewModel", "The HTML file does not exist at $htmlFile")
