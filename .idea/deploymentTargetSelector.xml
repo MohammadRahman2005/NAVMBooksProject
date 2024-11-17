@@ -2,21 +2,16 @@
 <project version="4">
   <component name="deploymentTargetSelector">
     <selectionStates>
-<<<<<<< HEAD
-      <SelectionState runConfigName="App">
+      <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-=======
-      <SelectionState runConfigName="MainActivity">
-        <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-11-08T15:48:51.516188700Z">
+        <DropdownSelection timestamp="2024-11-17T19:28:33.723759Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\noahg\.android\avd\Resizable_Experimental_API_34.avd" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\rahma\.android\avd\Resizable_Experimental_API_35.avd" />
             </handle>
           </Target>
         </DropdownSelection>
         <DialogSelection />
->>>>>>> 9d6042298260260748c8e034dba12dd859b47ff2
       </SelectionState>
     </selectionStates>
   </component>
