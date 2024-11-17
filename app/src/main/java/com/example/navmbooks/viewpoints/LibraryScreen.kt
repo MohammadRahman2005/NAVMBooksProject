@@ -1,9 +1,11 @@
 package com.example.navmbooks.viewpoints
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
@@ -31,7 +33,12 @@ fun LibraryScreen(
     padding: PaddingValues,
     books: List<Book?>
 ) {
-    Column {
+    Column(
+        modifier = Modifier
+        .fillMaxSize()
+        .padding(padding),
+        horizontalAlignment = Alignment.CenterHorizontally, // Center horizontally
+        verticalArrangement = Arrangement.Center ) {
         Row(modifier = modifier.padding(padding)){
             Text(text=stringResource(R.string.lib_label), modifier = Modifier.testTag("LibraryText"))
         }
