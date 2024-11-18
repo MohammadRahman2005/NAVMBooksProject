@@ -55,9 +55,15 @@ fun ReadingScreen(
                 .fillMaxSize()
                 .padding(16.dp)
         ) {
-            Text(text = stringResource(R.string.reading_header, Chapter.chapNum, Chapter.title))
+            Text(
+                text = stringResource(R.string.reading_header, Chapter.chapNum, Chapter.title)
+            )
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = Chapter.text)
+            for (e in Chapter.text){
+                Text(
+                    text = Chapter.text
+                )
+            }
         }
     }
 }

@@ -2,6 +2,9 @@ package com.example.navmbooks;
 
 import android.util.Log;
 
+import com.example.navmbooks.data.ImageItem;
+import com.example.navmbooks.data.TextItem;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -50,8 +53,10 @@ public class Book {
             if(e.tagName().equals("div")) {
                 if (e.children().isEmpty()){
                     allContent.append(e.text()).append('\n');
+                    if (chapter!=null) chapter.addContent(new TextItem(e.text()));
                 }else if(e.child(0).tagName().equals("img")){
                     allContent.append("image here").append("\n");
+                    if (chapter!=null) chapter.addContent(new ImageItem(e.text()));
                 }else if(e.child(0).tagName().equals("table")) {
                     allContent.append("table here").append("\n");
                 }
