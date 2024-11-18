@@ -1,5 +1,6 @@
 package com.example.navmbooks.viewpoints
 
+import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -47,19 +49,17 @@ fun LibraryScreen(
                         contentColor = MaterialTheme.colorScheme.primary
                     )) {
                 if (book != null) {
-                    val coverImage = book.getCoverImage()
-                    val painter = rememberAsyncImagePainter(ImageRequest.Builder(LocalContext.current).data(
-                            data = coverImage  // Pass the File directly here
-                        ).apply(block = fun ImageRequest.Builder.() {
-                            crossfade(true)  // Optional: Adds a fade effect when the image loads
-                        }).build()
-                        )
+                    val coverImage = BitmapFactory.decodeFile(book.coverImage.absolutePath)
+
                     Image(
-                        painter = painter,
-                        contentDescription = "Book cover image",
+                        coverImage!!.asImageBitmap(),
+                        contentDescription = book.title,
                         modifier = modifier
                             .size(150.dp)
                             .align(Alignment.CenterVertically)
+                    )
+                    Text(
+                        text=book.title
                     )
                 }
             }
