@@ -120,7 +120,7 @@ fun BookReadingApp(
         },
         bottomBar = {
             // Show a bottom navigation bar if the current mode supports it
-            if (!bookViewModel.isReadingMode.value && adaptiveNavigationType == AdaptiveNavigationType.BOTTOM_NAVIGATION) {
+                if (!bookViewModel.isReadingMode.value && adaptiveNavigationType == AdaptiveNavigationType.BOTTOM_NAVIGATION) {
                 BottomNavigationBar(navController = navController)
             }
         }
@@ -151,13 +151,14 @@ fun AdaptiveNavigationBars(
     when (adaptiveNavigationType) {
         AdaptiveNavigationType.PERMANENT_NAVIGATION_DRAWER -> {
             Row(modifier = Modifier.padding(padding)) {
-                PermanentNavigationDrawerComponent(
-                    navController = navController,
-                    bookViewModel = bookViewModel
-                )
-            }
+
+            PermanentNavigationDrawerComponent(
+                navController = navController,
+                bookViewModel = bookViewModel
+            )
         }
-        else -> {
+    }
+    else -> {
             Column(Modifier.padding(padding)) {
                 val paddingVal = if (adaptiveNavigationType == AdaptiveNavigationType.NAVIGATION_RAIL) {
                     PaddingValues(start = dimensionResource(R.dimen.small_padding))
@@ -172,7 +173,7 @@ fun AdaptiveNavigationBars(
                     padding = paddingVal,
                 )
             }
-            if (adaptiveNavigationType == AdaptiveNavigationType.NAVIGATION_RAIL) {
+            if (!bookViewModel.isReadingMode.value && adaptiveNavigationType == AdaptiveNavigationType.NAVIGATION_RAIL) {
                 Row(modifier = Modifier.padding(padding)) {
                     NavigationRailComponent(navController = navController)
                 }
@@ -216,35 +217,44 @@ fun PermanentNavigationDrawerComponent(
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoutes = backStackEntry?.destination?.route
-    PermanentNavigationDrawer(
-        drawerContent = {
-            PermanentDrawerSheet {
-                Column {
-                    Spacer(Modifier.height(dimensionResource(R.dimen.large_size)))
-                    navBarItems().forEach { navItem ->
-                        NavigationDrawerItem(
-                            selected = currentRoutes == navItem.route,
-                            onClick = {
-                                navController.navigate(navItem.route)
-                            },
-                            icon = {
-                                Icon(navItem.image, contentDescription = navItem.title)
-                            },
-                            label = { Text(text = navItem.title) }
-                        )
+    if (!bookViewModel.isReadingMode.value) {
+        PermanentNavigationDrawer(
+            drawerContent = {
+                PermanentDrawerSheet {
+                    Column {
+                        Spacer(Modifier.height(dimensionResource(R.dimen.large_size)))
+                        navBarItems().forEach { navItem ->
+                            NavigationDrawerItem(
+                                selected = currentRoutes == navItem.route,
+                                onClick = {
+                                    navController.navigate(navItem.route)
+                                },
+                                icon = {
+                                    Icon(navItem.image, contentDescription = navItem.title)
+                                },
+                                label = { Text(text = navItem.title) }
+                            )
+                        }
                     }
                 }
+            },
+            content = {
+                NavigationHost(
+                    navController = navController,
+                    bookViewModel = bookViewModel,
+                    modifier = Modifier,
+                    padding = PaddingValues(dimensionResource(R.dimen.zero_padding))
+                )
             }
-        },
-        content = {
-            NavigationHost(
-                navController = navController,
-                bookViewModel = bookViewModel,
-                modifier = Modifier,
-                padding = PaddingValues(dimensionResource(R.dimen.zero_padding))
-            )
-        }
-    )
+        )
+    } else {
+        NavigationHost(
+            navController = navController,
+            bookViewModel = bookViewModel,
+            modifier = Modifier,
+            padding = PaddingValues(dimensionResource(R.dimen.zero_padding))
+        )
+    }
 }
 
 /**
