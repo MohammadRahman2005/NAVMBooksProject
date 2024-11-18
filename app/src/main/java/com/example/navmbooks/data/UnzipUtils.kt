@@ -1,5 +1,6 @@
 package com.example.navmbooks.data
 
+import android.util.Log
 import java.io.*
 import java.util.zip.ZipFile
 
@@ -28,6 +29,7 @@ object UnzipUtils {
             zip.entries().asSequence().forEach { entry ->
                 val filePath = destDirectory + File.separator + entry.name
                 val file = File(filePath)
+                Log.d("tag", file.absolutePath)
                 if (entry.isDirectory) {
                     file.mkdirs()
                 } else {
