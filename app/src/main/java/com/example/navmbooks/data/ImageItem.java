@@ -7,7 +7,7 @@ public class ImageItem {
         this.path=path;
     }
 
-    public String getText(){
+    public String getImagePath(){
         return path;
     }
 }
