@@ -1,6 +1,5 @@
 package com.example.navmbooks
 
-import android.content.res.Configuration
 import androidx.activity.compose.setContent
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.ui.test.ExperimentalTestApi
