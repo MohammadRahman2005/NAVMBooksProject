@@ -23,13 +23,12 @@ object UnzipUtils {
                 mkdirs()
             }
         }
-
+        Log.d("file", zipFilePath.absolutePath)
         ZipFile(zipFilePath).use { zip ->
 
             zip.entries().asSequence().forEach { entry ->
                 val filePath = destDirectory + File.separator + entry.name
                 val file = File(filePath)
-                Log.d("tag", file.absolutePath)
                 if (entry.isDirectory) {
                     file.mkdirs()
                 } else {
