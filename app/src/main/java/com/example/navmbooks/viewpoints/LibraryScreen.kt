@@ -62,7 +62,7 @@ fun LibraryScreen(
                         coverImage!!.asImageBitmap(),
                         contentDescription = book.title,
                         modifier = modifier
-                            .size(150.dp)
+                            .size(dimensionResource(R.dimen.extra_large_size))
                             .align(Alignment.CenterVertically)
                     )
                     Text(

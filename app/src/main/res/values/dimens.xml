@@ -7,4 +7,5 @@
     <dimen name="big_padding">32dp</dimen>
     <dimen name="large_padding">50dp</dimen>
     <dimen name="large_size">50dp</dimen>
+    <dimen name="extra_large_size">200dp</dimen>
 </resources>
