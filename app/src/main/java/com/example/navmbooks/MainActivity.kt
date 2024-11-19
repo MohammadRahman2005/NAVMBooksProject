@@ -151,7 +151,6 @@ fun AdaptiveNavigationBars(
     when (adaptiveNavigationType) {
         AdaptiveNavigationType.PERMANENT_NAVIGATION_DRAWER -> {
             Row(modifier = Modifier.padding(padding)) {
-
             PermanentNavigationDrawerComponent(
                 navController = navController,
                 bookViewModel = bookViewModel
@@ -173,9 +172,12 @@ fun AdaptiveNavigationBars(
                     padding = paddingVal,
                 )
             }
-            if (!bookViewModel.isReadingMode.value && adaptiveNavigationType == AdaptiveNavigationType.NAVIGATION_RAIL) {
+            if (adaptiveNavigationType == AdaptiveNavigationType.NAVIGATION_RAIL) {
                 Row(modifier = Modifier.padding(padding)) {
-                    NavigationRailComponent(navController = navController)
+                    NavigationRailComponent(
+                        navController = navController,
+                        bookViewModel = bookViewModel
+                    )
                 }
             }
         }
@@ -188,21 +190,24 @@ fun AdaptiveNavigationBars(
 @Composable
 fun NavigationRailComponent(
     navController: NavHostController,
+    bookViewModel: BookViewModel
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoutes = backStackEntry?.destination?.route
     NavigationRail {
-        navBarItems().forEach { navItem ->
-            NavigationRailItem(
-                selected = currentRoutes == navItem.route,
-                onClick = {
-                    navController.navigate(navItem.route)
-                },
-                icon = {
-                    Icon(navItem.image, contentDescription = navItem.title)
-                },
-                label = { Text(text = navItem.title) }
-            )
+        if (!bookViewModel.isReadingMode.value) {
+            navBarItems().forEach { navItem ->
+                NavigationRailItem(
+                    selected = currentRoutes == navItem.route,
+                    onClick = {
+                        navController.navigate(navItem.route)
+                    },
+                    icon = {
+                        Icon(navItem.image, contentDescription = navItem.title)
+                    },
+                    label = { Text(text = navItem.title) }
+                )
+            }
         }
     }
 }
@@ -217,9 +222,10 @@ fun PermanentNavigationDrawerComponent(
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoutes = backStackEntry?.destination?.route
-    if (!bookViewModel.isReadingMode.value) {
-        PermanentNavigationDrawer(
-            drawerContent = {
+
+    PermanentNavigationDrawer(
+        drawerContent = {
+            if (!bookViewModel.isReadingMode.value) {
                 PermanentDrawerSheet {
                     Column {
                         Spacer(Modifier.height(dimensionResource(R.dimen.large_size)))
@@ -237,24 +243,17 @@ fun PermanentNavigationDrawerComponent(
                         }
                     }
                 }
-            },
-            content = {
-                NavigationHost(
-                    navController = navController,
-                    bookViewModel = bookViewModel,
-                    modifier = Modifier,
-                    padding = PaddingValues(dimensionResource(R.dimen.zero_padding))
-                )
             }
-        )
-    } else {
-        NavigationHost(
-            navController = navController,
-            bookViewModel = bookViewModel,
-            modifier = Modifier,
-            padding = PaddingValues(dimensionResource(R.dimen.zero_padding))
-        )
-    }
+        },
+        content = {
+            NavigationHost(
+                navController = navController,
+                bookViewModel = bookViewModel,
+                modifier = Modifier,
+                padding = PaddingValues(dimensionResource(R.dimen.zero_padding))
+            )
+        }
+    )
 }
 
 /**
