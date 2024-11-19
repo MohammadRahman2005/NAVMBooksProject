@@ -1,5 +1,8 @@
 package com.example.navmbooks.data;
 
+/**
+ * Handles if chapter content is text
+ */
 public class TextItem {
     private final String text;
 

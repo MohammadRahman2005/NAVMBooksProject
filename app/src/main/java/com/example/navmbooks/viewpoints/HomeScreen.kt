@@ -24,6 +24,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.navmbooks.R
 
+
+/**
+ * this screen is the home screen which you see on load
+ */
 @Composable
 fun HomeScreen(
     navController: NavController,

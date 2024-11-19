@@ -9,7 +9,9 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.IOException
 
-
+/**
+ * This class handles downloaded the zip files and creating local storage directories
+ */
 class FileRepository(val context: Context) {
     fun createFile(directoryName: String, fileName: String): File {
         val downloadFolder = File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), directoryName)

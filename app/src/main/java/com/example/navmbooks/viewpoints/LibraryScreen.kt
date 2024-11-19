@@ -31,6 +31,9 @@ import com.example.navmbooks.Book
 import com.example.navmbooks.NavRoutes
 import com.example.navmbooks.R
 
+/**
+ * This is the library screen where we show the books
+ */
 @Composable
 fun LibraryScreen(
     navController: NavController,

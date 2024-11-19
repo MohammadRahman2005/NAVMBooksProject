@@ -15,6 +15,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * Book object
+ */
 public class Book {
     private final String title;
     private final String author;
@@ -36,6 +39,15 @@ public class Book {
         this.allContent = String.valueOf(allContent);
         this.coverImage = coverImage;
     }
+
+    /**
+     * Read book from localstorage and turn it into a book object
+     * @param file the file of the book
+     * @param cover the file which represents the image
+     * @param bookDirectory the path to the current book
+     * @return a new book object
+     * @throws IOException
+     */
     public static Book readBookFromFile(File file, File cover, String bookDirectory) throws IOException {
         StringBuilder allContent= new StringBuilder();
         ArrayList<Chapter> chapters = new ArrayList<Chapter>();

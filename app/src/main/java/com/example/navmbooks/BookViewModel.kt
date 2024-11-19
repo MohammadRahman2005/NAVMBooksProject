@@ -16,6 +16,9 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
 
+/**
+ * This class represents a view model for books
+ */
 @SuppressLint("MutableCollectionMutableState")
 class BookViewModel(private val repository: FileRepository) : ViewModel() {
 

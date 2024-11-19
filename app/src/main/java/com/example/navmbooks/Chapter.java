@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * This class creates chapter objects.
+ */
 public class Chapter {
     private final String chapTitle;
     private final Integer chapNum;

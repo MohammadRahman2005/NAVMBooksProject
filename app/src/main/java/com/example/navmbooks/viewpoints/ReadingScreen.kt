@@ -31,6 +31,9 @@ import com.example.navmbooks.R
 import com.example.navmbooks.data.ImageItem
 import com.example.navmbooks.data.TextItem
 
+/**
+ * this is the screen which displays the content of a chapter
+ */
 @Composable
 fun ReadingScreen(
     navController: NavHostController,
