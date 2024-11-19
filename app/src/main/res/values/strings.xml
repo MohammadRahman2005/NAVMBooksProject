@@ -36,17 +36,18 @@
     <string name="loading_book">Loading book…</string>
 
     <string-array name="booksUrl">
-        <item>https://www.gutenberg.org/cache/epub/8710/pg8710-h.zip</item>
+        <item>https://www.gutenberg.org/cache/epub/345/pg345-h.zip</item>
         <item>https://www.gutenberg.org/cache/epub/20195/pg20195-h.zip</item>
         <item>https://www.gutenberg.org/cache/epub/40367/pg40367-h.zip</item>
+
     </string-array>
     <string-array name="booksFile">
-        <item>Download/DownloadedFiles/pg8710-h/pg8710-images.html</item>
+        <item>Download/DownloadedFiles/pg345-h/pg345-images.html</item>
         <item>Download/DownloadedFiles/pg20195-h/pg20195-images.html</item>
         <item>Download/DownloadedFiles/pg40367-h/pg40367-images.html</item>
     </string-array>
     <string-array name="booksCover">
-        <item>Download/DownloadedFiles/pg8710-h/images/cover.jpg</item>
+        <item>Download/DownloadedFiles/pg345-h/images/cover.jpg</item>
         <item>Download/DownloadedFiles/pg20195-h/20195-cover.png</item>
         <item>Download/DownloadedFiles/pg40367-h/images/title.jpg</item>
     </string-array>
@@ -54,16 +55,18 @@
     <string-array name="DownloadableBooksUrl">
         <item>https://www.gutenberg.org/cache/epub/1661/pg1661-h.zip</item>
         <item>https://www.gutenberg.org/cache/epub/74675/pg74675-h.zip</item>
-        <item>https://www.gutenberg.org/cache/epub/345/pg345-h.zip</item>
+        <item>https://www.gutenberg.org/cache/epub/8710/pg8710-h.zip</item>
     </string-array>
     <string-array name="DownloadableBooksFile">
         <item>Download/DownloadedFiles/pg1661-h/pg1661-images.html</item>
         <item>Download/DownloadedFiles/pg74675-h/pg74675-images.html</item>
-        <item>Download/DownloadedFiles/pg345-h/pg345-images.html</item>
+        <item>Download/DownloadedFiles/pg8710-h/pg8710-images.html</item>
+
     </string-array>
     <string-array name="DownloadedBooksCover">
         <item>Download/DownloadedFiles/pg1661-h/images/cover.jpg</item>
         <item>Download/DownloadedFiles/pg74675-h/images/cover.jpg</item>
-        <item>Download/DownloadedFiles/pg345-h/images/cover.jpg</item>
+        <item>Download/DownloadedFiles/pg8710-h/images/cover.jpg</item>
+
     </string-array>
 </resources>

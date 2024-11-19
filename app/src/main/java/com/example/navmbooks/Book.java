@@ -81,6 +81,21 @@ public class Book {
             if(e.tagName().equals("table")) {
                 allContent.append("table here").append("\n");
             }
+            if(e.tagName().equals("div") && e.className().equals("chapter")){
+                for (Element child : e.children()){
+                    if (child.tagName().equals("h2")){
+                        String chapterTitle = e.text();
+                        chapter = new Chapter(chapterTitle,i);
+                        i++;
+                        chapters.add(chapter);
+                    }else if(child.tagName().equals("p") && chapter!=null){
+                        if (e.children().isEmpty() || e.child(0).equals("i")){
+                            chapter.addContent(e.text().trim()+" ");
+                        }
+                        chapter.addContent(new TextItem(e.text()));
+                    }
+                }
+            }
             if(e.tagName().equals("h2") || e.tagName().equals("h3")){
                 String chapterTitle = e.text();
                 chapter = new Chapter(chapterTitle,i);
