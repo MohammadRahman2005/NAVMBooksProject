@@ -53,17 +53,17 @@
 
     <string-array name="DownloadableBooksUrl">
         <item>https://www.gutenberg.org/cache/epub/1661/pg1661-h.zip</item>
-<!--        <item>https://www.gutenberg.org/cache/epub/74672/pg74672-h.zip</item>-->
+        <item>https://www.gutenberg.org/cache/epub/74675/pg74675-h.zip</item>
         <item>https://www.gutenberg.org/cache/epub/345/pg345-h.zip</item>
     </string-array>
     <string-array name="DownloadableBooksFile">
         <item>Download/DownloadedFiles/pg1661-h/pg1661-images.html</item>
-<!--        <item>Download/DownloadedFiles/pg74672-h/pg74672-images.html</item>-->
+        <item>Download/DownloadedFiles/pg74675-h/pg74675-images.html</item>
         <item>Download/DownloadedFiles/pg345-h/pg345-images.html</item>
     </string-array>
     <string-array name="DownloadedBooksCover">
         <item>Download/DownloadedFiles/pg1661-h/images/cover.jpg</item>
-<!--        <item>Download/DownloadedFiles/pg74672-h/images/cover.jpg</item>-->
+        <item>Download/DownloadedFiles/pg74675-h/images/cover.jpg</item>
         <item>Download/DownloadedFiles/pg345-h/images/cover.jpg</item>
     </string-array>
 </resources>
