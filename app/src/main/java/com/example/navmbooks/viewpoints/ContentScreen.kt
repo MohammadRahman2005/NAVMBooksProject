@@ -27,6 +27,9 @@ import com.example.navmbooks.BookViewModel
 import com.example.navmbooks.NavRoutes
 import com.example.navmbooks.R
 
+/**
+ * This screen shows the chapters for a chosen book from library
+ */
 @Composable
 fun ContentScreen(
     navController: NavController,

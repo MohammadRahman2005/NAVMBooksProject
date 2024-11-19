@@ -12,6 +12,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.example.navmbooks.R
 
+/**
+ * search words within the chapter contents being shown
+ */
 @Composable
 fun SearchScreen(
     navController: NavController,

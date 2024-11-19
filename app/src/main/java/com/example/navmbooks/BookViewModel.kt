@@ -16,11 +16,16 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
 
+/**
+ * This class represents a view model for books
+ */
 @SuppressLint("MutableCollectionMutableState")
 class BookViewModel(private val repository: FileRepository) : ViewModel() {
 
     private val _directoryContents = MutableLiveData<List<String>>()
     val directoryContents: LiveData<List<String>> = _directoryContents
+
+    private var currentBookDirectory: String? = null
 
     // Function to set up file download
     fun setupDownload(url: String) {
@@ -34,6 +39,7 @@ class BookViewModel(private val repository: FileRepository) : ViewModel() {
                 if (file.exists() && file.length() > 0) {
                     updateDirectoryContents(destDir)
                     val destDirFile = repository.createFile(destDir, fileName.substringBeforeLast("."))
+                    currentBookDirectory = destDirFile.absolutePath
                     UnzipUtils.unzip(file, destDirFile.absolutePath)
                 } else {
                     Log.e("DownloadViewModel", "File is empty or does not exist.")
@@ -69,13 +75,14 @@ class BookViewModel(private val repository: FileRepository) : ViewModel() {
                 }
                 val files = repository.context.resources.getStringArray(R.array.booksFile)
                 val coverImages = repository.context.resources.getStringArray(R.array.booksCover)
-                var i = 0
-                files.forEach {file ->
+                var i = 0;
+                files.forEachIndexed {index, file ->
                     val htmlFile = File(repository.context.getExternalFilesDir(null), file)
                     val cover  = File(repository.context.getExternalFilesDir(null), coverImages[i])
                     i++
+                    currentBookDirectory = htmlFile.parent
                     if (htmlFile.exists() && cover.exists()) {
-                        val book = Book.readBookFromFile(htmlFile, cover)
+                        val book = Book.readBookFromFile(htmlFile, cover, currentBookDirectory!!)
                         bookList= bookList + book
                     }else{
                         Log.e("BookViewModel", "The HTML file does not exist at $htmlFile")
