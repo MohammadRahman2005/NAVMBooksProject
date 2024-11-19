@@ -38,7 +38,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Companion.Compact
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Companion.Expanded
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Companion.Medium
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
@@ -84,7 +83,7 @@ class MainActivity : ComponentActivity() {
                 val windowSize = calculateWindowSizeClass(this)
                 BookReadingApp(
                     locale = Locale.US,
-                    windowSizeClass = Expanded,
+                    windowSizeClass = windowSize.widthSizeClass,
                     factory=factory
                 )
             }
@@ -121,7 +120,7 @@ fun BookReadingApp(
         },
         bottomBar = {
             // Show a bottom navigation bar if the current mode supports it
-            if (!bookViewModel.isReadingMode.value && adaptiveNavigationType == AdaptiveNavigationType.BOTTOM_NAVIGATION) {
+                if (!bookViewModel.isReadingMode.value && adaptiveNavigationType == AdaptiveNavigationType.BOTTOM_NAVIGATION) {
                 BottomNavigationBar(navController = navController)
             }
         }
@@ -152,13 +151,13 @@ fun AdaptiveNavigationBars(
     when (adaptiveNavigationType) {
         AdaptiveNavigationType.PERMANENT_NAVIGATION_DRAWER -> {
             Row(modifier = Modifier.padding(padding)) {
-                PermanentNavigationDrawerComponent(
-                    navController = navController,
-                    bookViewModel = bookViewModel
-                )
-            }
+            PermanentNavigationDrawerComponent(
+                navController = navController,
+                bookViewModel = bookViewModel
+            )
         }
-        else -> {
+    }
+    else -> {
             Column(Modifier.padding(padding)) {
                 val paddingVal = if (adaptiveNavigationType == AdaptiveNavigationType.NAVIGATION_RAIL) {
                     PaddingValues(start = dimensionResource(R.dimen.small_padding))
