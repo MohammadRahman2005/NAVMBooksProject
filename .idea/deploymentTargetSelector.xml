@@ -4,10 +4,17 @@
     <selectionStates>
       <SelectionState runConfigName="MainActivity">
         <option name="selectionMode" value="DROPDOWN" />
+<<<<<<< HEAD
         <DropdownSelection timestamp="2024-11-18T17:10:12.725244200Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\noahg\.android\avd\Resizable_Experimental_API_34.avd" />
+=======
+        <DropdownSelection timestamp="2024-11-18T23:57:47.362926Z">
+          <Target type="DEFAULT_BOOT">
+            <handle>
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Aman Sood\.android\avd\Resizable_Experimental_API_VanillaIceCream.avd" />
+>>>>>>> 8b427e5adc1930676c32b878d92307444a21e489
             </handle>
           </Target>
         </DropdownSelection>
