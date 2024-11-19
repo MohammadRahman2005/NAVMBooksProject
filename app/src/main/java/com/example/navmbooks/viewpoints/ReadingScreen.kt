@@ -37,7 +37,7 @@ fun ReadingScreen(
     bookViewModel: BookViewModel,
     modifier: Modifier = Modifier,
     padding: PaddingValues = PaddingValues(dimensionResource(R.dimen.zero_padding)),
-    Chapter: Chapter,
+    chapter: Chapter,
 ) {
     Column (modifier = modifier
         .padding(padding)

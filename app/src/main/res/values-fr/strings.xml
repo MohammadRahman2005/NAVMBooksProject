@@ -3,6 +3,11 @@
     <string name="app_name">NAVM Books</string>
     <string name="logo_desc">Logo Appli</string>
 
+    <string name="welcome_image_desc">Image de bienvenue</string>
+    <string name="welcome_title">Bienvenue sur NAVMBooks</string>
+    <string name="welcome_description">Découvrez, lisez et profitez de notre bibliothèque de livres !</string>
+    <string name="get_started">Commencer</string>
+
     <string name="home">Accueil</string>
     <string name="library">Étagère</string>
     <string name="search">Recherche</string>
