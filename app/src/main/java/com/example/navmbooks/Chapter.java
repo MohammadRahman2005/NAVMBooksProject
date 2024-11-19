@@ -1,5 +1,8 @@
 package com.example.navmbooks;
 
+import com.example.navmbooks.data.ImageItem;
+import com.example.navmbooks.data.TextItem;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -7,7 +10,6 @@ import java.util.Objects;
 public class Chapter {
     private final String chapTitle;
     private final Integer chapNum;
-    private String text="No Text";
     private final List<Object> content;
 
     public List<Object> getContent() {
@@ -30,19 +32,21 @@ public class Chapter {
     public Integer getChapNum(){
         return chapNum;
     }
-    public String getText(){
-        return text;
-    }
-    public void setText(String text){
-        if (Objects.equals(this.text, "No Text")){
-            this.text = text;
-        }else{
-            this.text+=text;
-        }
-    }
 
     @Override
-    public String toString(){
-        return "\nChapter Title: " + chapTitle + ", Chapter Number: " + chapNum + "\n" + text;
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        result.append("\nChapter Title: ").append(chapTitle)
+                .append(", Chapter Number: ").append(chapNum)
+                .append("\n");
+
+        for (Object item : content) {
+            if (item instanceof TextItem) {
+                result.append(((TextItem) item).getText()).append("\n");
+            } else if (item instanceof ImageItem) {
+                result.append("Image: ").append(((ImageItem) item).getImagePath()).append("\n");
+            }
+        }
+        return result.toString();
     }
 }
