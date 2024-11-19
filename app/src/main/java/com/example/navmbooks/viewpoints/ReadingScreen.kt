@@ -60,12 +60,12 @@ fun ReadingScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)
+                .padding(dimensionResource(R.dimen.medium_padding))
         ) {
             Text(
                 text = stringResource(R.string.reading_header, Chapter.chapNum, Chapter.title)
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.small_padding)))
             for (e in Chapter.content){
                 if (e is TextItem){
                     Text(
@@ -78,7 +78,7 @@ fun ReadingScreen(
                         bitmap!!.asImageBitmap(),
                         contentDescription = e.imagePath,
                         modifier = modifier
-                            .size(150.dp)
+                            .size(dimensionResource(R.dimen.extra_large_size))
                             .align(Alignment.CenterHorizontally)
                     )
                 }
