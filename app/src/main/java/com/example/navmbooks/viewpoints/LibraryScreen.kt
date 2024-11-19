@@ -41,9 +41,9 @@ fun LibraryScreen(
 ) {
     Column(
         modifier = Modifier
-        .fillMaxSize()
-        .padding(padding)
-        .verticalScroll(rememberScrollState()),
+            .fillMaxSize()
+            .padding(padding)
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally, // Center horizontally
         verticalArrangement = Arrangement.Center
     ) {
