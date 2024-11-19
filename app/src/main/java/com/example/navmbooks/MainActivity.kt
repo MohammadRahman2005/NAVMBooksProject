@@ -3,6 +3,7 @@
 package com.example.navmbooks
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -194,6 +195,10 @@ fun NavigationRailComponent(
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoutes = backStackEntry?.destination?.route
+
+    if (currentRoutes != NavRoutes.ContentScreen.route && currentRoutes != NavRoutes.ReadingScreen.route) {
+        bookViewModel.isReadingMode.value = false
+    }
     NavigationRail {
         if (!bookViewModel.isReadingMode.value) {
             navBarItems().forEach { navItem ->
@@ -223,6 +228,9 @@ fun PermanentNavigationDrawerComponent(
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoutes = backStackEntry?.destination?.route
 
+    if (currentRoutes != NavRoutes.ContentScreen.route && currentRoutes != NavRoutes.ReadingScreen.route) {
+        bookViewModel.isReadingMode.value = false
+    }
     PermanentNavigationDrawer(
         drawerContent = {
             if (!bookViewModel.isReadingMode.value) {
