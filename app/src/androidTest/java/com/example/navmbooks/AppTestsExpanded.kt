@@ -1,5 +1,6 @@
 package com.example.navmbooks
 
+import android.content.res.Configuration
 import androidx.activity.compose.setContent
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.ui.test.ExperimentalTestApi
@@ -19,6 +20,8 @@ import org.junit.Rule
 import org.junit.Test
 import java.util.Locale
 
+// HAVE DEVICE IN LANDSCAPE
+// FIX FOR UI NOT DISPLAYING FULLY CAUSING TESTS TO FAIL.
 class AppTestsExpanded {
     // Create the ComposeTestRule to test composables
     @get:Rule

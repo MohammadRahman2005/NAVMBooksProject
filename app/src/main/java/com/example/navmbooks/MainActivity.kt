@@ -38,6 +38,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Companion.Compact
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Companion.Expanded
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Companion.Medium
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
@@ -83,7 +84,7 @@ class MainActivity : ComponentActivity() {
                 val windowSize = calculateWindowSizeClass(this)
                 BookReadingApp(
                     locale = Locale.US,
-                    windowSizeClass = windowSize.widthSizeClass,
+                    windowSizeClass = Expanded,
                     factory=factory
                 )
             }
@@ -174,7 +175,10 @@ fun AdaptiveNavigationBars(
             }
             if (adaptiveNavigationType == AdaptiveNavigationType.NAVIGATION_RAIL) {
                 Row(modifier = Modifier.padding(padding)) {
-                    NavigationRailComponent(navController = navController)
+                    NavigationRailComponent(
+                        navController = navController,
+                        bookViewModel = bookViewModel
+                    )
                 }
             }
         }
@@ -187,21 +191,24 @@ fun AdaptiveNavigationBars(
 @Composable
 fun NavigationRailComponent(
     navController: NavHostController,
+    bookViewModel: BookViewModel
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoutes = backStackEntry?.destination?.route
     NavigationRail {
-        navBarItems().forEach { navItem ->
-            NavigationRailItem(
-                selected = currentRoutes == navItem.route,
-                onClick = {
-                    navController.navigate(navItem.route)
-                },
-                icon = {
-                    Icon(navItem.image, contentDescription = navItem.title)
-                },
-                label = { Text(text = navItem.title) }
-            )
+        if (!bookViewModel.isReadingMode.value) {
+            navBarItems().forEach { navItem ->
+                NavigationRailItem(
+                    selected = currentRoutes == navItem.route,
+                    onClick = {
+                        navController.navigate(navItem.route)
+                    },
+                    icon = {
+                        Icon(navItem.image, contentDescription = navItem.title)
+                    },
+                    label = { Text(text = navItem.title) }
+                )
+            }
         }
     }
 }
@@ -216,22 +223,25 @@ fun PermanentNavigationDrawerComponent(
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoutes = backStackEntry?.destination?.route
+
     PermanentNavigationDrawer(
         drawerContent = {
-            PermanentDrawerSheet {
-                Column {
-                    Spacer(Modifier.height(dimensionResource(R.dimen.large_size)))
-                    navBarItems().forEach { navItem ->
-                        NavigationDrawerItem(
-                            selected = currentRoutes == navItem.route,
-                            onClick = {
-                                navController.navigate(navItem.route)
-                            },
-                            icon = {
-                                Icon(navItem.image, contentDescription = navItem.title)
-                            },
-                            label = { Text(text = navItem.title) }
-                        )
+            if (!bookViewModel.isReadingMode.value) {
+                PermanentDrawerSheet {
+                    Column {
+                        Spacer(Modifier.height(dimensionResource(R.dimen.large_size)))
+                        navBarItems().forEach { navItem ->
+                            NavigationDrawerItem(
+                                selected = currentRoutes == navItem.route,
+                                onClick = {
+                                    navController.navigate(navItem.route)
+                                },
+                                icon = {
+                                    Icon(navItem.image, contentDescription = navItem.title)
+                                },
+                                label = { Text(text = navItem.title) }
+                            )
+                        }
                     }
                 }
             }
