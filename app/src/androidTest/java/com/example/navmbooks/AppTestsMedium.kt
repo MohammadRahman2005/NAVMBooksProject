@@ -48,6 +48,7 @@ class AppTestsMedium {
         }
     }
 
+    // Verifies that the top bar elements (title, logo, back button) are rendered correctly.
     @Test
     fun testTopBarRenders() {
         composeTestRule.waitForIdle()
@@ -56,12 +57,14 @@ class AppTestsMedium {
         composeTestRule.onNodeWithTag("backButton").assertIsDisplayed()
     }
 
+    // Ensures the home screen is rendered with the welcome message displayed.
     @Test
     fun testRendersHomeScreen() {
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithText("Welcome to NAVMBooks").assertIsDisplayed()
     }
 
+    // Confirms the library screen is rendered and its content is displayed upon navigation.
     @Test
     fun testRendersLibrary() {
         composeTestRule.waitForIdle()
@@ -70,6 +73,7 @@ class AppTestsMedium {
         composeTestRule.onNodeWithTag("LibraryText").assertIsDisplayed()
     }
 
+    // Validates that the search screen is rendered correctly upon navigation.
     @Test
     fun testRendersSearch() {
         composeTestRule.waitForIdle()
@@ -78,7 +82,7 @@ class AppTestsMedium {
         composeTestRule.onNodeWithTag("SearchText").assertIsDisplayed()
     }
 
-
+    // Checks if the content details are displayed correctly when navigating through the library.
     @OptIn(ExperimentalTestApi::class)
     @Test
     fun testRendersContent() {
@@ -90,6 +94,7 @@ class AppTestsMedium {
         composeTestRule.onNodeWithText("Chapter 1").assertIsDisplayed()
     }
 
+    // Ensures the reading screen displays the appropriate content when navigating from the library.
     @OptIn(ExperimentalTestApi::class)
     @Test
     fun testRendersReading() {
@@ -104,6 +109,7 @@ class AppTestsMedium {
         composeTestRule.onNodeWithTag("ContentText").assertIsDisplayed()
     }
 
+    // Verifies that the bottom navigation bar renders with all its options (Home, Library, Search).
     @Test
     fun testBottomNavRender() {
         composeTestRule.waitForIdle()
@@ -112,6 +118,7 @@ class AppTestsMedium {
         composeTestRule.onNodeWithText("Search").assertIsDisplayed()
     }
 
+    // Tests if back navigation from the library screen returns to the home screen.
     @Test
     fun testBackNavigation() {
         composeTestRule.waitForIdle()
@@ -122,6 +129,7 @@ class AppTestsMedium {
         composeTestRule.onNodeWithText("Welcome to NAVMBooks").assertIsDisplayed()
     }
 
+    // Ensures the reading mode toggle works as expected, switching states and affecting the UI accordingly.
     @OptIn(ExperimentalTestApi::class)
     @Test
     fun testReadingModeButton() {
