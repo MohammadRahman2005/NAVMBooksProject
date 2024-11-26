@@ -80,6 +80,7 @@ public class Book {
             }
             if(e.tagName().equals("table")) {
                 allContent.append("table here").append("\n");
+                if (chapter != null) chapter.addContent(new TextItem("Table here"));
             }
             if(e.tagName().equals("div") && e.className().equals("chapter")){
                 for (Element child : e.children()){

@@ -3,6 +3,7 @@
 package com.example.navmbooks
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -318,6 +319,7 @@ fun NavigationHost(
     padding: PaddingValues,
 ) {
     val books = bookViewModel.bookList
+    val booksToDownload = bookViewModel.downloadedBookList
     NavHost(
         navController = navController,
         startDestination = NavRoutes.HomeScreen.route,
@@ -327,7 +329,7 @@ fun NavigationHost(
             HomeScreen(navController = navController, modifier, padding)
         }
         composable(route = NavRoutes.LibraryScreen.route) {
-            LibraryScreen(navController = navController, modifier, padding, books = books)
+            LibraryScreen(navController = navController, modifier, padding, books = books, booksToDownload = booksToDownload)
         }
         composable(route = NavRoutes.SearchScreen.route) {
             SearchScreen(navController = navController, modifier, padding)

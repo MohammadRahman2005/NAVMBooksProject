@@ -62,19 +62,24 @@ class BookViewModel(private val repository: FileRepository) : ViewModel() {
 
     var bookList by mutableStateOf<List<Book?>>(emptyList())
         private set
-
+    var downloadedBookList by mutableStateOf<List<Book?>>(emptyList())
+        private set
     init {
-        loadBookFromLocalStorage()
+        loadBookFromLocalStorage(urls = repository.context.resources.getStringArray(R.array.booksUrl), file = repository.context.resources.getStringArray(R.array.booksFile), images = repository.context.resources.getStringArray(R.array.booksCover))
     }
-    private fun loadBookFromLocalStorage(){
+    private fun loadBookFromLocalStorage(
+        urls: Array<String>,
+        file: Array<String>,
+        images: Array<String>
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val urls = repository.context.resources.getStringArray(R.array.booksUrl)
-                urls.forEach { url ->
+                val urlList = urls
+                urlList.forEach { url ->
                     setupDownload(url)
                 }
-                val files = repository.context.resources.getStringArray(R.array.booksFile)
-                val coverImages = repository.context.resources.getStringArray(R.array.booksCover)
+                val files = file
+                val coverImages = images
                 var i = 0;
                 files.forEachIndexed {index, file ->
                     val htmlFile = File(repository.context.getExternalFilesDir(null), file)
