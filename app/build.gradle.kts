@@ -5,11 +5,11 @@ plugins {
 
 android {
     namespace = "com.example.navmbooks"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.navmbooks"
-        minSdk = 26
+        minSdk = 30
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -78,6 +78,9 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation (libs.androidx.material)
+    implementation("io.coil-kt:coil-compose:2.3.0")
     implementation("androidx.compose.material3:material3-window-size-class")
     implementation ("org.jsoup:jsoup:1.10.3")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+
 }

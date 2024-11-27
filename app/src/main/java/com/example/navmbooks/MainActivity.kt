@@ -3,11 +3,11 @@
 package com.example.navmbooks
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -50,7 +50,6 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -67,7 +66,15 @@ import com.example.navmbooks.viewpoints.ReadingScreen
 import com.example.navmbooks.viewpoints.SearchScreen
 import java.util.Locale
 
+/**
+ * MainActivity is the entry point of the application.
+ * It sets up the content view and determines the navigation style
+ * based on the device's window size.
+ */
 class MainActivity : ComponentActivity() {
+    private val factory by lazy {
+        BookViewModelFactory(this.applicationContext) // Use application context to prevent memory leaks
+    }
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,54 +82,28 @@ class MainActivity : ComponentActivity() {
         setContent {
             NAVMBooksTheme {
                 val windowSize = calculateWindowSizeClass(this)
-                val bookViewModel: BookViewModel = viewModel()
                 BookReadingApp(
                     locale = Locale.US,
                     windowSizeClass = windowSize.widthSizeClass,
-                    bookViewModel = bookViewModel
+                    factory=factory
                 )
             }
         }
     }
 }
 
-//@SuppressLint("CoroutineCreationDuringComposition")
-//@Composable
-//fun MainScreen() {
-//    val context = LocalContext.current
-//    var book by remember { mutableStateOf<Book?>(null) }
-//
-//    LaunchedEffect(Unit){
-//            try
-//            {
-////            context.assets.open("pg20195-h/pg20195-images.html").use { inputStream ->
-////                val book = Book.readBook(inputStream)
-////             Log.d("MainScreen", "Book parsed: $book")
-////            }
-//                withContext(Dispatchers.IO) {
-//                    book = Book.readBookURL("https://www.gutenberg.org/cache/epub/8710/pg8710-images.html")
-//                    val book2 = Book.readBookURL("https://www.gutenberg.org/cache/epub/20195/pg20195-images.html")
-//                    val book3 = Book.readBookURL("https://www.gutenberg.org/cache/epub/40367/pg40367-images.html")
-//                }
-////                Log.d("MainScreen", "Book parsed: $book")
-//            } catch (e: IOException) {
-//                Log.e("MainScreen", "Error reading book", e)
-//            }
-//    }
-//    if (book!=null){
-//        Text(text= "Book: ${book!!.chapters}")
-//    }else {
-//        Text(text = "No book")
-//    }
-//}
-
+/**
+ * BookReadingApp handles the main composable structure of the app,
+ * including navigation and adapting the UI based on the window size class.
+ */
 @Composable
 fun BookReadingApp(
     navController: NavHostController = rememberNavController(),
     locale: Locale,
-    bookViewModel: BookViewModel,
-    windowSizeClass: WindowWidthSizeClass
+    windowSizeClass: WindowWidthSizeClass,
+    factory: BookViewModelFactory
 ) {
+    val bookViewModel: BookViewModel = viewModel(factory=factory)
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry?.destination?.route
     val adaptiveNavigationType = when (windowSizeClass) {
@@ -133,12 +114,14 @@ fun BookReadingApp(
 
     Scaffold(
         topBar = {
+            // Display the app bar only on specific screens
             if (currentRoute != NavRoutes.ContentScreen.route && currentRoute != NavRoutes.ReadingScreen.route) {
                 NAVMAppBar(navigateUp = { navController.navigateUp() })
             }
         },
         bottomBar = {
-            if (!bookViewModel.isReadingMode.value && adaptiveNavigationType == AdaptiveNavigationType.BOTTOM_NAVIGATION) {
+            // Show a bottom navigation bar if the current mode supports it
+                if (!bookViewModel.isReadingMode.value && adaptiveNavigationType == AdaptiveNavigationType.BOTTOM_NAVIGATION) {
                 BottomNavigationBar(navController = navController)
             }
         }
@@ -147,66 +130,96 @@ fun BookReadingApp(
             padding = padding,
             navController = navController,
             bookViewModel = bookViewModel,
-            adaptiveNavigationType = adaptiveNavigationType
+            adaptiveNavigationType = adaptiveNavigationType,
         )
 
     }
 }
 
+
+/**
+ * AdaptiveNavigationBars handles the adaptive navigation structure,
+ * supporting drawer, rail, or bottom navigation based on the device.
+ */
 @Composable
 fun AdaptiveNavigationBars(
     padding: PaddingValues,
     navController: NavHostController,
     bookViewModel: BookViewModel,
     adaptiveNavigationType: AdaptiveNavigationType,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-    Column(Modifier.padding(padding)) {
-        val padding = if (adaptiveNavigationType == AdaptiveNavigationType.NAVIGATION_RAIL) {
-            PaddingValues(start = dimensionResource(R.dimen.small_padding))
-        } else {
-            PaddingValues(dimensionResource(R.dimen.zero_padding))
-        }
-
-        NavigationHost(
-            navController = navController,
-            bookViewModel = bookViewModel,
-            modifier = modifier,
-            padding = padding
-        )
-    }
-    Row(modifier = Modifier.padding(padding)) {
-        if (!bookViewModel.isReadingMode.value && adaptiveNavigationType == AdaptiveNavigationType.PERMANENT_NAVIGATION_DRAWER) {
-            PermanentNavigationDrawerComponent(navController = navController, bookViewModel = bookViewModel)
-        }
-        if (!bookViewModel.isReadingMode.value && adaptiveNavigationType == AdaptiveNavigationType.NAVIGATION_RAIL) {
-            NavigationRailComponent(navController = navController)
-        }
-    }
-}
-
-@Composable
-fun NavigationRailComponent(
-    navController: NavHostController,
-) {
-    val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoutes = backStackEntry?.destination?.route
-    NavigationRail {
-        navBarItems().forEach { navItem ->
-            NavigationRailItem(
-                selected = currentRoutes == navItem.route,
-                onClick = {
-                    navController.navigate(navItem.route)
-                },
-                icon = {
-                    Icon(navItem.image, contentDescription = navItem.title)
-                },
-                label = { Text(text = navItem.title) }
+    when (adaptiveNavigationType) {
+        AdaptiveNavigationType.PERMANENT_NAVIGATION_DRAWER -> {
+            Row(modifier = Modifier.padding(padding)) {
+            PermanentNavigationDrawerComponent(
+                navController = navController,
+                bookViewModel = bookViewModel
             )
         }
     }
+    else -> {
+            Column(Modifier.padding(padding)) {
+                val paddingVal = if (adaptiveNavigationType == AdaptiveNavigationType.NAVIGATION_RAIL) {
+                    PaddingValues(start = dimensionResource(R.dimen.small_padding))
+                } else {
+                    PaddingValues(dimensionResource(R.dimen.zero_padding))
+                }
+
+                NavigationHost(
+                    navController = navController,
+                    bookViewModel = bookViewModel,
+                    modifier = modifier,
+                    padding = paddingVal,
+                )
+            }
+            if (adaptiveNavigationType == AdaptiveNavigationType.NAVIGATION_RAIL) {
+                Row(modifier = Modifier.padding(padding)) {
+                    NavigationRailComponent(
+                        navController = navController,
+                        bookViewModel = bookViewModel
+                    )
+                }
+            }
+        }
+    }
 }
 
+/**
+ * Defines the Navigation Rail for medium-sized screens.
+ */
+@Composable
+fun NavigationRailComponent(
+    navController: NavHostController,
+    bookViewModel: BookViewModel
+) {
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoutes = backStackEntry?.destination?.route
+
+    if (currentRoutes != NavRoutes.ContentScreen.route && currentRoutes != NavRoutes.ReadingScreen.route) {
+        bookViewModel.isReadingMode.value = false
+    }
+    NavigationRail {
+        if (!bookViewModel.isReadingMode.value) {
+            navBarItems().forEach { navItem ->
+                NavigationRailItem(
+                    selected = currentRoutes == navItem.route,
+                    onClick = {
+                        navController.navigate(navItem.route)
+                    },
+                    icon = {
+                        Icon(navItem.image, contentDescription = navItem.title)
+                    },
+                    label = { Text(text = navItem.title) }
+                )
+            }
+        }
+    }
+}
+
+/**
+ * Defines the Permanent Navigation Drawer for large screens.
+ */
 @Composable
 fun PermanentNavigationDrawerComponent(
     navController: NavHostController,
@@ -214,38 +227,46 @@ fun PermanentNavigationDrawerComponent(
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoutes = backStackEntry?.destination?.route
+
+    if (currentRoutes != NavRoutes.ContentScreen.route && currentRoutes != NavRoutes.ReadingScreen.route) {
+        bookViewModel.isReadingMode.value = false
+    }
     PermanentNavigationDrawer(
         drawerContent = {
-            PermanentDrawerSheet {
-                Column {
-                    Spacer(Modifier.height(dimensionResource(R.dimen.large_size)))
-                    navBarItems().forEach { navItem ->
-                        NavigationDrawerItem(
-                            selected = currentRoutes == navItem.route,
-                            onClick = {
-                                navController.navigate(navItem.route)
-                            },
-                            icon = {
-                                Icon(navItem.image, contentDescription = navItem.title)
-                            },
-                            label = { Text(text = navItem.title) }
-                        )
+            if (!bookViewModel.isReadingMode.value) {
+                PermanentDrawerSheet {
+                    Column {
+                        Spacer(Modifier.height(dimensionResource(R.dimen.large_size)))
+                        navBarItems().forEach { navItem ->
+                            NavigationDrawerItem(
+                                selected = currentRoutes == navItem.route,
+                                onClick = {
+                                    navController.navigate(navItem.route)
+                                },
+                                icon = {
+                                    Icon(navItem.image, contentDescription = navItem.title)
+                                },
+                                label = { Text(text = navItem.title) }
+                            )
+                        }
                     }
                 }
-            } },
-        content = {
-            Box(modifier = Modifier.fillMaxSize()) {
-                NavigationHost(
-                    navController = navController,
-                    bookViewModel = bookViewModel,
-                    modifier = Modifier,
-                    padding = PaddingValues(dimensionResource(R.dimen.zero_padding))
-                )
             }
+        },
+        content = {
+            NavigationHost(
+                navController = navController,
+                bookViewModel = bookViewModel,
+                modifier = Modifier,
+                padding = PaddingValues(dimensionResource(R.dimen.zero_padding))
+            )
         }
     )
 }
 
+/**
+ * Defines the Top App Bar with a back button and logo.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NAVMAppBar(
@@ -280,22 +301,29 @@ fun NAVMAppBar(
     )
 }
 
+/**
+ * Displays the app logo in the top bar.
+ */
 @Composable
 fun Logo(modifier: Modifier = Modifier) {
     Image(
         painter = painterResource(R.drawable.navm),
-        contentDescription = "App Logo",
+        contentDescription = stringResource(R.string.logo_desc),
         modifier = modifier,
         contentScale = ContentScale.Crop
     )
 }
 
+
+/**
+ * Hosts the navigation routes and connects screens.
+ */
 @Composable
 fun NavigationHost(
     navController: NavHostController,
     bookViewModel: BookViewModel,
     modifier: Modifier = Modifier,
-    padding: PaddingValues
+    padding: PaddingValues,
 ) {
     val books = bookViewModel.bookList
     NavHost(
@@ -307,7 +335,7 @@ fun NavigationHost(
             HomeScreen(navController = navController, modifier, padding)
         }
         composable(route = NavRoutes.LibraryScreen.route) {
-            LibraryScreen(navController = navController, modifier, padding, viewModel = BookViewModel(), books = books)
+            LibraryScreen(navController = navController, modifier, padding, books = books)
         }
         composable(route = NavRoutes.SearchScreen.route) {
             SearchScreen(navController = navController, modifier, padding)
@@ -334,7 +362,9 @@ fun NavigationHost(
     }
 }
 
-
+/**
+ * Defines the Bottom Navigation Drawer for phone screens.
+ */
 @Composable
 fun BottomNavigationBar(navController: NavHostController) {
     NavigationBar(
