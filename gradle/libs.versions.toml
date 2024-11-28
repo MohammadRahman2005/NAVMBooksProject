@@ -21,6 +21,8 @@ zxingAndroidEmbedded = "4.3.0"
 uiTestJunit4Android = "1.7.5"
 navigationTesting = "2.8.3"
 uiTextGoogleFonts = "1.7.5"
+roomCommon = "2.6.1"
+roomKtx = "2.6.1"
 
 [libraries]
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
@@ -52,6 +54,8 @@ zxing-android-embedded = { module = "com.journeyapps:zxing-android-embedded", ve
 androidx-ui-test-junit4-android = { group = "androidx.compose.ui", name = "ui-test-junit4-android", version.ref = "uiTestJunit4Android" }
 androidx-navigation-testing = { group = "androidx.navigation", name = "navigation-testing", version.ref = "navigationTesting" }
 androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "uiTextGoogleFonts" }
+androidx-room-common = { group = "androidx.room", name = "room-common", version.ref = "roomCommon" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

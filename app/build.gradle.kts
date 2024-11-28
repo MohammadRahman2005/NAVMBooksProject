@@ -65,6 +65,8 @@ dependencies {
     implementation(libs.androidx.material3.window.size)
     implementation(libs.androidx.navigation.testing)
     implementation(libs.androidx.ui.text.google.fonts)
+    implementation(libs.androidx.room.common)
+    implementation(libs.androidx.room.ktx)
     testImplementation(libs.junit)
     testImplementation(libs.androidx.ui.test.junit4.android)
     androidTestImplementation(libs.androidx.junit)
