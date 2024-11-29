@@ -1,4 +1,4 @@
-package com.example.navmbooks.viewpoints
+package com.example.navmbooks.ui.theme.viewpoints
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,9 +22,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
-import com.example.navmbooks.Book
-import com.example.navmbooks.BookViewModel
-import com.example.navmbooks.NavRoutes
+import com.example.navmbooks.ui.theme.Book
+import com.example.navmbooks.ui.theme.BookViewModel
+import com.example.navmbooks.ui.theme.NavRoutes
 import com.example.navmbooks.R
 
 /**
