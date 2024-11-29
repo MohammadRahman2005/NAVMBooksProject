@@ -68,7 +68,6 @@ public class Book {
                     for (Element child : e.children()) {
                         if (child.tagName().equals("img")) {
                             String imgSrc = bookDirectory + File.separator + child.attr("src");
-                            allContent.append("image here").append("\n");
                             if (chapter != null) chapter.addContent(new ImageItem(imgSrc));
                         }
                     }

@@ -3,7 +3,6 @@
 package com.example.navmbooks
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -154,7 +153,8 @@ fun AdaptiveNavigationBars(
             Row(modifier = Modifier.padding(padding)) {
             PermanentNavigationDrawerComponent(
                 navController = navController,
-                bookViewModel = bookViewModel
+                bookViewModel = bookViewModel,
+                adaptiveNavType = adaptiveNavigationType
             )
         }
     }
@@ -171,6 +171,7 @@ fun AdaptiveNavigationBars(
                     bookViewModel = bookViewModel,
                     modifier = modifier,
                     padding = paddingVal,
+                    adaptiveNavType = adaptiveNavigationType
                 )
             }
             if (adaptiveNavigationType == AdaptiveNavigationType.NAVIGATION_RAIL) {
@@ -219,7 +220,8 @@ fun NavigationRailComponent(
 @Composable
 fun PermanentNavigationDrawerComponent(
     navController: NavHostController,
-    bookViewModel: BookViewModel
+    bookViewModel: BookViewModel,
+    adaptiveNavType: AdaptiveNavigationType
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoutes = backStackEntry?.destination?.route
@@ -251,7 +253,8 @@ fun PermanentNavigationDrawerComponent(
                 navController = navController,
                 bookViewModel = bookViewModel,
                 modifier = Modifier,
-                padding = PaddingValues(dimensionResource(R.dimen.zero_padding))
+                padding = PaddingValues(dimensionResource(R.dimen.zero_padding)),
+                adaptiveNavType = adaptiveNavType
             )
         }
     )
@@ -317,6 +320,7 @@ fun NavigationHost(
     bookViewModel: BookViewModel,
     modifier: Modifier = Modifier,
     padding: PaddingValues,
+    adaptiveNavType: AdaptiveNavigationType,
 ) {
     val books = bookViewModel.bookList
     val booksToDownload = bookViewModel.downloadedBookList
@@ -349,7 +353,8 @@ fun NavigationHost(
                     bookViewModel = bookViewModel,
                     modifier = modifier,
                     padding = padding,
-                    it
+                    it,
+                    adaptiveNavType = adaptiveNavType
                 )
             }
         }
