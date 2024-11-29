@@ -19,6 +19,7 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass.Companion.Compact
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,19 +50,18 @@ fun ReadingScreen(
     Chapter: Chapter,
     adaptiveNavType: AdaptiveNavigationType,
     ) {
-    var chunkedContent: List<List<Any>>? = null
-    if (adaptiveNavType == AdaptiveNavigationType.BOTTOM_NAVIGATION){
-        chunkedContent = Chapter.content.chunked(6)
-    }else if (adaptiveNavType == AdaptiveNavigationType.NAVIGATION_RAIL){
-        chunkedContent = Chapter.content.chunked(4)
-    }else {
-        chunkedContent = Chapter.content.chunked(2)
+    val chunkedContent = remember(adaptiveNavType, Chapter.content) {
+        when (adaptiveNavType) {
+            AdaptiveNavigationType.BOTTOM_NAVIGATION -> Chapter.content.chunked(10)
+            AdaptiveNavigationType.NAVIGATION_RAIL -> Chapter.content.chunked(4)
+            else -> Chapter.content.chunked(2)
+        }
     }
-    var currentPage by remember { mutableStateOf(0) }
-    val scrollState = rememberLazyListState()
+
     Column (modifier = modifier
         .padding(padding)
-        .verticalScroll(rememberScrollState()))
+        .fillMaxHeight()
+    )
     {
         Column{
             Row(
@@ -77,53 +77,37 @@ fun ReadingScreen(
             Text(stringResource(R.string.content_label), modifier.testTag("ContentText"))
         }
 
-        LazyRow (modifier = Modifier.fillMaxHeight()
-                    .fillMaxWidth(),){
-            items(Chapter.content) {item ->
-                if (item is TextItem){
-                    Text(
-                        text = item.text
-                    )
-                }else if (item is ImageItem){
-                    val bitmap = BitmapFactory.decodeFile(item.imagePath)
-                    Log.d("imagePath", item.imagePath)
-                    Image(
-                        bitmap!!.asImageBitmap(),
-                        contentDescription = item.imagePath,
-                        modifier = modifier
-                            .size(dimensionResource(R.dimen.extra_large_size))
-                            .align(Alignment.CenterHorizontally)
-                    )
+        LazyRow(
+            modifier = Modifier
+                .fillMaxHeight()
+                .fillMaxWidth()
+        ) {
+            items(Chapter.content.chunked(10)) { chunk ->
+                Column {
+                    chunk.forEach { item ->
+                        when (item) {
+                            is TextItem -> {
+                                Text(text = item.text)
+                            }
+                            is ImageItem -> {
+                                val bitmap = remember(item.imagePath) {
+                                    BitmapFactory.decodeFile(item.imagePath)?.asImageBitmap()
+                                }
+                                if (bitmap != null) {
+                                    Image(
+                                        bitmap = bitmap,
+                                        contentDescription = item.imagePath,
+                                        modifier = Modifier
+                                            .size(dimensionResource(R.dimen.extra_large_size))
+                                            .align(Alignment.CenterHorizontally)
+                                    )
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
 
-//        Column(
-//            modifier = Modifier
-//                .fillMaxSize()
-//                .padding(dimensionResource(R.dimen.medium_padding))
-//        ) {
-//            Text(
-//                text = stringResource(R.string.reading_header, Chapter.chapNum, Chapter.title)
-//            )
-//            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.small_padding)))
-//            for (e in Chapter.content){
-//                if (e is TextItem){
-//                    Text(
-//                        text = e.text
-//                    )
-//                }else if (e is ImageItem){
-//                    val bitmap = BitmapFactory.decodeFile(e.imagePath)
-//                    Log.d("imagePath", e.imagePath)
-//                    Image(
-//                        bitmap!!.asImageBitmap(),
-//                        contentDescription = e.imagePath,
-//                        modifier = modifier
-//                            .size(dimensionResource(R.dimen.extra_large_size))
-//                            .align(Alignment.CenterHorizontally)
-//                    )
-//                }
-//            }
-//        }
     }
 }

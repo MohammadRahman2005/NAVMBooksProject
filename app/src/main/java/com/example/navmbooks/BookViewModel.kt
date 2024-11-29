@@ -65,14 +65,22 @@ class BookViewModel(private val repository: FileRepository) : ViewModel() {
     var downloadedBookList by mutableStateOf<List<Book?>>(emptyList())
         private set
     init {
-        loadBookFromLocalStorage(urls = repository.context.resources.getStringArray(R.array.booksUrl), file = repository.context.resources.getStringArray(R.array.booksFile), images = repository.context.resources.getStringArray(R.array.booksCover))
+       getBooks(urls = repository.context.resources.getStringArray(R.array.booksUrl), file = repository.context.resources.getStringArray(R.array.booksFile), images = repository.context.resources.getStringArray(R.array.booksCover))
     }
+    private fun getBooks(urls: Array<String>,
+                         file: Array<String>,
+                         images: Array<String>){
+        viewModelScope.launch (Dispatchers.IO){
+            bookList = loadBookFromLocalStorage(urls, file, images)
+        }
+    }
+
     private fun loadBookFromLocalStorage(
         urls: Array<String>,
         file: Array<String>,
         images: Array<String>
-    ) {
-        viewModelScope.launch(Dispatchers.IO) {
+    ): List<Book?> {
+        var listBooks by mutableStateOf<List<Book?>>(emptyList())
             try {
                 val urlList = urls
                 urlList.forEach { url ->
@@ -88,7 +96,7 @@ class BookViewModel(private val repository: FileRepository) : ViewModel() {
                     currentBookDirectory = htmlFile.parent
                     if (htmlFile.exists() && cover.exists()) {
                         val book = Book.readBookFromFile(htmlFile, cover, currentBookDirectory!!)
-                        bookList= bookList + book
+                        listBooks= listBooks + book
                     }else{
                         Log.e("BookViewModel", "The HTML file does not exist at $htmlFile")
                     }
@@ -97,7 +105,7 @@ class BookViewModel(private val repository: FileRepository) : ViewModel() {
                 e.printStackTrace()
                 Log.e("BookViewModel", "Error reading local book file", e)
             }
-        }
+        return listBooks
     }
 
     var isReadingMode = mutableStateOf(false)
