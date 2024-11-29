@@ -1,35 +1,30 @@
 package com.example.navmbooks.viewpoints
 
 import android.graphics.BitmapFactory
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass.Companion.Compact
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.navmbooks.BookViewModel
 import com.example.navmbooks.Chapter
@@ -50,11 +45,15 @@ fun ReadingScreen(
     Chapter: Chapter,
     adaptiveNavType: AdaptiveNavigationType,
     ) {
+    val configuration = LocalConfiguration.current
+
+    val screenHeight = configuration.screenHeightDp.dp
+    val screenWidth = configuration.screenWidthDp.dp
     val chunkedContent = remember(adaptiveNavType, Chapter.content) {
         when (adaptiveNavType) {
-            AdaptiveNavigationType.BOTTOM_NAVIGATION -> Chapter.content.chunked(10)
-            AdaptiveNavigationType.NAVIGATION_RAIL -> Chapter.content.chunked(4)
-            else -> Chapter.content.chunked(2)
+            AdaptiveNavigationType.BOTTOM_NAVIGATION -> Chapter.content.chunked(3)
+            AdaptiveNavigationType.NAVIGATION_RAIL -> Chapter.content.chunked(2)
+            else -> Chapter.content.chunked(1)
         }
     }
 
@@ -82,8 +81,12 @@ fun ReadingScreen(
                 .fillMaxHeight()
                 .fillMaxWidth()
         ) {
-            items(Chapter.content.chunked(10)) { chunk ->
-                Column {
+            items(chunkedContent) { chunk ->
+                Column (
+                    modifier = Modifier
+                        .widthIn(max=screenWidth)
+                        .padding(horizontal = dimensionResource(R.dimen.medium_padding))
+                ){
                     chunk.forEach { item ->
                         when (item) {
                             is TextItem -> {
