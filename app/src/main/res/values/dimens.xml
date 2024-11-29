@@ -8,4 +8,5 @@
     <dimen name="large_padding">50dp</dimen>
     <dimen name="large_size">50dp</dimen>
     <dimen name="extra_large_size">200dp</dimen>
+    <dimen name="extra_large_text">200sp</dimen>
 </resources>
