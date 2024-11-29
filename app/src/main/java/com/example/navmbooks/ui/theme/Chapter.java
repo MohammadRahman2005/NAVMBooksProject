@@ -1,11 +1,10 @@
-package com.example.navmbooks;
+package com.example.navmbooks.ui.theme;
 
 import com.example.navmbooks.data.ImageItem;
 import com.example.navmbooks.data.TextItem;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * This class creates chapter objects.

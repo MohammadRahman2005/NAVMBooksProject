@@ -1,6 +1,4 @@
-package com.example.navmbooks;
-
-import android.util.Log;
+package com.example.navmbooks.ui.theme;
 
 import com.example.navmbooks.data.ImageItem;
 import com.example.navmbooks.data.TextItem;

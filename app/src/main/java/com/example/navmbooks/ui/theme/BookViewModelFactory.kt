@@ -1,4 +1,4 @@
-package com.example.navmbooks
+package com.example.navmbooks.ui.theme
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
