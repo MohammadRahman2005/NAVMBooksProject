@@ -9,9 +9,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.room.Database
 import com.example.navmbooks.R
 import com.example.navmbooks.data.FileRepository
 import com.example.navmbooks.data.UnzipUtils
+import com.example.navmbooks.database.DatabaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
@@ -21,7 +23,7 @@ import java.io.IOException
  * This class represents a view model for books
  */
 @SuppressLint("MutableCollectionMutableState")
-class BookViewModel(private val repository: FileRepository) : ViewModel() {
+class BookViewModel(private val repository: FileRepository, private val dbViewModel : DatabaseViewModel) : ViewModel() {
     var titles = repository.context.resources.getStringArray(R.array.DownloadedBooksTitle).toList()
 
     var urls = repository.context.resources.getStringArray(R.array.DownloadableBooksUrl).toList()

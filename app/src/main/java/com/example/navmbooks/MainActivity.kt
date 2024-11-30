@@ -32,8 +32,9 @@ import java.util.Locale
  */
 class MainActivity : ComponentActivity() {
 
+    private val dbViewModel = DatabaseViewModel(application)
     private val factory by lazy {
-        BookViewModelFactory(this.applicationContext) // Use application context to prevent memory leaks
+        BookViewModelFactory(this.applicationContext, dbViewModel) // Use application context to prevent memory leaks
     }
 
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
@@ -41,10 +42,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        val dbviewModel = DatabaseViewModel(application)
-
         CoroutineScope(Dispatchers.IO).launch {
-            dataBaseUsage(dbviewModel)
+            dataBaseUsage(dbViewModel)
         }
         setContent {
             NAVMBooksTheme {
