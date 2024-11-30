@@ -14,6 +14,7 @@ import com.example.navmbooks.R
 import com.example.navmbooks.data.FileRepository
 import com.example.navmbooks.data.UnzipUtils
 import com.example.navmbooks.database.DatabaseViewModel
+import com.example.navmbooks.database.entities.Author
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
@@ -91,11 +92,14 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
                     val book = processSingleBook(url, filePath, imagePath)
                     if (book != null) {
                         bookList = bookList + book
+                        val author = Author(authorName = book.author)
+                        dbViewModel.insertAuthor(author)
+                        Log.d("BookViewModel", dbViewModel.getAuthorById(2).toString())
                     }
                 } else {
                     Log.e("BookViewModel", "Invalid file or image path for index $index")
                 }
-            }
+            };
         }
     }
 
