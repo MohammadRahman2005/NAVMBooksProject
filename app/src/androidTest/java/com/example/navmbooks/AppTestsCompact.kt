@@ -14,6 +14,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.navmbooks.ui.theme.BookReadingApp
 import com.example.navmbooks.ui.theme.BookViewModelFactory
 import com.example.navmbooks.ui.theme.NAVMBooksTheme
 import org.junit.Before

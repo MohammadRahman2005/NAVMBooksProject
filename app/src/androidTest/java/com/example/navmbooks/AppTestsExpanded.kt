@@ -13,6 +13,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ActivityScenario
+import com.example.navmbooks.ui.theme.BookReadingApp
 import com.example.navmbooks.ui.theme.BookViewModelFactory
 import com.example.navmbooks.ui.theme.NAVMBooksTheme
 import org.junit.Before

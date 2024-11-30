@@ -86,5 +86,4 @@ dependencies {
     implementation(libs.androidx.room.runtime.v250)
     implementation(libs.androidx.room.ktx.v250)
     kapt("androidx.room:room-compiler:2.6.1")
-
 }
