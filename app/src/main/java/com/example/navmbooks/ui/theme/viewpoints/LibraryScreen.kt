@@ -46,6 +46,9 @@ fun LibraryScreen(
 ) {
     val context = LocalContext.current
     val downloadableBooksUrl = context.resources.getStringArray(R.array.DownloadableBooksUrl)
+    val downloadableBooksFile = context.resources.getStringArray(R.array.DownloadableBooksFile)
+    val downloadableBooksImages = context.resources.getStringArray(R.array.DownloadedBooksCover)
+    val downloadableBooksTitle = context.resources.getStringArray(R.array.DownloadedBooksTitle)
 
     Column(
         modifier = Modifier
@@ -99,20 +102,22 @@ fun LibraryScreen(
                     }
                 }
             }
-            Column {
-                Button(
-                    onClick = {
+            booksToDownload.forEachIndexed { index, book ->
+                Column {
+                    Button(
+                        onClick = {
 //                        navController.navigate(NavRoutes.ReadingScreen.createRoute(bookIndex, index))
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                        contentColor = MaterialTheme.colorScheme.primary
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = dimensionResource(R.dimen.tiny_padding))
-                ) {
-                    Text(text = "Download Book")
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                            contentColor = MaterialTheme.colorScheme.primary
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = dimensionResource(R.dimen.tiny_padding))
+                    ) {
+                        Text(text = "Download ${downloadableBooksTitle[index]}")
+                    }
                 }
             }
         }
