@@ -22,13 +22,26 @@ import java.io.IOException
  */
 @SuppressLint("MutableCollectionMutableState")
 class BookViewModel(private val repository: FileRepository) : ViewModel() {
+    var titles = repository.context.resources.getStringArray(R.array.DownloadedBooksTitle).toList()
+
+    var urls = repository.context.resources.getStringArray(R.array.DownloadableBooksUrl).toList()
+
+    var files = repository.context.resources.getStringArray(R.array.DownloadableBooksFile).toList()
+
+    var images = repository.context.resources.getStringArray(R.array.DownloadedBooksCover).toList()
+
+    fun removeBookAt(index: Int) {
+        titles = titles.toMutableList().apply { removeAt(index) }
+        urls = urls.toMutableList().apply { removeAt(index) }
+        files = files.toMutableList().apply { removeAt(index) }
+        images = images.toMutableList().apply { removeAt(index) }
+    }
 
     private val _directoryContents = MutableLiveData<List<String>>()
     val directoryContents: LiveData<List<String>> = _directoryContents
 
     private var currentBookDirectory: String? = null
 
-    // Function to set up file download
     fun setupDownload(url: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val fileName = url.substringAfterLast("/")
@@ -63,50 +76,54 @@ class BookViewModel(private val repository: FileRepository) : ViewModel() {
 
     var bookList by mutableStateOf<List<Book?>>(emptyList())
         private set
-    var downloadedBookList by mutableStateOf<List<Book?>>(emptyList())
-        private set
     init {
-       getBooks(urls = repository.context.resources.getStringArray(R.array.booksUrl), file = repository.context.resources.getStringArray(R.array.booksFile), images = repository.context.resources.getStringArray(R.array.booksCover))
+       getBooks(urls = repository.context.resources.getStringArray(R.array.booksUrl), files = repository.context.resources.getStringArray(R.array.booksFile), images = repository.context.resources.getStringArray(R.array.booksCover))
     }
-    private fun getBooks(urls: Array<String>,
-                         file: Array<String>,
-                         images: Array<String>){
-        viewModelScope.launch (Dispatchers.IO){
-            bookList = loadBookFromLocalStorage(urls, file, images)
+    private fun getBooks(urls: Array<String>, files: Array<String>, images: Array<String>) {
+        viewModelScope.launch(Dispatchers.IO) {
+            urls.forEachIndexed { index, url ->
+                val filePath = files.getOrNull(index)
+                val imagePath = images.getOrNull(index)
+
+                if (filePath != null && imagePath != null) {
+                    val book = processSingleBook(url, filePath, imagePath)
+                    if (book != null) {
+                        bookList = bookList + book
+                    }
+                } else {
+                    Log.e("BookViewModel", "Invalid file or image path for index $index")
+                }
+            }
         }
     }
 
-    private fun loadBookFromLocalStorage(
-        urls: Array<String>,
-        file: Array<String>,
-        images: Array<String>
-    ): List<Book?> {
-            var listBooks by mutableStateOf<List<Book?>>(emptyList())
-            try {
-                val urlList = urls
-                urlList.forEach { url ->
-                    setupDownload(url)
-                }
-                val files = file
-                val coverImages = images
-                var i = 0;
-                files.forEachIndexed {index, file ->
-                    val htmlFile = File(repository.context.getExternalFilesDir(null), file)
-                    val cover  = File(repository.context.getExternalFilesDir(null), coverImages[i])
-                    i++
-                    currentBookDirectory = htmlFile.parent
-                    if (htmlFile.exists() && cover.exists()) {
-                        val book = Book.readBookFromFile(htmlFile, cover, currentBookDirectory!!)
-                        listBooks= listBooks + book
-                    }else{
-                        Log.e("BookViewModel", "The HTML file does not exist at $htmlFile")
-                    }
-                }
-            } catch (e: IOException) {
-                e.printStackTrace()
-                Log.e("BookViewModel", "Error reading local book file", e)
+    fun addBookToBookList(url: String, filePath: String, imagePath: String) {
+        viewModelScope.launch {
+            val book = processSingleBook(url, filePath, imagePath)
+            bookList = bookList + book
+        }
+    }
+
+
+    private fun processSingleBook(url: String, filePath: String, imagePath: String): Book? {
+        return try {
+            setupDownload(url)
+
+            val htmlFile = File(repository.context.getExternalFilesDir(null), filePath)
+            val coverImage = File(repository.context.getExternalFilesDir(null), imagePath)
+
+            if (htmlFile.exists() && coverImage.exists()) {
+                currentBookDirectory = htmlFile.parent
+                Book.readBookFromFile(htmlFile, coverImage, currentBookDirectory!!)
+            } else {
+                Log.e("BookViewModel", "Files do not exist: HTML=$htmlFile, Cover=$coverImage")
+                null
             }
-        return listBooks
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Log.e("BookViewModel", "Error processing book: $url", e)
+            null
+        }
     }
 
     var isReadingMode = mutableStateOf(false)

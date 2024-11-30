@@ -1,6 +1,7 @@
 package com.example.navmbooks.ui.theme.viewpoints
 
 import android.graphics.BitmapFactory
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -20,10 +21,10 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -32,6 +33,7 @@ import androidx.navigation.NavController
 import com.example.navmbooks.ui.theme.Book
 import com.example.navmbooks.ui.theme.NavRoutes
 import com.example.navmbooks.R
+import com.example.navmbooks.ui.theme.BookViewModel
 
 /**
  * This is the library screen where we show the books
@@ -42,20 +44,19 @@ fun LibraryScreen(
     modifier: Modifier = Modifier,
     padding: PaddingValues,
     books: List<Book?>,
-    booksToDownload: List<Book?>
+    viewModel: BookViewModel
 ) {
-    val context = LocalContext.current
-    val downloadableBooksUrl = context.resources.getStringArray(R.array.DownloadableBooksUrl)
-    val downloadableBooksFile = context.resources.getStringArray(R.array.DownloadableBooksFile)
-    val downloadableBooksImages = context.resources.getStringArray(R.array.DownloadedBooksCover)
-    val downloadableBooksTitle = context.resources.getStringArray(R.array.DownloadedBooksTitle)
+    val titles = viewModel.titles
+    val urls = viewModel.urls
+    val files = viewModel.files
+    val images = viewModel.images
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(padding)
             .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally, // Center horizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         if (books.isEmpty()) {
@@ -102,11 +103,21 @@ fun LibraryScreen(
                     }
                 }
             }
-            booksToDownload.forEachIndexed { index, book ->
+            titles.forEachIndexed { index, title ->
+                val url = urls.getOrNull(index)
+                val filePath = files.getOrNull(index)
+                val imagePath = images.getOrNull(index)
                 Column {
                     Button(
                         onClick = {
-//                        navController.navigate(NavRoutes.ReadingScreen.createRoute(bookIndex, index))
+
+
+                            if (url != null && filePath != null && imagePath != null) {
+                                viewModel.addBookToBookList(url, filePath, imagePath)
+                                viewModel.removeBookAt(index)
+                            } else {
+                                Log.e("LibraryScreen", "Invalid data at index $index: url=$url, filePath=$filePath, imagePath=$imagePath")
+                            }
                         },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.secondaryContainer,
@@ -116,7 +127,7 @@ fun LibraryScreen(
                             .fillMaxWidth()
                             .padding(vertical = dimensionResource(R.dimen.tiny_padding))
                     ) {
-                        Text(text = "Download ${downloadableBooksTitle[index]}")
+                        Text(text = "Download $title")
                     }
                 }
             }
