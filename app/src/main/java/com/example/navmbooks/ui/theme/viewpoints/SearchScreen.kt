@@ -1,4 +1,4 @@
-package com.example.navmbooks.viewpoints
+package com.example.navmbooks.ui.theme.viewpoints
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row

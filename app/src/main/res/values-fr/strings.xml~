@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NAVM Books</string>
+    <string name="logo_desc">Logo Appli</string>
+
+    <string name="welcome_image_desc">Image de bienvenue</string>
+    <string name="welcome_title">Bienvenue sur NAVMBooks</string>
+    <string name="welcome_description">Découvrez, lisez et profitez de notre bibliothèque de livres !</string>
+    <string name="get_started">Commencer</string>
+
+    <string name="home">Accueil</string>
+    <string name="library">Étagère</string>
+    <string name="search">Recherche</string>
+    <string name="content">Contenu</string>
+    <string name="reading">Lecture</string>
+
+    <string name="home_label">Écran Accueil</string>
+    <string name="lib_label">Écran d\'Étagère</string>
+    <string name="search_label">Écran Recherche</string>
+    <string name="content_label">Écran de Contenu</string>
+    <string name="reading_label">Écran de Lecture</string>
+
+    <string name="select_chapter">Selectionner un Chapitre</string>
+    <string name="chapter_label">Chapitre %s</string>
+
+    <string name="welcome_message">Bienvenue sur NAVM Books</string>
+
+    <string name="reading_header">"Chapitre %s, Titre: %s</string>
+
+    <string name="back_button">Retour</string>
+    <string name="reading_button">Mode Lecture</string>
+
+    <string name="loading_book">Chargement de Livre…</string>
+</resources>

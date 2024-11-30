@@ -1,9 +1,8 @@
-package com.example.navmbooks.viewpoints
+package com.example.navmbooks.ui.theme.viewpoints
 
 import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -23,10 +22,9 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.navmbooks.BookViewModel
-import com.example.navmbooks.Chapter
+import com.example.navmbooks.ui.theme.BookViewModel
+import com.example.navmbooks.ui.theme.Chapter
 import com.example.navmbooks.R
 import com.example.navmbooks.data.ImageItem
 import com.example.navmbooks.data.TextItem

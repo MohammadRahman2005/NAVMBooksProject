@@ -1,4 +1,4 @@
-package com.example.navmbooks
+package com.example.navmbooks.ui.theme
 
 import androidx.compose.ui.graphics.vector.ImageVector
 
