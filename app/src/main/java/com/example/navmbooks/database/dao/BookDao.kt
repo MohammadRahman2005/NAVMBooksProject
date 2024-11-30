@@ -5,7 +5,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.lifecycle.LiveData
-import com.example.navmbooks.database.BookMetadata
 import com.example.navmbooks.database.entities.Book
 
 @Dao
@@ -15,7 +14,7 @@ interface BookDao {
 
     @Query("""
         SELECT 
-            b.bookId, b.title, b.summary, b.releaseDate, a.authorName
+            b.bookId, b.title, b.summary, b.releaseDate, a.authorName, a.authorId
         FROM 
             books b
         JOIN 
@@ -23,7 +22,7 @@ interface BookDao {
         WHERE 
             b.bookId = :bookId
     """)
-    fun getBookMetadata(bookId: Int): LiveData<BookMetadata>
+    suspend fun getBookMetadata(bookId: Int): Book
 
     // Get all books
     @Query("SELECT * FROM books")

@@ -14,7 +14,7 @@ interface ChapterDao {
 
     @Query("""
         SELECT 
-            chapterId, chapterNumber, chapterTitle
+            bookId, chapterId, chapterNumber, chapterTitle
         FROM 
             chapters
         WHERE 
@@ -22,5 +22,5 @@ interface ChapterDao {
         ORDER BY 
             chapterNumber
     """)
-    fun getChaptersByBook(bookId: Int): LiveData<List<Chapter>>
+    fun getChaptersByBook(bookId: Int): List<Chapter>
 }

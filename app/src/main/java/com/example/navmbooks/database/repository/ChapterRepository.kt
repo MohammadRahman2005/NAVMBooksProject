@@ -1,16 +1,24 @@
 package com.example.navmbooks.database.repository
 
-import android.content.Context
 import androidx.lifecycle.LiveData
-import com.example.navmbooks.database.DatabaseProvider
+import com.example.navmbooks.database.dao.ChapterDao
 import com.example.navmbooks.database.entities.Chapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class ChapterRepository(context: Context) {
-    private val chapterDao = DatabaseProvider.getDatabase(context).chapterDao()
+class ChapterRepository(private val chapterDao: ChapterDao) {
+    private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
     // Insert chapters into the database
-    suspend fun insertChapters(chapters: List<Chapter>) = chapterDao.insertChapters(chapters)
+    fun insertChapters(chapters: List<Chapter>) {
+        coroutineScope.launch(Dispatchers.IO) {
+            chapterDao.insertChapters(chapters)
+        }
+    }
 
     // Get all chapters for a specific book
-    fun getChaptersByBook(bookId: Int): LiveData<List<Chapter>> = chapterDao.getChaptersByBook(bookId)
+    fun getChaptersByBook(bookId: Int): List<Chapter> {
+        return chapterDao.getChaptersByBook(bookId)
+    }
 }

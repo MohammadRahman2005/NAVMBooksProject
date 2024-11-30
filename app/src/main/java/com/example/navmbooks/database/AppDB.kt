@@ -1,6 +1,8 @@
 package com.example.navmbooks.database
 
+import android.content.Context
 import androidx.room.Database
+import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.navmbooks.database.dao.AuthorDao
 import com.example.navmbooks.database.dao.BookDao
@@ -16,9 +18,30 @@ import com.example.navmbooks.database.entities.Content
     version = 1,
     exportSchema = false
 )
-abstract class AppDatabase : RoomDatabase() {
+abstract class AppDB : RoomDatabase() {
     abstract fun authorDao(): AuthorDao
     abstract fun bookDao(): BookDao
     abstract fun chapterDao(): ChapterDao
     abstract fun contentDao(): ContentDao
+
+    companion object {
+
+        private var INSTANCE: AppDB? = null
+        fun getInstance(context: Context): AppDB {
+            synchronized(this) {
+                var instance = INSTANCE
+                if (instance == null) {
+                    instance = Room.databaseBuilder(
+                    context.applicationContext,
+                        AppDB::class.java,
+                    "library_database"
+                    ).fallbackToDestructiveMigration()
+                    .build()
+                    INSTANCE = instance
+                }
+                return instance
+            }
+        }
+    }
 }
+

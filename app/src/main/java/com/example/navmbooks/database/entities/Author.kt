@@ -5,7 +5,6 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "authors")
 data class Author(
-    @PrimaryKey(autoGenerate = true)
-    val authorId: Int = 0,
+    @PrimaryKey(autoGenerate = true) val authorId: Int = 0,
     val authorName: String
 )

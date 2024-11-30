@@ -15,7 +15,7 @@ interface ContentDao {
 
     @Query("""
         SELECT 
-            contentId, contentType, chapterContent
+            chapterId, contentId, contentType, chapterContent
         FROM 
             contents
         WHERE 
@@ -23,7 +23,7 @@ interface ContentDao {
         ORDER BY 
             contentId
     """)
-    fun getContentByChapter(chapterId: Int): LiveData<List<Content>>
+    fun getContentByChapter(chapterId: Int): List<Content>
 
     @Query("""
         SELECT 
@@ -35,5 +35,5 @@ interface ContentDao {
         WHERE 
             ch.bookId = :bookId AND ct.chapterContent LIKE '%' || :keyword || '%'
     """)
-    fun searchContentInBook(bookId: Int, keyword: String): LiveData<List<ContentWithChapterInfo>>
+    fun searchContentInBook(bookId: Int, keyword: String): List<ContentWithChapterInfo>
 }
