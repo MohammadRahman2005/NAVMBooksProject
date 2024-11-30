@@ -67,4 +67,9 @@
         <item>Download/DownloadedFiles/pg20195-h/20195-cover.png</item>
         <item>Download/DownloadedFiles/pg8710-h/images/cover.jpg</item>
     </string-array>
+    <string-array name="DownloadedBooksTitle">
+        <item>Viennese Medley</item>
+        <item>Wood-Block Printing</item>
+        <item>The Doré Bible Gallery, Complete</item>
+    </string-array>
 </resources>

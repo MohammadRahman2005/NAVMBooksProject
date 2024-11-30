@@ -294,7 +294,6 @@ fun NavigationHost(
     adaptiveNavType: AdaptiveNavigationType,
 ) {
     val books = bookViewModel.bookList
-    val booksToDownload = bookViewModel.downloadedBookList
     NavHost(
         navController = navController,
         startDestination = NavRoutes.HomeScreen.route,
@@ -304,7 +303,7 @@ fun NavigationHost(
             HomeScreen(navController = navController, modifier, padding)
         }
         composable(route = NavRoutes.LibraryScreen.route) {
-            LibraryScreen(navController = navController, modifier, padding, books = books, booksToDownload = booksToDownload)
+            LibraryScreen(navController = navController, modifier, padding, books = books, viewModel = bookViewModel)
         }
         composable(route = NavRoutes.SearchScreen.route) {
             SearchScreen(navController = navController, modifier, padding)
