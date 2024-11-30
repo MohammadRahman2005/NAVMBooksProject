@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("kotlin-kapt")
 }
 
 android {
@@ -40,7 +41,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.14"
     }
     packaging {
         resources {
@@ -50,7 +51,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -78,9 +78,12 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation (libs.androidx.material)
-    implementation("io.coil-kt:coil-compose:2.3.0")
+    implementation(libs.coil.compose)
     implementation("androidx.compose.material3:material3-window-size-class")
     implementation ("org.jsoup:jsoup:1.10.3")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
 
+    implementation(libs.androidx.room.runtime.v250)
+    implementation(libs.androidx.room.ktx.v250)
+    kapt("androidx.room:room-compiler:2.6.1")
 }
