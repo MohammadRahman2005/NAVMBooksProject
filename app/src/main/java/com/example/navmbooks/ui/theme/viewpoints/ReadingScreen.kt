@@ -1,33 +1,37 @@
 package com.example.navmbooks.ui.theme.viewpoints
 
 import android.graphics.BitmapFactory
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.navmbooks.ui.theme.BookViewModel
 import com.example.navmbooks.ui.theme.Chapter
 import com.example.navmbooks.R
 import com.example.navmbooks.data.ImageItem
 import com.example.navmbooks.data.TextItem
+import com.example.navmbooks.ui.theme.utils.AdaptiveNavigationType
 
 /**
  * this is the screen which displays the content of a chapter
@@ -39,10 +43,24 @@ fun ReadingScreen(
     modifier: Modifier = Modifier,
     padding: PaddingValues = PaddingValues(dimensionResource(R.dimen.zero_padding)),
     Chapter: Chapter,
-) {
+    adaptiveNavType: AdaptiveNavigationType,
+    ) {
+    val configuration = LocalConfiguration.current
+
+    val screenHeight = configuration.screenHeightDp.dp
+    val screenWidth = configuration.screenWidthDp.dp
+    val chunkedContent = remember(adaptiveNavType, Chapter.content) {
+        when (adaptiveNavType) {
+            AdaptiveNavigationType.BOTTOM_NAVIGATION -> Chapter.content.chunked(3)
+            AdaptiveNavigationType.NAVIGATION_RAIL -> Chapter.content.chunked(2)
+            else -> Chapter.content.chunked(1)
+        }
+    }
+
     Column (modifier = modifier
         .padding(padding)
-        .verticalScroll(rememberScrollState()))
+        .fillMaxHeight()
+    )
     {
         Column{
             Row(
@@ -58,32 +76,41 @@ fun ReadingScreen(
             Text(stringResource(R.string.content_label), modifier.testTag("ContentText"))
         }
 
-        Column(
+        LazyRow(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(dimensionResource(R.dimen.medium_padding))
+                .fillMaxHeight()
+                .fillMaxWidth()
         ) {
-            Text(
-                text = stringResource(R.string.reading_header, Chapter.chapNum, Chapter.title)
-            )
-            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.small_padding)))
-            for (e in Chapter.content){
-                if (e is TextItem){
-                    Text(
-                        text = e.text
-                    )
-                }else if (e is ImageItem){
-                    val bitmap = BitmapFactory.decodeFile(e.imagePath)
-                    Log.d("imagePath", e.imagePath)
-                    Image(
-                        bitmap!!.asImageBitmap(),
-                        contentDescription = e.imagePath,
-                        modifier = modifier
-                            .size(dimensionResource(R.dimen.extra_large_size))
-                            .align(Alignment.CenterHorizontally)
-                    )
+            items(chunkedContent) { chunk ->
+                Column (
+                    modifier = Modifier
+                        .widthIn(max=screenWidth)
+                        .padding(horizontal = dimensionResource(R.dimen.medium_padding))
+                ){
+                    chunk.forEach { item ->
+                        when (item) {
+                            is TextItem -> {
+                                Text(text = item.text)
+                            }
+                            is ImageItem -> {
+                                val bitmap = remember(item.imagePath) {
+                                    BitmapFactory.decodeFile(item.imagePath)?.asImageBitmap()
+                                }
+                                if (bitmap != null) {
+                                    Image(
+                                        bitmap = bitmap,
+                                        contentDescription = item.imagePath,
+                                        modifier = Modifier
+                                            .size(dimensionResource(R.dimen.extra_large_size))
+                                            .align(Alignment.CenterHorizontally)
+                                    )
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
+
     }
 }

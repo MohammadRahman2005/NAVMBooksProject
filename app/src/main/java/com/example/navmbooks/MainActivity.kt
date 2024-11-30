@@ -24,6 +24,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.Locale
 
+
 /**
  * MainActivity is the entry point of the application.
  * It sets up the content view and determines the navigation style
@@ -56,6 +57,7 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+}
 
     private suspend fun dataBaseUsage(dbviewModel: DatabaseViewModel) {
         val newAuthor = Author(authorName = "TESTING")
@@ -96,4 +98,3 @@ class MainActivity : ComponentActivity() {
         val searchResult = dbviewModel.searchContentInBook(1, "TESTING")
         Log.d("Testing Search", searchResult[0].toString())
     }
-}

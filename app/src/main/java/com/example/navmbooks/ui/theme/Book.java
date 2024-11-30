@@ -66,7 +66,6 @@ public class Book {
                     for (Element child : e.children()) {
                         if (child.tagName().equals("img")) {
                             String imgSrc = bookDirectory + File.separator + child.attr("src");
-                            allContent.append("image here").append("\n");
                             if (chapter != null) chapter.addContent(new ImageItem(imgSrc));
                         }
                     }
@@ -78,6 +77,7 @@ public class Book {
             }
             if(e.tagName().equals("table")) {
                 allContent.append("table here").append("\n");
+                if (chapter != null) chapter.addContent(new TextItem("Table here"));
             }
             if(e.tagName().equals("div") && e.className().equals("chapter")){
                 for (Element child : e.children()){
