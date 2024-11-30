@@ -1,4 +1,4 @@
-package com.example.navmbooks.viewpoints
+package com.example.navmbooks.ui.theme.viewpoints
 
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
@@ -29,8 +29,8 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.navmbooks.Book
-import com.example.navmbooks.NavRoutes
+import com.example.navmbooks.ui.theme.Book
+import com.example.navmbooks.ui.theme.NavRoutes
 import com.example.navmbooks.R
 
 /**
