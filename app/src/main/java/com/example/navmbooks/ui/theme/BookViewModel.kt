@@ -81,7 +81,7 @@ class BookViewModel(private val repository: FileRepository) : ViewModel() {
         file: Array<String>,
         images: Array<String>
     ): List<Book?> {
-        var listBooks by mutableStateOf<List<Book?>>(emptyList())
+            var listBooks by mutableStateOf<List<Book?>>(emptyList())
             try {
                 val urlList = urls
                 urlList.forEach { url ->
