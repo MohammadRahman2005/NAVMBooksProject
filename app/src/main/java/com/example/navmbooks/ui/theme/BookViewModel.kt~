@@ -114,7 +114,7 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
                         val modelChapter = Chapter(chapter.chapterTitle, chapter.chapterNumber)
                         modelChapters.add(Chapter(chapter.chapterTitle, chapter.chapterNumber))
                     }
-                    val modelBook = Book(book.title, author.authorName, modelChapters, modelContents, null)
+                    val modelBook = Book(book.title, author.authorName, modelChapters, "", null)
                 }
             } else {
                 urls.forEachIndexed { index, url ->
