@@ -30,6 +30,7 @@ import com.example.navmbooks.ui.theme.BookViewModel
 import com.example.navmbooks.ui.theme.Chapter
 import com.example.navmbooks.R
 import com.example.navmbooks.data.ImageItem
+import com.example.navmbooks.data.TableItem
 import com.example.navmbooks.data.TextItem
 import com.example.navmbooks.ui.theme.utils.AdaptiveNavigationType
 
@@ -106,6 +107,8 @@ fun ReadingScreen(
                                     )
                                 }
                             }
+                            is TableItem ->
+                                Text(text = item.text)
                         }
                     }
                 }
