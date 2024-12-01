@@ -15,7 +15,7 @@ class ChapterRepository(private val chapterDao: ChapterDao) {
     suspend fun insertChapters(chapters: Chapter): Int {
         return withContext(Dispatchers.IO) {
             chapterDao.insertChapters(chapters)
-        }.toInt()
+        }
     }
 
     // Get all chapters for a specific book

@@ -14,7 +14,7 @@ class AuthorRepository(private val authorDao: AuthorDao) {
     suspend fun insertAuthor(author: Author): Int {
         return withContext(Dispatchers.IO) {
             authorDao.insertAuthor(author)
-        }.toInt()
+        }
     }
 
     // Get an author by ID (runs on IO dispatcher)

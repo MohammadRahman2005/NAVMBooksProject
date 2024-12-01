@@ -16,7 +16,7 @@ class BookRepository(private val bookDao: BookDao) {
     {
         return withContext(Dispatchers.IO) {
             bookDao.insertBooks(book)
-        }
+        }.toInt()
     }
 
     // Get book metadata (including author name)

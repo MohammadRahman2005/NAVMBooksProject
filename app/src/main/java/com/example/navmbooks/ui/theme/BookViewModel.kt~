@@ -110,9 +110,6 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
 //                    bookList += Book(book.title, author.authorName, chapterList,)
                 }
             } else {
-                val dbBookList = ArrayList<dbBook>()
-                val dbChapterList = ArrayList<dbChapter>()
-                val dbContentList = ArrayList<Content>()
                 urls.forEachIndexed { index, url ->
                     val filePath = files.getOrNull(index)
                     val imagePath = images.getOrNull(index)
@@ -123,38 +120,29 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
                             bookList = bookList + book
 
                             Log.d("Database", "START DB")
-                            dbBookList.add(dbBook(
-                                title = book.title, authorId = index
-                            ))
-                            dbViewModel.insertAuthor(Author(authorName = book.author))
+
+                            val authorId = dbViewModel.insertAuthor(Author(authorName = book.author))
                             Log.d("Database", "INSERT AUTHOR")
                             delay(1000)
 
-                            val chaptersForBook = ArrayList<dbChapter>()
-                            book.chapters.forEach { chapter ->
-                                chaptersForBook.add(dbChapter(
-                                    chapterNumber = chapter.chapNum, chapterTitle = chapter.title, bookId = index
-                                ))
+                            val bookId = dbViewModel.insertBooks(dbBook(title = book.title, authorId = authorId))
+                            Log.d("Database", "INSERT BOOK")
+                            delay(1000)
 
-                                chapter.content.forEach { con ->
-                                    when (con) {
-                                        is TextItem -> dbContentList.add(Content(chapterId = 0, contentType = "text", chapterContent = con.text))
-                                        is ImageItem -> dbContentList.add(Content(chapterId = 0, contentType = "image", chapterContent = con.imagePath))
-                                        is TableItem -> dbContentList.add(Content(chapterId = 0, contentType = "table", chapterContent = con.text))
+                            book.chapters.forEach{ chapter ->
+                                val chapterId = dbViewModel.insertChapters(
+                                    dbChapter(bookId = bookId, chapterNumber = chapter.chapNum, chapterTitle = chapter.title)
+                                )
+                                delay(1000)
+
+                                chapter.content.forEach{ cont ->
+                                    when (cont) {
+                                        is TextItem -> dbViewModel.insertContents(Content(chapterId = chapterId, contentType = "Text", chapterContent = cont.text))
+                                        is ImageItem -> dbViewModel.insertContents(Content(chapterId = chapterId, contentType = "Image", chapterContent = cont.imagePath))
+                                        is TableItem -> dbViewModel.insertContents(Content(chapterId = chapterId, contentType = "Table", chapterContent = cont.text))
                                     }
                                 }
-                                dbChapterList.addAll(chaptersForBook)
                             }
-
-                            dbViewModel.insertBooks(dbBookList)
-                            Log.d("Database", "INSERT BOOKS")
-                            delay(1000)
-                            dbViewModel.insertChapters(dbChapterList)
-                            Log.d("Database", "INSERT CHAPTERS")
-                            delay(1000)
-                            dbViewModel.insertContents(dbContentList)
-                            Log.d("Database", "INSERT CONTENTS")
-                            delay(1000)
                         }
                     } else {
                         Log.e("BookViewModel", "Invalid file or image path for index $index")

@@ -9,7 +9,7 @@ import com.example.navmbooks.database.entities.Author
 @Dao
 interface AuthorDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAuthor(author: Author): Long
+    suspend fun insertAuthor(author: Author): Int
 
     @Query("SELECT * FROM authors WHERE authorId = :authorId")
     suspend fun getAuthorById(authorId: Int): Author
