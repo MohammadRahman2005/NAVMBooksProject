@@ -14,7 +14,6 @@ import com.example.navmbooks.R
 import com.example.navmbooks.data.FileRepository
 import com.example.navmbooks.data.UnzipUtils
 import com.example.navmbooks.database.DatabaseViewModel
-import com.example.navmbooks.database.entities.Author
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
@@ -84,22 +83,37 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
     }
     private fun getBooks(urls: Array<String>, files: Array<String>, images: Array<String>) {
         viewModelScope.launch(Dispatchers.IO) {
-            urls.forEachIndexed { index, url ->
-                val filePath = files.getOrNull(index)
-                val imagePath = images.getOrNull(index)
-
-                if (filePath != null && imagePath != null) {
-                    val book = processSingleBook(url, filePath, imagePath)
-                    if (book != null) {
-                        bookList = bookList + book
-                        val author = Author(authorName = book.author)
-                        dbViewModel.insertAuthor(author)
-                        Log.d("BookViewModel", dbViewModel.getAuthorById(2).toString())
+            val books = dbViewModel.getAllBooks()
+            if (books !== null) {
+                books.forEach{ book ->
+                    val author = dbViewModel.getAuthorById(book.authorId)
+                    val dbChapters = dbViewModel.getChaptersByBook(book.bookId)
+                    val chapterList = ArrayList<Chapter>()
+                    dbChapters.forEach{ chapter ->
+                        val dbContent = dbViewModel.getContentByChapter(chapter.chapterId)
+                        val contentString = StringBuilder()
+//                        dbContent.forEach{ content ->
+//
+//                        }
+                        chapterList.add(Chapter(chapter.chapterTitle, chapter.chapterNumber))
                     }
-                } else {
-                    Log.e("BookViewModel", "Invalid file or image path for index $index")
+//                    bookList += Book(book.title, author.authorName, chapterList,)
                 }
-            };
+            } else {
+                urls.forEachIndexed { index, url ->
+                    val filePath = files.getOrNull(index)
+                    val imagePath = images.getOrNull(index)
+
+                    if (filePath != null && imagePath != null) {
+                        val book = processSingleBook(url, filePath, imagePath)
+                        if (book != null) {
+                            bookList = bookList + book
+                        }
+                    } else {
+                        Log.e("BookViewModel", "Invalid file or image path for index $index")
+                    }
+                }
+            }
         }
     }
 

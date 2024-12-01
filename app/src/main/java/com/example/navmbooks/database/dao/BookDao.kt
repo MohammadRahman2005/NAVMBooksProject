@@ -14,7 +14,7 @@ interface BookDao {
 
     @Query("""
         SELECT 
-            b.bookId, b.title, b.summary, b.releaseDate, a.authorName, a.authorId
+            b.bookId, b.title, a.authorName, a.authorId
         FROM 
             books b
         JOIN 
@@ -26,5 +26,5 @@ interface BookDao {
 
     // Get all books
     @Query("SELECT * FROM books")
-    fun getAllBooks(): LiveData<List<Book>>
+    fun getAllBooks(): List<Book>
 }

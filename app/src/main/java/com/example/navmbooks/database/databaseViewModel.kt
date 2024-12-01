@@ -78,4 +78,8 @@ class DatabaseViewModel(application: Application) : AndroidViewModel(application
         return contentRepository.searchContentInBook(bookId, keyword)
 
     }
+
+    fun getAllBooks(): List<Book>? {
+        return bookRepository.getAllBooks()
+    }
 }
