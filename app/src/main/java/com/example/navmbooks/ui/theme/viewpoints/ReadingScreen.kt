@@ -74,7 +74,6 @@ fun ReadingScreen(
                     Modifier.testTag("ReadingSwitch")
                 )
             }
-            Text(stringResource(R.string.content_label), modifier.testTag("ContentText"))
         }
 
         LazyRow(

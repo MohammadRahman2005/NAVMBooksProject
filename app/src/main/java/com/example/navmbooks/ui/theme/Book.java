@@ -1,6 +1,9 @@
 package com.example.navmbooks.ui.theme;
 
+import android.util.Log;
+
 import com.example.navmbooks.data.ImageItem;
+import com.example.navmbooks.data.TableItem;
 import com.example.navmbooks.data.TextItem;
 
 import org.jsoup.Jsoup;
@@ -76,8 +79,22 @@ public class Book {
                 }
             }
             if(e.tagName().equals("table")) {
-                allContent.append("table here").append("\n");
-                if (chapter != null) chapter.addContent(new TextItem("Table here"));
+                StringBuilder tableContent = new StringBuilder();
+                if (e.child(0).tagName().equals("tbody")){
+                    for (Element row : e.child(0).children()){
+                        StringBuilder rowContent = new StringBuilder();
+                        for (Element cell : row.children()) {
+                            if (rowContent.length() > 0) {
+                                rowContent.append(" | ");
+                            }
+                            rowContent.append(cell.text());
+                        }
+                        tableContent.append("| ").append(rowContent).append(" |\n");
+                        tableContent.append("-".repeat(rowContent.length() + 4)).append("\n");
+                    }
+                }
+                TableItem tableItem = new TableItem(tableContent.toString());
+                if (chapter != null) chapter.addContent(tableItem);
             }
             if(e.tagName().equals("div") && e.className().equals("chapter")){
                 for (Element child : e.children()){
