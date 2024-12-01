@@ -8,9 +8,17 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import com.example.navmbooks.database.DatabaseViewModel
+import com.example.navmbooks.database.entities.Author
+import com.example.navmbooks.database.entities.Book
+import com.example.navmbooks.database.entities.Chapter
+import com.example.navmbooks.database.entities.Content
 import com.example.navmbooks.ui.theme.BookReadingApp
 import com.example.navmbooks.ui.theme.BookViewModelFactory
 import com.example.navmbooks.ui.theme.NAVMBooksTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 
