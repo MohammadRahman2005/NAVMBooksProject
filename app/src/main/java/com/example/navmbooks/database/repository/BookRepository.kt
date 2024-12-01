@@ -6,16 +6,17 @@ import com.example.navmbooks.database.entities.Book
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class BookRepository(private val bookDao: BookDao) {
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
     // Insert books into the database
-    fun insertBooks(books: List<Book>)
+    suspend fun insertBooks(book: Book): Int
     {
-        coroutineScope.launch(Dispatchers.IO) {
-            bookDao.insertBooks(books)
-        }
+        return withContext(Dispatchers.IO) {
+            bookDao.insertBooks(book)
+        }.toInt()
     }
 
     // Get book metadata (including author name)
@@ -25,11 +26,7 @@ class BookRepository(private val bookDao: BookDao) {
     }
 
     // Get all books
-    fun getAllBooks(): LiveData<List<Book>>? {
-        var books: LiveData<List<Book>>? = null
-        coroutineScope.launch(Dispatchers.IO) {
-            books = bookDao.getAllBooks()
-        }
-        return books
+    fun getAllBooks(): List<Book> {
+        return bookDao.getAllBooks()
     }
 }

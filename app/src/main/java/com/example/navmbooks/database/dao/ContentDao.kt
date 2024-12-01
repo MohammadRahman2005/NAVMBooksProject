@@ -11,7 +11,7 @@ import com.example.navmbooks.database.entities.Content
 @Dao
 interface ContentDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertContents(contents: List<Content>)
+    suspend fun insertContents(contents: Content)
 
     @Query("""
         SELECT 

@@ -15,7 +15,7 @@ class ContentRepository(private val contentDao: ContentDao) {
     fun insertContents(content: Content) {
         coroutineScope.launch(Dispatchers.IO) {
             contentDao.insertContents(content)
-        }
+        }.toInt()
     }
 
     // Get all content for a specific chapter

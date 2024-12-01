@@ -49,6 +49,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.navmbooks.R
+import com.example.navmbooks.database.DatabaseViewModel
 import com.example.navmbooks.ui.theme.utils.AdaptiveNavigationType
 import com.example.navmbooks.ui.theme.viewpoints.ContentScreen
 import com.example.navmbooks.ui.theme.viewpoints.HomeScreen
@@ -96,7 +97,7 @@ fun BookReadingApp(
             padding = padding,
             navController = navController,
             bookViewModel = bookViewModel,
-            adaptiveNavigationType = adaptiveNavigationType,
+            adaptiveNavigationType = adaptiveNavigationType
         )
 
     }
@@ -291,7 +292,7 @@ fun NavigationHost(
     bookViewModel: BookViewModel,
     modifier: Modifier = Modifier,
     padding: PaddingValues,
-    adaptiveNavType: AdaptiveNavigationType,
+    adaptiveNavType: AdaptiveNavigationType
 ) {
     val books = bookViewModel.bookList
     NavHost(

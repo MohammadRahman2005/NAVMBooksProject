@@ -19,6 +19,4 @@ data class Book(
     @PrimaryKey(autoGenerate = true) val bookId: Int = 0,
     val authorId: Int,
     val title: String,
-    val summary: String?,
-    val releaseDate: String?
 )

@@ -35,8 +35,8 @@ class DatabaseViewModel(application: Application) : AndroidViewModel(application
         contentRepository = ContentRepository(contentDao)
     }
 
-    fun insertAuthor(author: Author) {
-        authorRepository.insertAuthor(author)
+    suspend fun insertAuthor(author: Author): Int {
+        return authorRepository.insertAuthor(author)
     }
 
     suspend fun getAuthorById(authorId: Int): Author
@@ -45,18 +45,20 @@ class DatabaseViewModel(application: Application) : AndroidViewModel(application
         return author
     }
 
-    fun insertBooks(books: List<Book>){
-        bookRepository.insertBooks(books)
+    suspend fun insertBooks(book: Book): Int
+    {
+        return bookRepository.insertBooks(book)
     }
 
-    suspend fun getBookById(bookId: Int): Book {
+    suspend fun getBookById(bookId: Int): Book
+    {
         val book = bookRepository.getBookMetadata(bookId)
         return book
     }
 
-    fun insertChapters(chapters: List<Chapter>)
+    suspend fun insertChapters(chapters: Chapter): Int
     {
-        chapterRepository.insertChapters(chapters)
+        return chapterRepository.insertChapters(chapters)
     }
 
     fun getChaptersByBook(bookId: Int): List<Chapter>
@@ -65,8 +67,8 @@ class DatabaseViewModel(application: Application) : AndroidViewModel(application
         return chapters
     }
 
-    fun insertContents(contents: List<Content>){
-        contentRepository.insertContents(contents)
+    fun insertContents(content: Content){
+        contentRepository.insertContents(content)
     }
 
     fun getContentByChapter(chapterId: Int): List<Content> {
@@ -77,5 +79,9 @@ class DatabaseViewModel(application: Application) : AndroidViewModel(application
     fun searchContentInBook(bookId: Int, keyword: String): List<ContentWithChapterInfo> {
         return contentRepository.searchContentInBook(bookId, keyword)
 
+    }
+
+    fun getAllBooks(): List<Book>? {
+        return bookRepository.getAllBooks()
     }
 }
