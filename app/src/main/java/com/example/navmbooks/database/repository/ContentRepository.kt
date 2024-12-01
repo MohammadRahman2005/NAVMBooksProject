@@ -12,9 +12,9 @@ class ContentRepository(private val contentDao: ContentDao) {
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
     // Insert content into the database
-    fun insertContents(contents: List<Content>) {
+    fun insertContents(content: Content) {
         coroutineScope.launch(Dispatchers.IO) {
-            contentDao.insertContents(contents)
+            contentDao.insertContents(content)
         }
     }
 
