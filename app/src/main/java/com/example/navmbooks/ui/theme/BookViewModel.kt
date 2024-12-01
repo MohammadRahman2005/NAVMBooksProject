@@ -12,12 +12,21 @@ import androidx.lifecycle.viewModelScope
 import androidx.room.Database
 import com.example.navmbooks.R
 import com.example.navmbooks.data.FileRepository
+import com.example.navmbooks.data.ImageItem
+import com.example.navmbooks.data.TableItem
+import com.example.navmbooks.data.TextItem
 import com.example.navmbooks.data.UnzipUtils
 import com.example.navmbooks.database.DatabaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
+import com.example.navmbooks.ui.theme.Book
+import com.example.navmbooks.ui.theme.Chapter
+import com.example.navmbooks.database.entities.Chapter as dbChapter
+import com.example.navmbooks.database.entities.Book as dbBook
+import com.example.navmbooks.database.entities.Content
+import com.example.navmbooks.database.entities.Author
 
 /**
  * This class represents a view model for books
@@ -100,6 +109,9 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
 //                    bookList += Book(book.title, author.authorName, chapterList,)
                 }
             } else {
+                val dbBookList = ArrayList<dbBook>()
+                val dbChapterList = ArrayList<dbChapter>()
+                val dbContentList = ArrayList<Content>()
                 urls.forEachIndexed { index, url ->
                     val filePath = files.getOrNull(index)
                     val imagePath = images.getOrNull(index)
@@ -108,6 +120,30 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
                         val book = processSingleBook(url, filePath, imagePath)
                         if (book != null) {
                             bookList = bookList + book
+                            dbBookList.add(dbBook(
+                                bookId = index, title = book.title, authorId = index
+                            ))
+                            dbViewModel.insertAuthor(Author(authorName = book.author))
+                            Log.d("DB", "INSERT AUTHOR")
+
+                            val chaptersForBook = ArrayList<dbChapter>()
+                            book.chapters.forEach { chapter ->
+                                chaptersForBook.add(dbChapter(
+                                    chapterNumber = chapter.chapNum, chapterTitle = chapter.title, bookId = index
+                                ))
+
+                                chapter.content.forEach { con ->
+                                    when (con) {
+                                        is TextItem -> dbContentList.add(Content(chapterId = 0, contentType = "text", chapterContent = con.text))
+                                        is ImageItem -> dbContentList.add(Content(chapterId = 0, contentType = "image", chapterContent = con.imagePath))
+                                        is TableItem -> dbContentList.add(Content(chapterId = 0, contentType = "table", chapterContent = con.text))
+                                    }
+                                }
+                                dbChapterList.addAll(chaptersForBook)
+                            }
+                            dbViewModel.insertBooks(dbBookList)
+                            dbViewModel.insertChapters(dbChapterList)
+                            dbViewModel.insertContents(dbContentList)
                         }
                     } else {
                         Log.e("BookViewModel", "Invalid file or image path for index $index")
