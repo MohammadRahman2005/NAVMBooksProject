@@ -25,12 +25,13 @@ public class Book {
     public String getTitle(){
         return title;
     }
+    public String getAuthor() { return author; }
     public ArrayList<Chapter> getChapters(){
         return chapters;
     }
     public File getCoverImage() {return coverImage; }
 
-    private Book(String title, String author, ArrayList<Chapter> chapters, StringBuilder allContent, File coverImage){
+    public Book(String title, String author, ArrayList<Chapter> chapters, StringBuilder allContent, File coverImage){
         this.title=title;
         this.author=author;
         this.chapters=chapters;

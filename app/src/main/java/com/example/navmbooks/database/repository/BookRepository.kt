@@ -25,8 +25,8 @@ class BookRepository(private val bookDao: BookDao) {
     }
 
     // Get all books
-    fun getAllBooks(): LiveData<List<Book>>? {
-        var books: LiveData<List<Book>>? = null
+    fun getAllBooks(): List<Book>? {
+        var books: List<Book>? = null
         coroutineScope.launch(Dispatchers.IO) {
             books = bookDao.getAllBooks()
         }
