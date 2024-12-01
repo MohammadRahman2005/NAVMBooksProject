@@ -94,7 +94,7 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
     private fun getBooks(urls: Array<String>, files: Array<String>, images: Array<String>) {
         viewModelScope.launch(Dispatchers.IO) {
             val books = dbViewModel.getAllBooks()
-            if (books !== null) {
+            if (books != null) {
                 books.forEach{ book ->
                     val author = dbViewModel.getAuthorById(book.authorId)
                     val dbChapters = dbViewModel.getChaptersByBook(book.bookId)
@@ -122,18 +122,16 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
                             Log.d("Database", "START DB")
 
                             val authorId = dbViewModel.insertAuthor(Author(authorName = book.author))
-                            Log.d("Database", "INSERT AUTHOR")
-                            delay(500)
+                            Log.d("Database", "INSERT AUTHOR ${book.author}")
 
                             val bookId = dbViewModel.insertBooks(dbBook(title = book.title, authorId = authorId))
-                            Log.d("Database", "INSERT BOOK")
-                            delay(500)
+                            Log.d("Database", "INSERT BOOK ${book.title}")
 
                             book.chapters.forEach{ chapter ->
                                 val chapterId = dbViewModel.insertChapters(
                                     dbChapter(bookId = bookId, chapterNumber = chapter.chapNum, chapterTitle = chapter.title)
                                 )
-                                delay(1000)
+                                Log.d("Database", "INSERT CHAPTER ${chapter.title}")
 
                                 chapter.content.forEach{ cont ->
                                     when (cont) {
@@ -141,6 +139,8 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
                                         is ImageItem -> dbViewModel.insertContents(Content(chapterId = chapterId, contentType = "Image", chapterContent = cont.imagePath))
                                         is TableItem -> dbViewModel.insertContents(Content(chapterId = chapterId, contentType = "Table", chapterContent = cont.text))
                                     }
+                                    Log.d("Database", "INSERT CONTENT")
+
                                 }
                             }
                         }
