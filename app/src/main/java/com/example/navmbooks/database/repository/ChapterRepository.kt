@@ -6,13 +6,14 @@ import com.example.navmbooks.database.entities.Chapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ChapterRepository(private val chapterDao: ChapterDao) {
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
     // Insert chapters into the database
-    fun insertChapters(chapters: List<Chapter>) {
-        coroutineScope.launch(Dispatchers.IO) {
+    suspend fun insertChapters(chapters: Chapter): Int {
+        return withContext(Dispatchers.IO) {
             chapterDao.insertChapters(chapters)
         }
     }

@@ -5,13 +5,14 @@ import com.example.navmbooks.database.entities.Author
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AuthorRepository(private val authorDao: AuthorDao) {
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
     // Insert a single author (runs on IO dispatcher)
-    fun insertAuthor(author: Author) {
-        coroutineScope.launch(Dispatchers.IO) {
+    suspend fun insertAuthor(author: Author): Int {
+        return withContext(Dispatchers.IO) {
             authorDao.insertAuthor(author)
         }
     }

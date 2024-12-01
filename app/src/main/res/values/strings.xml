@@ -36,18 +36,18 @@
     <string name="loading_book">Loading book…</string>
 
     <string-array name="booksUrl">
-        <item>https://www.gutenberg.org/cache/epub/345/pg345-h.zip</item>
+        <item>https://www.gutenberg.org/cache/epub/67098/pg67098-h.zip</item>
         <item>https://www.gutenberg.org/cache/epub/74675/pg74675-h.zip</item>
         <item>https://www.gutenberg.org/cache/epub/40367/pg40367-h.zip</item>
 
     </string-array>
     <string-array name="booksFile">
-        <item>Download/DownloadedFiles/pg345-h/pg345-images.html</item>
+        <item>Download/DownloadedFiles/pg67098-h/pg67098-images.html</item>
         <item>Download/DownloadedFiles/pg74675-h/pg74675-images.html</item>
         <item>Download/DownloadedFiles/pg40367-h/pg40367-images.html</item>
     </string-array>
     <string-array name="booksCover">
-        <item>Download/DownloadedFiles/pg345-h/images/cover.jpg</item>
+        <item>Download/DownloadedFiles/pg67098-h/images/cover.jpg</item>
         <item>Download/DownloadedFiles/pg74675-h/images/cover.jpg</item>
         <item>Download/DownloadedFiles/pg40367-h/images/title.jpg</item>
     </string-array>

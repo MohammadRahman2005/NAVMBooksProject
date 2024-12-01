@@ -6,15 +6,16 @@ import com.example.navmbooks.database.entities.Book
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class BookRepository(private val bookDao: BookDao) {
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
     // Insert books into the database
-    fun insertBooks(books: List<Book>)
+    suspend fun insertBooks(book: Book): Int
     {
-        coroutineScope.launch(Dispatchers.IO) {
-            bookDao.insertBooks(books)
+        return withContext(Dispatchers.IO) {
+            bookDao.insertBooks(book)
         }
     }
 

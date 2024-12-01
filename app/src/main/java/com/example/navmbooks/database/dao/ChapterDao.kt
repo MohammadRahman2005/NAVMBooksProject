@@ -10,7 +10,7 @@ import com.example.navmbooks.database.entities.Chapter
 @Dao
 interface ChapterDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertChapters(chapters: List<Chapter>)
+    suspend fun insertChapters(chapters: Chapter): Int
 
     @Query("""
         SELECT 
