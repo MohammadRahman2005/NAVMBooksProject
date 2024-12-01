@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
@@ -26,11 +25,12 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.navmbooks.ui.theme.BookViewModel
-import com.example.navmbooks.ui.theme.Chapter
 import com.example.navmbooks.R
 import com.example.navmbooks.data.ImageItem
+import com.example.navmbooks.data.TableItem
 import com.example.navmbooks.data.TextItem
+import com.example.navmbooks.ui.theme.BookViewModel
+import com.example.navmbooks.ui.theme.Chapter
 import com.example.navmbooks.ui.theme.utils.AdaptiveNavigationType
 
 /**
@@ -42,18 +42,17 @@ fun ReadingScreen(
     bookViewModel: BookViewModel,
     modifier: Modifier = Modifier,
     padding: PaddingValues = PaddingValues(dimensionResource(R.dimen.zero_padding)),
-    Chapter: Chapter,
+    chapter: Chapter,
     adaptiveNavType: AdaptiveNavigationType,
     ) {
     val configuration = LocalConfiguration.current
 
-    val screenHeight = configuration.screenHeightDp.dp
     val screenWidth = configuration.screenWidthDp.dp
-    val chunkedContent = remember(adaptiveNavType, Chapter.content) {
+    val chunkedContent = remember(adaptiveNavType, chapter.content) {
         when (adaptiveNavType) {
-            AdaptiveNavigationType.BOTTOM_NAVIGATION -> Chapter.content.chunked(3)
-            AdaptiveNavigationType.NAVIGATION_RAIL -> Chapter.content.chunked(2)
-            else -> Chapter.content.chunked(1)
+            AdaptiveNavigationType.BOTTOM_NAVIGATION -> chapter.content.chunked(3)
+            AdaptiveNavigationType.NAVIGATION_RAIL -> chapter.content.chunked(2)
+            else -> chapter.content.chunked(1)
         }
     }
 
@@ -73,18 +72,17 @@ fun ReadingScreen(
                     Modifier.testTag("ReadingSwitch")
                 )
             }
-            Text(stringResource(R.string.content_label), modifier.testTag("ContentText"))
         }
 
         LazyRow(
             modifier = Modifier
                 .fillMaxHeight()
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             items(chunkedContent) { chunk ->
                 Column (
                     modifier = Modifier
-                        .widthIn(max=screenWidth)
+                        .widthIn(min = screenWidth, max=screenWidth)
                         .padding(horizontal = dimensionResource(R.dimen.medium_padding))
                 ){
                     chunk.forEach { item ->
@@ -106,6 +104,8 @@ fun ReadingScreen(
                                     )
                                 }
                             }
+                            is TableItem ->
+                                Text(text = item.text)
                         }
                     }
                 }
