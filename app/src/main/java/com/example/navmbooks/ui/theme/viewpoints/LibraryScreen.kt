@@ -110,8 +110,6 @@ fun LibraryScreen(
                 Column {
                     Button(
                         onClick = {
-
-
                             if (url != null && filePath != null && imagePath != null) {
                                 viewModel.addBookToBookList(url, filePath, imagePath)
                                 viewModel.removeBookAt(index)
