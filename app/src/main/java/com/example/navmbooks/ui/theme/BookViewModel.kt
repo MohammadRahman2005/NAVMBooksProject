@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.text.toUpperCase
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -26,6 +27,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.IOException
+import java.util.Locale
 import com.example.navmbooks.database.entities.Book as dbBook
 import com.example.navmbooks.database.entities.Chapter as dbChapter
 
@@ -155,29 +157,37 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
     }
 
     private suspend fun addBookListToDatabase(book: Book) {
-        val authorId = dbViewModel.insertAuthor(Author(authorName = book.author))
-        Log.d("Database", "INSERT AUTHOR ${book.author}")
+        val bookcheck = dbViewModel.getBookIDByTitle(book.title.uppercase())
 
-        val bookId = dbViewModel.insertBooks(dbBook(title = book.title, authorId = authorId, imagePath = book.coverImage))
-        Log.d("Database", "INSERT BOOK ${book.title}")
+        if (bookcheck == null) {
 
-        book.chapters.forEach{ chapter ->
-            val chapterId = dbViewModel.insertChapters(
-                dbChapter(bookId = bookId, chapterNumber = chapter.chapNum, chapterTitle = chapter.title)
-            )
-            chapter.content.forEach{ cont ->
-                when (cont) {
-                    is TextItem -> dbViewModel.insertContents(Content(chapterId = chapterId, contentType = "Text", chapterContent = cont.text))
-                    is ImageItem -> dbViewModel.insertContents(Content(chapterId = chapterId, contentType = "Image", chapterContent = cont.imagePath))
-                    is TableItem -> dbViewModel.insertContents(Content(chapterId = chapterId, contentType = "Table", chapterContent = cont.text))
+            val authorId = dbViewModel.insertAuthor(Author(authorName = book.author))
+            Log.d("Database", "INSERT AUTHOR ${book.author}")
+
+            val bookId = dbViewModel.insertBooks(dbBook(title = book.title.uppercase(), authorId = authorId, imagePath = book.coverImage))
+            Log.d("Database", "INSERT BOOK ${book.title}")
+
+            book.chapters.forEach{ chapter ->
+                val chapterId = dbViewModel.insertChapters(
+                    dbChapter(bookId = bookId, chapterNumber = chapter.chapNum, chapterTitle = chapter.title)
+                )
+                chapter.content.forEach{ cont ->
+                    when (cont) {
+                        is TextItem -> dbViewModel.insertContents(Content(chapterId = chapterId, contentType = "Text", chapterContent = cont.text))
+                        is ImageItem -> dbViewModel.insertContents(Content(chapterId = chapterId, contentType = "Image", chapterContent = cont.imagePath))
+                        is TableItem -> dbViewModel.insertContents(Content(chapterId = chapterId, contentType = "Table", chapterContent = cont.text))
+                    }
                 }
             }
+        } else {
+            Log.d("Database", "BOOK ALREADY EXISTS IN DB")
         }
     }
 
     fun addBookToBookList(title: String, url: String, filePath: String, imagePath: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val databaseBookId = dbViewModel.getBookIDByTitle(title)
+            val databaseBookId = dbViewModel.getBookIDByTitle(title.uppercase())
+            Log.d("Database", "BOOK ID: $databaseBookId")
             if (databaseBookId == null) {
                 val book = processSingleBook(url, filePath, imagePath)
                 if (book != null) {

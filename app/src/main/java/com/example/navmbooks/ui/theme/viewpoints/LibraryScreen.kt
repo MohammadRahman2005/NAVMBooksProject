@@ -117,8 +117,8 @@ fun LibraryScreen(
                 val url = urls.getOrNull(index)
                 val filePath = files.getOrNull(index)
                 val imagePath = images.getOrNull(index)
-
-                val bookExists = viewModel.bookList.any { it?.title == title}
+                Log.d("Download Button", "Title: $title")
+                val bookExists = viewModel.bookList.any { it?.title?.uppercase()  == title.uppercase()}
                 if (!bookExists) {
                     Column {
                         Button(
