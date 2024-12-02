@@ -150,8 +150,8 @@ fun SearchScreen(
                         .clickable {
                             navController.navigate(
                                 NavRoutes.ReadingScreen.createRoute(
-                                    selectedId,
-                                    result.chapterNumber
+                                    selectedId - 1,
+                                    result.chapterId - 1
                                 )
                             )
                         }
