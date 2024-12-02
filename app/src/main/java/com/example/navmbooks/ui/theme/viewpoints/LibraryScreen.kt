@@ -112,7 +112,7 @@ fun LibraryScreen(
                     Button(
                         onClick = {
                             if (url != null && filePath != null && imagePath != null) {
-                                viewModel.addBookToBookList(url, filePath, imagePath)
+                                viewModel.addBookToBookList(title, url, filePath, imagePath)
                                 viewModel.removeBookAt(index)
                             } else {
                                 Log.e("LibraryScreen", "Invalid data at index $index: url=$url, filePath=$filePath, imagePath=$imagePath")

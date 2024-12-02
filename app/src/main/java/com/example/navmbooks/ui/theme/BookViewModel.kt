@@ -166,7 +166,7 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
         }
     }
 
-    fun addBookToBookList(url: String, filePath: String, imagePath: String) {
+    fun addBookToBookList(title: String, url: String, filePath: String, imagePath: String) {
         viewModelScope.launch {
             Log.d("BookViewModel", "Processing book: $url")
             val book = processSingleBook(url, filePath, imagePath)
