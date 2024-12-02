@@ -9,7 +9,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.Database
 import com.example.navmbooks.R
 import com.example.navmbooks.data.FileRepository
 import com.example.navmbooks.data.ImageItem
@@ -17,18 +16,16 @@ import com.example.navmbooks.data.TableItem
 import com.example.navmbooks.data.TextItem
 import com.example.navmbooks.data.UnzipUtils
 import com.example.navmbooks.database.DatabaseViewModel
+import com.example.navmbooks.database.entities.Author
+import com.example.navmbooks.database.entities.Content
+import com.example.navmbooks.ui.theme.Book
+import com.example.navmbooks.ui.theme.Chapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
-import com.example.navmbooks.ui.theme.Book
-import com.example.navmbooks.ui.theme.Chapter
-import com.example.navmbooks.database.entities.Chapter as dbChapter
 import com.example.navmbooks.database.entities.Book as dbBook
-import com.example.navmbooks.database.entities.Content
-import com.example.navmbooks.database.entities.Author
-import kotlinx.coroutines.delay
-import java.lang.StringBuilder
+import com.example.navmbooks.database.entities.Chapter as dbChapter
 
 /**
  * This class represents a view model for books
@@ -104,17 +101,32 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
                     val modelContents = StringBuilder()
                     chapters.forEach{ chapter->
                         val contents = dbViewModel.getContentByChapter(chapterId = chapter.chapterId)
-                        contents.forEach{ content ->
-//                            when (content.contentType) {
-//                                "text" ->
-//                                "image" ->
-//                                "table" ->
-//                            }
-                        }
                         val modelChapter = Chapter(chapter.chapterTitle, chapter.chapterNumber)
-                        modelChapters.add(Chapter(chapter.chapterTitle, chapter.chapterNumber))
+                        contents.forEach{ content ->
+                            when (content.contentType) {
+
+                                "Text" -> {
+                                    Log.d("content", content.chapterContent)
+                                    val textItem = TextItem(content.chapterContent)
+                                    modelChapter.content.add(textItem)
+                                }
+                                "Image" -> {
+                                    Log.d("content", content.chapterContent)
+                                    val imageItem = ImageItem(content.chapterContent)
+                                    modelChapter.content.add(imageItem)
+                                }
+                                "Table" -> {
+                                    Log.d("content", content.chapterContent)
+                                    val tableItem = TableItem(content.chapterContent)
+                                    modelChapter.content.add(tableItem)
+                                }
+                            }
+                        }
+                        modelChapters.add(modelChapter)
                     }
-                    val modelBook = Book(book.title, author.authorName, modelChapters, modelContents, null)
+                    val image = dbViewModel.getBookById(book.bookId)
+                    val modelBook = Book(book.title, author.authorName, modelChapters, modelContents, image.imagePath)
+                    bookList = bookList + modelBook
                 }
             } else {
                 urls.forEachIndexed { index, url ->
@@ -129,7 +141,7 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
                             val authorId = dbViewModel.insertAuthor(Author(authorName = book.author))
                             Log.d("Database", "INSERT AUTHOR ${book.author}")
 
-                            val bookId = dbViewModel.insertBooks(dbBook(title = book.title, authorId = authorId))
+                            val bookId = dbViewModel.insertBooks(dbBook(title = book.title, authorId = authorId, imagePath = book.coverImage))
                             Log.d("Database", "INSERT BOOK ${book.title}")
 
                             book.chapters.forEach{ chapter ->
