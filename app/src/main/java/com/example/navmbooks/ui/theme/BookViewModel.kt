@@ -208,16 +208,16 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
     private val _searchResults = MutableLiveData<List<ContentWithChapterInfo>>(emptyList())
     val searchResults: LiveData<List<ContentWithChapterInfo>> = _searchResults
 
-    fun updateSelectedIdByTitle(dataViewModel: DatabaseViewModel, title: String) {
+    fun updateSelectedIdByTitle(title: String) {
         viewModelScope.launch {
             _selectedId.value = dbViewModel.getBookIDByTitle(title)
         }
     }
 
-    fun performSearch(dataViewModel: DatabaseViewModel, query: String) {
+    fun performSearch(query: String) {
         viewModelScope.launch {
             if (query.isNotEmpty()) {
-                _searchResults.value = dataViewModel.searchContentInBook(_selectedId.value ?: 0, query)
+                _searchResults.value = dbViewModel.searchContentInBook(_selectedId.value ?: 0, query)
             } else {
                 _searchResults.value = emptyList()
             }

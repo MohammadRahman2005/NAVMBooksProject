@@ -61,7 +61,6 @@ fun SearchScreen(
     navController: NavController,
     modifier: Modifier = Modifier,
     viewModel: BookViewModel,
-    dataViewModel: DatabaseViewModel,
     books: List<Book?>,
     padding: PaddingValues
 ) {
@@ -104,7 +103,7 @@ fun SearchScreen(
                         onClick = {
                             selectedTitle = book?.title.orEmpty()
                             expanded = false
-                            viewModel.updateSelectedIdByTitle(dataViewModel, selectedTitle)
+                            viewModel.updateSelectedIdByTitle(selectedTitle)
                         }
                     )
                 }
@@ -131,7 +130,7 @@ fun SearchScreen(
 
         Button(
             onClick = {
-                viewModel.performSearch(dataViewModel, searchQuery.text)
+                viewModel.performSearch(searchQuery.text)
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
