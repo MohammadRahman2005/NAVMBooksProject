@@ -1,5 +1,6 @@
 package com.example.navmbooks
 
+import android.content.Context
 import androidx.activity.compose.setContent
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.ui.test.ExperimentalTestApi
@@ -22,6 +23,9 @@ import com.example.navmbooks.database.DatabaseViewModel
 import com.example.navmbooks.ui.theme.BookReadingApp
 import com.example.navmbooks.ui.theme.BookViewModelFactory
 import com.example.navmbooks.ui.theme.NAVMBooksTheme
+import com.example.navmbooks.ui.theme.NavRoutes
+import android.content.SharedPreferences
+import android.widget.Toast
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -41,6 +45,7 @@ class AppTestsCompact {
     fun setUp() {
         // Launch the activity and set up content with the Compact window size class for all tests
         scenario = ActivityScenario.launch(MainActivity::class.java)
+        val sharedPreferences =
         setContentForTest()
     }
 
@@ -48,17 +53,28 @@ class AppTestsCompact {
         // Set content for the test, forcing a specific window size class
         scenario.onActivity { activity ->
             activity.setContent {
+                val sharedPreferences = getSharedPreferences("book_preferences", Context.MODE_PRIVATE)
                 val dbViewModel = DatabaseViewModel(activity.application)
                 NAVMBooksTheme {
                     BookReadingApp(
                         locale = Locale.US,
                         windowSizeClass = WindowWidthSizeClass.Compact,
-                        factory = BookViewModelFactory(activity.applicationContext,dbViewModel),
-                        dbViewModel = dbViewModel
+                        factory = BookViewModelFactory(activity.applicationContext, dbViewModel),
+                        dbViewModel = dbViewModel,
+                        startDestination = NavRoutes.HomeScreen.route,
+                        onResetLastAccessed = {resetLastAccessed(sharedPreferences)}
                     )
                 }
             }
         }
+    }
+
+    private fun resetLastAccessed(sharedPreferences: SharedPreferences) {
+        with(sharedPreferences.edit()) {
+            clear() // Clear all saved data
+            apply()
+        }
+        Toast.makeText(this, "Last accessed chapter reset successfully", Toast.LENGTH_SHORT).show()
     }
 
     // Verifies that the top bar elements (title, logo, back button) are rendered correctly.
