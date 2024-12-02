@@ -64,9 +64,11 @@ fun ReadingScreen(
         val sharedPreferences = context.getSharedPreferences("book_preferences", Context.MODE_PRIVATE)
         with(sharedPreferences.edit()) {
             putInt("last_accessed_chapter_$bookIndex", chapter.chapNum)
+            putInt("last_accessed_book", bookIndex) // Save the book index
             apply()
         }
     }
+
     val chunkedContent = remember(adaptiveNavType, chapter.content) {
         when (adaptiveNavType) {
             AdaptiveNavigationType.BOTTOM_NAVIGATION -> chapter.content.chunked(3)

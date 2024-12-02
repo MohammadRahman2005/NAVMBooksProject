@@ -39,7 +39,8 @@ fun ContentScreen(
     padding: PaddingValues,
     viewModel: BookViewModel,
     bookIndex: Int,
-    books: List<Book?>
+    books: List<Book?>,
+    onResetLastAccessed: () -> Unit
 ) {
     val book = books[bookIndex]
     val context = LocalContext.current
@@ -54,7 +55,6 @@ fun ContentScreen(
             .padding(dimensionResource(R.dimen.medium_padding))
             .verticalScroll(rememberScrollState())
     ) {
-        // Reading mode switch UI here...
 
         if (book == null) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {

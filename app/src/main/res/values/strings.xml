@@ -11,6 +11,7 @@
     <string name="enter_keyword">Enter Keyword</string>
     <string name="click_to_navigate">Click on the paragraph to navigate</string>
     <string name="resume_reading">Resume Reading</string>
+    <string name="reset_reading">Reset Reading</string>
 
     <string name="home">Home</string>
     <string name="library">Library</string>

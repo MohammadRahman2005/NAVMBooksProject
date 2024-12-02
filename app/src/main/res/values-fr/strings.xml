@@ -12,6 +12,7 @@
     <string name="enter_keyword">Entrez Le Mot-Clé</string>
     <string name="click_to_navigate">Cliquez sur le paragraphe pour naviguer</string>
     <string name="resume_reading">Reprendre La Lecture</string>
+    <string name="reset_reading">Réinitialiser La Lecture</string>
 
     <string name="home">Accueil</string>
     <string name="library">Étagère</string>
