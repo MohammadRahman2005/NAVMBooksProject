@@ -65,6 +65,7 @@ fun LibraryScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .testTag("Scroll")
             .padding(padding)
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -146,6 +147,7 @@ fun LibraryScreen(
                             ),
                             modifier = Modifier
                                 .fillMaxWidth()
+                                .testTag("DownloadButton")
                                 .padding(vertical = dimensionResource(R.dimen.tiny_padding))
                         ) {
                             Text(text = "Download $title")
