@@ -11,6 +11,7 @@ import androidx.compose.ui.test.assertIsOff
 import androidx.compose.ui.test.assertIsOn
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasTestTag
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onAllNodesWithTag
@@ -164,6 +165,7 @@ class AppTestsExpanded {
     }
 
     // Tests the functionality of the search screen.
+    @OptIn(ExperimentalTestApi::class)
     @Test
     fun testSearchFunctionality() {
         composeTestRule.waitForIdle()
@@ -174,9 +176,10 @@ class AppTestsExpanded {
         composeTestRule.onNodeWithTag("DropdownMenu").assertIsDisplayed()
         composeTestRule.onNodeWithTag("DropdownMenu").performClick()
         composeTestRule.waitForIdle()
+        composeTestRule.waitUntilAtLeastOneExists(hasText("WINNIE-THE-POOH"))
         composeTestRule.onNodeWithText("WINNIE-THE-POOH").performClick()
         composeTestRule.waitForIdle()
-        composeTestRule.onNodeWithTag("SearchField").performTextInput("The")
+        composeTestRule.onNodeWithTag("SearchField").performTextInput("the")
         composeTestRule.onNodeWithTag("SearchButton").performClick()
         composeTestRule.waitForIdle()
         val searchResults = composeTestRule.onAllNodesWithTag("SearchResult")

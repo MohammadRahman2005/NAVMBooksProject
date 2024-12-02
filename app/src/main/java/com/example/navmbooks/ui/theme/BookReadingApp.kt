@@ -340,21 +340,41 @@ fun NavigationHost(
             val bookIndex = backStackEntry.arguments?.getInt("bookIndex") ?: 0
             ContentScreen(navController = navController, modifier, padding, bookViewModel, books = books, bookIndex = bookIndex, onResetLastAccessed = onResetLastAccessed)
         }
-        composable(route = NavRoutes.ReadingScreen.route, arguments = listOf(navArgument("chapterIndex") { type = NavType.StringType }, navArgument("bookIndex") { type = NavType.IntType })) {
-                backStackEntry ->
-            val bookIndex = backStackEntry.arguments?.getInt("bookIndex") ?: 0
+        composable(
+            route = NavRoutes.ReadingScreen.route,
+            arguments = listOf(
+                navArgument("chapterIndex") { type = NavType.StringType },
+                navArgument("bookIndex") { type = NavType.IntType }
+            )
+        ) { backStackEntry ->
+            val bookIndex = backStackEntry.arguments?.getInt("bookIndex") ?: -1
             val chapterIndex = backStackEntry.arguments?.getString("chapterIndex")?.toIntOrNull()
-            chapterIndex?.let { books[bookIndex]?.chapters?.get(it) }?.let {
-                ReadingScreen(
-                    navController = navController,
-                    bookViewModel = bookViewModel,
-                    modifier = modifier,
-                    padding = padding,
-                    it,
-                    adaptiveNavType = adaptiveNavType,
-                    bookIndex = bookIndex
-                )
+
+            if (bookIndex == -1) {
+                return@composable
             }
+
+            if (chapterIndex == null) {
+                return@composable
+            }
+
+            // Ensure that the bookIndex and chapterIndex are valid and within bounds.
+            val book = books.getOrNull(bookIndex)
+            val chapter = book?.chapters?.getOrNull(chapterIndex)
+
+            if (book == null || chapter == null) {
+                return@composable
+            }
+
+            ReadingScreen(
+                navController = navController,
+                bookViewModel = bookViewModel,
+                modifier = modifier,
+                padding = padding,
+                chapter = chapter,
+                adaptiveNavType = adaptiveNavType,
+                bookIndex = bookIndex
+            )
         }
     }
 }

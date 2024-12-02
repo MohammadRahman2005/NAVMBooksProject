@@ -137,7 +137,6 @@ class AppTestsCompact {
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithText("Library").performClick()
         composeTestRule.waitForIdle()
-        composeTestRule.waitUntilAtLeastOneExists(hasTestTag("LibraryText"), timeoutMillis = 5000)
         composeTestRule.onNodeWithTag("LibraryText").assertIsDisplayed()
     }
 
