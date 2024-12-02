@@ -2,16 +2,19 @@ package com.example.navmbooks.ui.theme.viewpoints
 
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Button
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,6 +34,7 @@ import com.example.navmbooks.data.TableItem
 import com.example.navmbooks.data.TextItem
 import com.example.navmbooks.ui.theme.BookViewModel
 import com.example.navmbooks.ui.theme.Chapter
+import com.example.navmbooks.ui.theme.NavRoutes
 import com.example.navmbooks.ui.theme.utils.AdaptiveNavigationType
 
 /**
@@ -44,6 +48,7 @@ fun ReadingScreen(
     padding: PaddingValues = PaddingValues(dimensionResource(R.dimen.zero_padding)),
     chapter: Chapter,
     adaptiveNavType: AdaptiveNavigationType,
+    bookIndex: Int
     ) {
     val configuration = LocalConfiguration.current
 
@@ -56,58 +61,89 @@ fun ReadingScreen(
         }
     }
 
-    Column (modifier = modifier
-        .padding(padding)
-        .fillMaxHeight()
-    )
-    {
-        Column{
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(stringResource(R.string.reading_label), modifier = Modifier.padding(end = dimensionResource(R.dimen.small_padding)).testTag("ReadingText"))
-                Switch(
-                    checked = bookViewModel.isReadingMode.value,
-                    onCheckedChange = { bookViewModel.toggleReadingMode(it) },
-                    Modifier.testTag("ReadingSwitch")
-                )
+    Box(modifier = Modifier.fillMaxSize().padding(padding)) {
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(bottom = dimensionResource(R.dimen.medium_padding))
+        )
+        {
+            Column {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        stringResource(R.string.reading_label),
+                        modifier = Modifier.padding(end = dimensionResource(R.dimen.small_padding))
+                            .testTag("ReadingText")
+                    )
+                    Switch(
+                        checked = bookViewModel.isReadingMode.value,
+                        onCheckedChange = { bookViewModel.toggleReadingMode(it) },
+                        Modifier.testTag("ReadingSwitch")
+                    )
+                }
             }
-        }
 
-        LazyRow(
-            modifier = Modifier
-                .fillMaxHeight()
-                .fillMaxWidth(),
-        ) {
-            items(chunkedContent) { chunk ->
-                Column (
-                    modifier = Modifier
-                        .widthIn(min = screenWidth, max=screenWidth)
-                        .padding(horizontal = dimensionResource(R.dimen.medium_padding))
-                ){
-                    chunk.forEach { item ->
-                        when (item) {
-                            is TextItem -> {
-                                Text(text = item.text)
-                            }
-                            is ImageItem -> {
-                                val bitmap = remember(item.imagePath) {
-                                    BitmapFactory.decodeFile(item.imagePath)?.asImageBitmap()
+            LazyRow(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth(),
+            ) {
+                items(chunkedContent) { chunk ->
+                    Column(
+                        modifier = Modifier
+                            .widthIn(min = screenWidth, max = screenWidth)
+                            .padding(horizontal = dimensionResource(R.dimen.medium_padding))
+                    ) {
+                        chunk.forEach { item ->
+                            when (item) {
+                                is TextItem -> {
+                                    Text(text = item.text)
                                 }
-                                if (bitmap != null) {
-                                    Image(
-                                        bitmap = bitmap,
-                                        contentDescription = item.imagePath,
-                                        modifier = Modifier
-                                            .size(dimensionResource(R.dimen.extra_large_size))
-                                            .align(Alignment.CenterHorizontally)
-                                    )
+
+                                is ImageItem -> {
+                                    val bitmap = remember(item.imagePath) {
+                                        BitmapFactory.decodeFile(item.imagePath)?.asImageBitmap()
+                                    }
+                                    if (bitmap != null) {
+                                        Image(
+                                            bitmap = bitmap,
+                                            contentDescription = item.imagePath,
+                                            modifier = Modifier
+                                                .size(dimensionResource(R.dimen.extra_large_size))
+                                                .align(Alignment.CenterHorizontally)
+                                        )
+                                    }
                                 }
+
+                                is TableItem ->
+                                    Text(text = item.text)
                             }
-                            is TableItem ->
-                                Text(text = item.text)
                         }
                     }
+                }
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(dimensionResource(R.dimen.medium_padding)),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Button(onClick = {
+                    navController.navigate(NavRoutes.ReadingScreen.createRoute(bookIndex,chapter.chapNum-2))
+                },
+                    enabled = chapter.chapNum-1 > 0
+                ) {
+                    Text("Previous Chapter")
+                }
+                Button(onClick = {
+                    navController.navigate(NavRoutes.ReadingScreen.createRoute(bookIndex,chapter.chapNum))
+                },
+                    enabled = chapter.chapNum < (bookViewModel.bookList[bookIndex]?.chapters?.size
+                        ?: 0)
+                ) {
+                    Text("Next Chapter")
                 }
             }
         }

@@ -325,7 +325,8 @@ fun NavigationHost(
                     modifier = modifier,
                     padding = padding,
                     it,
-                    adaptiveNavType = adaptiveNavType
+                    adaptiveNavType = adaptiveNavType,
+                    bookIndex = bookIndex
                 )
             }
         }
