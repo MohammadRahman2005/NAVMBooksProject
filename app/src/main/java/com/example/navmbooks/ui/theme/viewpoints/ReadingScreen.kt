@@ -61,7 +61,7 @@ fun ReadingScreen(
         }
     }
 
-    Box(modifier = Modifier.fillMaxSize().padding(padding)) {
+    Box(modifier = Modifier.fillMaxSize().padding(padding).testTag("Content")) {
         Column(
             modifier = modifier
                 .fillMaxSize()
@@ -75,7 +75,6 @@ fun ReadingScreen(
                     Text(
                         stringResource(R.string.reading_label),
                         modifier = Modifier.padding(end = dimensionResource(R.dimen.small_padding))
-                            .testTag("ReadingText")
                     )
                     Switch(
                         checked = bookViewModel.isReadingMode.value,
@@ -130,14 +129,14 @@ fun ReadingScreen(
                     .padding(dimensionResource(R.dimen.medium_padding)),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Button(onClick = {
+                Button(modifier = modifier.testTag("Previous"),onClick = {
                     navController.navigate(NavRoutes.ReadingScreen.createRoute(bookIndex,chapter.chapNum-2))
                 },
                     enabled = chapter.chapNum-1 > 0
                 ) {
                     Text("Previous Chapter")
                 }
-                Button(onClick = {
+                Button(modifier = modifier.testTag("Next"),onClick = {
                     navController.navigate(NavRoutes.ReadingScreen.createRoute(bookIndex,chapter.chapNum))
                 },
                     enabled = chapter.chapNum < (bookViewModel.bookList[bookIndex]?.chapters?.size

@@ -80,7 +80,9 @@ fun SearchScreen(
         ExposedDropdownMenuBox(
             expanded = expanded,
             onExpandedChange = { expanded = !expanded },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("DropdownMenu")
         ) {
             OutlinedTextField(
                 readOnly = true,
@@ -118,7 +120,7 @@ fun SearchScreen(
             value = searchQuery,
             onValueChange = { searchQuery = it },
             label = { Text(text = stringResource(R.string.enter_keyword)) },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().testTag("SearchField")
         )
 
         Spacer(modifier = Modifier.height(dimensionResource(R.dimen.medium_padding)))
@@ -131,7 +133,9 @@ fun SearchScreen(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
                 contentColor = MaterialTheme.colorScheme.primary
             ),
-            modifier = Modifier.align(Alignment.CenterHorizontally)
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .testTag("SearchButton")
         ) {
             Text(text = stringResource(R.string.search))
         }
@@ -146,6 +150,7 @@ fun SearchScreen(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .testTag("SearchResult")
                         .padding(dimensionResource(R.dimen.small_padding))
                         .clickable {
                             navController.navigate(
