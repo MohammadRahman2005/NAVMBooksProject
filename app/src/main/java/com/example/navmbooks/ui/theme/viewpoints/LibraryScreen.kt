@@ -54,6 +54,7 @@ fun LibraryScreen(
     padding: PaddingValues,
     books: List<Book?>,
     viewModel: BookViewModel,
+    onResetLastAccessed: () -> Unit,
     dbViewModel: DatabaseViewModel
 ) {
     val titles = viewModel.titles
@@ -83,6 +84,15 @@ fun LibraryScreen(
                     modifier = Modifier.testTag("LibraryText"),
                     style = MaterialTheme.typography.headlineMedium
                 )
+            }
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.big_padding)))
+            Button(
+                onClick = {onResetLastAccessed()},
+                modifier = Modifier
+                    .padding(vertical = dimensionResource(R.dimen.tiny_padding))
+                    .fillMaxWidth()
+            ) {
+                Text(text = stringResource(R.string.reset_reading))
             }
             Spacer(modifier = Modifier.height(dimensionResource(R.dimen.big_padding)))
             books.forEachIndexed { index, book ->
