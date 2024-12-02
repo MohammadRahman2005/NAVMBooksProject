@@ -200,4 +200,13 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
     fun toggleReadingMode(isEnabled: Boolean) {
         isReadingMode.value = isEnabled
     }
+
+    private val _selectedId = MutableLiveData<Int>()
+    val selectedId: LiveData<Int> = _selectedId
+
+    fun updateSelectedIdByTitle(dataViewModel: DatabaseViewModel, title: String) {
+        viewModelScope.launch {
+            _selectedId.value = dbViewModel.getBookIDByTitle(title)
+        }
+    }
 }

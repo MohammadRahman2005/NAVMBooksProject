@@ -31,7 +31,7 @@ class BookRepository(private val bookDao: BookDao) {
     }
 
     // Get bookId by title
-    fun getBookIdByTitle(title: String): Int {
+    suspend fun getBookIdByTitle(title: String): Int {
         return bookDao.getBookIdByTitle(title)
     }
 
