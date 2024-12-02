@@ -27,7 +27,7 @@ interface ContentDao {
 
     @Query("""
         SELECT 
-            ct.contentId, ct.contentType, ct.chapterContent, ch.chapterTitle, ch.chapterNumber
+            ct.contentId, ct.chapterId, ct.contentType, ct.chapterContent, ch.chapterTitle, ch.chapterNumber
         FROM 
             contents ct
         JOIN 

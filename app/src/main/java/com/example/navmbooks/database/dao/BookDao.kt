@@ -27,4 +27,9 @@ interface BookDao {
     // Get all books
     @Query("SELECT * FROM books")
     fun getAllBooks(): List<Book>
+
+    // Get bookId by title
+    @Query("SELECT bookId FROM books WHERE title = :title LIMIT 1")
+    fun getBookIdByTitle(title: String): Int
+
 }

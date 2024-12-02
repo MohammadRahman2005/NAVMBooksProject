@@ -56,6 +56,12 @@ class DatabaseViewModel(application: Application) : AndroidViewModel(application
         return book
     }
 
+    fun getBookIDByTitle(title: String): Int {
+        val book = bookRepository.getBookIdByTitle(title)
+        return book
+    }
+
+
     suspend fun insertChapters(chapters: Chapter): Int
     {
         return chapterRepository.insertChapters(chapters)
