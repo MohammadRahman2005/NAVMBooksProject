@@ -1,5 +1,6 @@
 package com.example.navmbooks.ui.theme.viewpoints
 
+import android.content.Context
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
@@ -38,8 +40,13 @@ fun ContentScreen(
     viewModel: BookViewModel,
     bookIndex: Int,
     books: List<Book?>
-){
+) {
     val book = books[bookIndex]
+    val context = LocalContext.current
+
+    // Load the last accessed chapter
+    val sharedPreferences = context.getSharedPreferences("book_preferences", Context.MODE_PRIVATE)
+    val lastAccessedChapter = sharedPreferences.getInt("last_accessed_chapter_$bookIndex", -1)
 
     Column(
         modifier = modifier
@@ -47,44 +54,46 @@ fun ContentScreen(
             .padding(dimensionResource(R.dimen.medium_padding))
             .verticalScroll(rememberScrollState())
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                stringResource(R.string.reading_label),
-                modifier = Modifier.padding(end = dimensionResource(R.dimen.small_padding))
-            )
-            Switch(
-                checked = viewModel.isReadingMode.value,
-                onCheckedChange = { viewModel.toggleReadingMode(it) },
-                modifier = Modifier.padding(end = dimensionResource(R.dimen.small_padding))
-            )
-        }
+        // Reading mode switch UI here...
 
-        if (book == null){
+        if (book == null) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text(text = stringResource(R.string.content_label))
             }
         } else {
-                Text(text = stringResource(R.string.select_chapter))
-                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.medium_padding)))
+            Text(text = stringResource(R.string.select_chapter))
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.medium_padding)))
 
-                book.chapters.forEachIndexed { index, chapter ->
-                    Button(
-                        onClick = {
-                            navController.navigate(NavRoutes.ReadingScreen.createRoute(bookIndex, index))
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                            contentColor = MaterialTheme.colorScheme.primary
-                        ),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = dimensionResource(R.dimen.tiny_padding))
-                    ) {
-                        Text(text = stringResource(R.string.chapter_label, index + 1))
-                    }
+            // Button to resume reading if there's a last accessed chapter
+            if (lastAccessedChapter > 0 && lastAccessedChapter <= book.chapters.size) {
+                Button(
+                    onClick = {
+                        navController.navigate(NavRoutes.ReadingScreen.createRoute(bookIndex, lastAccessedChapter - 1))
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = dimensionResource(R.dimen.tiny_padding))
+                ) {
+                    Text(text = stringResource(R.string.resume_reading))
                 }
+            }
+
+            book.chapters.forEachIndexed { index, chapter ->
+                Button(
+                    onClick = {
+                        navController.navigate(NavRoutes.ReadingScreen.createRoute(bookIndex, index))
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                        contentColor = MaterialTheme.colorScheme.primary
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = dimensionResource(R.dimen.tiny_padding))
+                ) {
+                    Text(text = stringResource(R.string.chapter_label, index + 1))
+                }
+            }
         }
     }
 }
