@@ -1,5 +1,6 @@
 package com.example.navmbooks.ui.theme.viewpoints
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.TabRowDefaults.Divider
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenuItem
@@ -30,9 +32,15 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.navmbooks.R
@@ -144,6 +152,7 @@ fun SearchScreen(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .padding(8.dp) // Add padding around each result
                         .clickable {
                             /*navController.navigate(
                                 NavRoutes.ReadingScreen.createRoute(
@@ -152,14 +161,60 @@ fun SearchScreen(
                                 )
                             )*/
                         }
-                        .padding(vertical = 8.dp)
+                        .background(MaterialTheme.colorScheme.surface)
+                        .padding(16.dp)
                 ) {
+                    val highlightedText = highlightKeyword(result.chapterContent, searchQuery.text)
+
+                    // Display the chapter content
                     Text(
-                        text = result.chapterContent,
-                        style = MaterialTheme.typography.bodyMedium
+                        text = highlightedText,
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(bottom = 8.dp)
                     )
+                    // Add metadata or additional info if needed
+                    Text(
+                        text = "Chapter: ${result.chapterId}",
+                        style = MaterialTheme.typography.bodySmall.copy(fontWeight = androidx.compose.ui.text.font.FontWeight.Bold),
+                        color = MaterialTheme.colorScheme.onSurface // Dark color
+                    )
+
                 }
+
+                Divider(
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
+                    thickness = 1.dp,
+                    modifier = Modifier.padding(vertical = 4.dp)
+                )
             }
         }
+
     }
+}
+
+fun highlightKeyword(text: String, keyword: String): AnnotatedString {
+    if (keyword.isEmpty()) return AnnotatedString(text)
+
+    val annotatedString = buildAnnotatedString {
+        var currentIndex = 0
+        while (currentIndex < text.length) {
+            val keywordIndex = text.indexOf(keyword, currentIndex, ignoreCase = true)
+            if (keywordIndex == -1) {
+                append(text.substring(currentIndex))
+                break
+            }
+            append(text.substring(currentIndex, keywordIndex))
+            pushStyle(
+                SpanStyle(
+                    color = Color.Red,
+                    fontWeight = FontWeight.Bold,
+                    textDecoration = TextDecoration.Underline
+                )
+            )
+            append(text.substring(keywordIndex, keywordIndex + keyword.length))
+            pop()
+            currentIndex = keywordIndex + keyword.length
+        }
+    }
+    return annotatedString
 }
