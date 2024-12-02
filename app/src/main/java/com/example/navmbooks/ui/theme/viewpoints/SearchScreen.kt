@@ -151,7 +151,7 @@ fun SearchScreen(
                             navController.navigate(
                                 NavRoutes.ReadingScreen.createRoute(
                                     selectedId - 1,
-                                    result.chapterId - 1
+                                    result.chapterNumber - 1
                                 )
                             )
                         }
