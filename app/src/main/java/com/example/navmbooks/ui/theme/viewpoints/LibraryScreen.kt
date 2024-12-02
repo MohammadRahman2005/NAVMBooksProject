@@ -83,7 +83,7 @@ fun LibraryScreen(
                         .testTag("BookItem")
                 ) {
                     if (book != null) {
-                        val coverImage = BitmapFactory.decodeFile(book.coverImage.absolutePath)
+                        val coverImage = BitmapFactory.decodeFile(book.coverImage)
 
                         Image(
                             coverImage!!.asImageBitmap(),

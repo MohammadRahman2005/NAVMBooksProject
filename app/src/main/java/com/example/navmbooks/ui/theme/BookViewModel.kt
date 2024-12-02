@@ -9,7 +9,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.Database
 import com.example.navmbooks.R
 import com.example.navmbooks.data.FileRepository
 import com.example.navmbooks.data.ImageItem
@@ -17,18 +16,16 @@ import com.example.navmbooks.data.TableItem
 import com.example.navmbooks.data.TextItem
 import com.example.navmbooks.data.UnzipUtils
 import com.example.navmbooks.database.DatabaseViewModel
+import com.example.navmbooks.database.entities.Author
+import com.example.navmbooks.database.entities.Content
+import com.example.navmbooks.ui.theme.Book
+import com.example.navmbooks.ui.theme.Chapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
-import com.example.navmbooks.ui.theme.Book
-import com.example.navmbooks.ui.theme.Chapter
-import com.example.navmbooks.database.entities.Chapter as dbChapter
 import com.example.navmbooks.database.entities.Book as dbBook
-import com.example.navmbooks.database.entities.Content
-import com.example.navmbooks.database.entities.Author
-import kotlinx.coroutines.delay
-import java.lang.StringBuilder
+import com.example.navmbooks.database.entities.Chapter as dbChapter
 
 /**
  * This class represents a view model for books
@@ -115,6 +112,7 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
                         modelChapters.add(Chapter(chapter.chapterTitle, chapter.chapterNumber))
                     }
                     val modelBook = Book(book.title, author.authorName, modelChapters, modelContents, null)
+                    bookList = bookList + modelBook
                 }
             } else {
                 urls.forEachIndexed { index, url ->

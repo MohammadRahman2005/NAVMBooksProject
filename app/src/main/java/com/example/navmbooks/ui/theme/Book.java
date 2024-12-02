@@ -1,7 +1,5 @@
 package com.example.navmbooks.ui.theme;
 
-import android.util.Log;
-
 import com.example.navmbooks.data.ImageItem;
 import com.example.navmbooks.data.TableItem;
 import com.example.navmbooks.data.TextItem;
@@ -24,7 +22,7 @@ public class Book {
     private final String author;
     private final ArrayList<Chapter> chapters;
     private final String allContent;
-    private final File coverImage;
+    private final String coverImage;
     public String getTitle(){
         return title;
     }
@@ -32,9 +30,9 @@ public class Book {
     public ArrayList<Chapter> getChapters(){
         return chapters;
     }
-    public File getCoverImage() {return coverImage; }
+    public String getCoverImage() {return coverImage; }
 
-    public Book(String title, String author, ArrayList<Chapter> chapters, StringBuilder allContent, File coverImage){
+    public Book(String title, String author, ArrayList<Chapter> chapters, StringBuilder allContent, String coverImage){
         this.title=title;
         this.author=author;
         this.chapters=chapters;
@@ -138,7 +136,7 @@ public class Book {
                 chapter.addContent(new TextItem(e.text()));
             }
         }
-        return new Book(title, author, chapters, allContent, cover);
+        return new Book(title, author, chapters, allContent, cover.getAbsolutePath());
     }
     @Override
     public String toString(){
