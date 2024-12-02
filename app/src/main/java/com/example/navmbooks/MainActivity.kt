@@ -37,7 +37,8 @@ class MainActivity : ComponentActivity() {
                 BookReadingApp(
                     locale = Locale.US,
                     windowSizeClass = windowSize.widthSizeClass,
-                    factory=factory
+                    factory=factory,
+                    dbViewModel=dbViewModel
                 )
             }
         }

@@ -30,6 +30,6 @@ interface BookDao {
 
     // Get bookId by title
     @Query("SELECT bookId FROM books WHERE title = :title LIMIT 1")
-    suspend fun getBookIdByTitle(title: String): Int
+    suspend fun getBookIdByTitle(title: String): Int?
 
 }
