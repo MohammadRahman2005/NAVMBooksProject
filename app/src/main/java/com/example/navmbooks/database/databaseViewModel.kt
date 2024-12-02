@@ -58,7 +58,7 @@ class DatabaseViewModel(application: Application) : AndroidViewModel(application
         return book
     }
 
-    suspend fun getBookIDByTitle(title: String): Int {
+    suspend fun getBookIDByTitle(title: String): Int? {
         val book = bookRepository.getBookIdByTitle(title)
         return book
     }

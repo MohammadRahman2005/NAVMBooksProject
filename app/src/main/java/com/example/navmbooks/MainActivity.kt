@@ -55,6 +55,7 @@ class MainActivity : ComponentActivity() {
                     locale = Locale.US,
                     windowSizeClass = windowSize.widthSizeClass,
                     factory = factory,
+                    dbViewModel = dbViewModel,
                     startDestination = startDestination, // Pass the start destination to the composable
                     onResetLastAccessed = { resetLastAccessed(sharedPreferences) }
                 )

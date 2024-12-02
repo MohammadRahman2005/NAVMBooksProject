@@ -69,6 +69,7 @@ fun BookReadingApp(
     locale: Locale,
     windowSizeClass: WindowWidthSizeClass,
     factory: BookViewModelFactory,
+    dbViewModel: DatabaseViewModel,
     startDestination: String,
     onResetLastAccessed: () -> Unit
 ) {
@@ -101,7 +102,9 @@ fun BookReadingApp(
             bookViewModel = bookViewModel,
             adaptiveNavigationType = adaptiveNavigationType,
             startDestination = startDestination,
-            onResetLastAccessed = onResetLastAccessed
+            onResetLastAccessed = onResetLastAccessed,
+            dbViewModel = dbViewModel
+
         )
 
     }
@@ -118,6 +121,7 @@ fun AdaptiveNavigationBars(
     navController: NavHostController,
     bookViewModel: BookViewModel,
     adaptiveNavigationType: AdaptiveNavigationType,
+    dbViewModel: DatabaseViewModel,
     modifier: Modifier = Modifier,
     startDestination: String,
     onResetLastAccessed: () -> Unit
@@ -130,7 +134,8 @@ fun AdaptiveNavigationBars(
                     bookViewModel = bookViewModel,
                     adaptiveNavType = adaptiveNavigationType,
                     startDestination = startDestination,
-                    onResetLastAccessed = onResetLastAccessed
+                    onResetLastAccessed = onResetLastAccessed,
+                    dbViewModel = dbViewModel
                 )
             }
         }
@@ -149,7 +154,9 @@ fun AdaptiveNavigationBars(
                     padding = paddingVal,
                     adaptiveNavType = adaptiveNavigationType,
                     startDestination = startDestination,
-                    onResetLastAccessed = onResetLastAccessed
+                    onResetLastAccessed = onResetLastAccessed,
+                    dbViewModel = dbViewModel
+
                 )
             }
             if (adaptiveNavigationType == AdaptiveNavigationType.NAVIGATION_RAIL) {
@@ -203,7 +210,8 @@ fun PermanentNavigationDrawerComponent(
     bookViewModel: BookViewModel,
     adaptiveNavType: AdaptiveNavigationType,
     startDestination: String,
-    onResetLastAccessed: () -> Unit
+    onResetLastAccessed: () -> Unit,
+    dbViewModel: DatabaseViewModel
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoutes = backStackEntry?.destination?.route
@@ -238,7 +246,8 @@ fun PermanentNavigationDrawerComponent(
                 padding = PaddingValues(dimensionResource(R.dimen.zero_padding)),
                 adaptiveNavType = adaptiveNavType,
                 startDestination = startDestination,
-                onResetLastAccessed = onResetLastAccessed
+                onResetLastAccessed = onResetLastAccessed,
+                dbViewModel = dbViewModel
             )
         }
     )
@@ -308,7 +317,8 @@ fun NavigationHost(
     padding: PaddingValues,
     adaptiveNavType: AdaptiveNavigationType,
     startDestination: String,
-    onResetLastAccessed: () -> Unit
+    onResetLastAccessed: () -> Unit,
+    dbViewModel: DatabaseViewModel
 ) {
     val books = bookViewModel.bookList
     NavHost(
@@ -320,7 +330,7 @@ fun NavigationHost(
             HomeScreen(navController = navController, modifier, padding)
         }
         composable(route = NavRoutes.LibraryScreen.route) {
-            LibraryScreen(navController = navController, modifier, padding, books = books, viewModel = bookViewModel, onResetLastAccessed = onResetLastAccessed)
+            LibraryScreen(navController = navController, modifier, padding, books = books, viewModel = bookViewModel, onResetLastAccessed = onResetLastAccessed, dbViewModel = dbViewModel)
         }
         composable(route = NavRoutes.SearchScreen.route) {
             SearchScreen(navController = navController, modifier, viewModel = bookViewModel, books = books, padding)
