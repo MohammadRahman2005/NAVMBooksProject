@@ -34,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -73,7 +74,7 @@ fun SearchScreen(
     Column(
         modifier = modifier
             .padding(padding)
-            .padding(16.dp)
+            .padding(dimensionResource(R.dimen.medium_padding))
     ) {
         // Dropdown with titles
         ExposedDropdownMenuBox(
@@ -110,13 +111,7 @@ fun SearchScreen(
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(
-            text = "Selected ID: $selectedId",
-            style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.padding(vertical = 8.dp)
-        )
+        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.medium_padding)))
 
         // Search Bar
         OutlinedTextField(
@@ -126,7 +121,7 @@ fun SearchScreen(
             modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.medium_padding)))
 
         Button(
             onClick = {
@@ -141,7 +136,7 @@ fun SearchScreen(
             Text(text = stringResource(R.string.search))
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.medium_padding)))
 
         // Results List
         LazyColumn(
@@ -151,25 +146,31 @@ fun SearchScreen(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(8.dp) // Add padding around each result
+                        .padding(dimensionResource(R.dimen.small_padding))
                         .clickable {
                             navController.navigate(
                                 NavRoutes.ReadingScreen.createRoute(
                                     selectedId,
-                                    result.chapterId,
+                                    result.chapterNumber
                                 )
                             )
                         }
                         .background(MaterialTheme.colorScheme.surface)
-                        .padding(16.dp)
+                        .padding(dimensionResource(R.dimen.medium_padding))
                 ) {
+                    Text(
+                        text = stringResource(R.string.click_to_navigate),
+                        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = androidx.compose.ui.text.font.FontWeight.Bold),
+                        color = MaterialTheme.colorScheme.onSurface, // Dark color
+                        modifier = Modifier.padding(bottom = dimensionResource(R.dimen.big_padding))
+                    )
                     val highlightedText = highlightKeyword(result.chapterContent, searchQuery.text)
 
                     // Display the chapter content
                     Text(
                         text = highlightedText,
                         style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(bottom = 8.dp)
+                        modifier = Modifier.padding(bottom = dimensionResource(R.dimen.small_padding))
                     )
                     // Add metadata or additional info if needed
                     Text(
@@ -183,7 +184,7 @@ fun SearchScreen(
                 Divider(
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
                     thickness = 1.dp,
-                    modifier = Modifier.padding(vertical = 4.dp)
+                    modifier = Modifier.padding(vertical = dimensionResource(R.dimen.tiny_padding))
                 )
             }
         }

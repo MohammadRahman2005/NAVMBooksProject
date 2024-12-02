@@ -10,6 +10,7 @@
 
     <string name="search_book">Rechercher Un Livre</string>
     <string name="enter_keyword">Entrez Le Mot-Clé</string>
+    <string name="click_to_navigate">Cliquez sur le paragraphe pour naviguer</string>
 
     <string name="home">Accueil</string>
     <string name="library">Étagère</string>
