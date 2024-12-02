@@ -14,7 +14,7 @@ interface BookDao {
 
     @Query("""
         SELECT 
-            b.bookId, b.title, a.authorName, a.authorId
+            b.bookId, b.title, b.imagePath, a.authorName, a.authorId
         FROM 
             books b
         JOIN 

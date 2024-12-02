@@ -111,7 +111,8 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
                         val modelChapter = Chapter(chapter.chapterTitle, chapter.chapterNumber)
                         modelChapters.add(Chapter(chapter.chapterTitle, chapter.chapterNumber))
                     }
-                    val modelBook = Book(book.title, author.authorName, modelChapters, modelContents, null)
+                    val image = dbViewModel.getBookById(book.bookId)
+                    val modelBook = Book(book.title, author.authorName, modelChapters, modelContents, image.imagePath)
                     bookList = bookList + modelBook
                 }
             } else {
@@ -127,7 +128,7 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
                             val authorId = dbViewModel.insertAuthor(Author(authorName = book.author))
                             Log.d("Database", "INSERT AUTHOR ${book.author}")
 
-                            val bookId = dbViewModel.insertBooks(dbBook(title = book.title, authorId = authorId))
+                            val bookId = dbViewModel.insertBooks(dbBook(title = book.title, authorId = authorId, imagePath = book.coverImage))
                             Log.d("Database", "INSERT BOOK ${book.title}")
 
                             book.chapters.forEach{ chapter ->
