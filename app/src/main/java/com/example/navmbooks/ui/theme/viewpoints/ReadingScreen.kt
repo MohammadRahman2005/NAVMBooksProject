@@ -1,5 +1,6 @@
 package com.example.navmbooks.ui.theme.viewpoints
 
+import android.content.Context
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -18,11 +19,13 @@ import androidx.compose.material.Button
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -50,9 +53,22 @@ fun ReadingScreen(
     adaptiveNavType: AdaptiveNavigationType,
     bookIndex: Int
     ) {
+
+    val context = LocalContext.current
     val configuration = LocalConfiguration.current
 
     val screenWidth = configuration.screenWidthDp.dp
+
+    // Save last accessed chapter
+    LaunchedEffect(chapter.chapNum) {
+        val sharedPreferences = context.getSharedPreferences("book_preferences", Context.MODE_PRIVATE)
+        with(sharedPreferences.edit()) {
+            putInt("last_accessed_chapter_$bookIndex", chapter.chapNum)
+            putInt("last_accessed_book", bookIndex) // Save the book index
+            apply()
+        }
+    }
+
     val chunkedContent = remember(adaptiveNavType, chapter.content) {
         when (adaptiveNavType) {
             AdaptiveNavigationType.BOTTOM_NAVIGATION -> chapter.content.chunked(3)

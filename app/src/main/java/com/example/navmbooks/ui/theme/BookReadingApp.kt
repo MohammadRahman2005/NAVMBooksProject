@@ -69,7 +69,9 @@ fun BookReadingApp(
     locale: Locale,
     windowSizeClass: WindowWidthSizeClass,
     factory: BookViewModelFactory,
-    dbViewModel: DatabaseViewModel
+    dbViewModel: DatabaseViewModel,
+    startDestination: String,
+    onResetLastAccessed: () -> Unit
 ) {
     val bookViewModel: BookViewModel = viewModel(factory=factory)
     val backStackEntry by navController.currentBackStackEntryAsState()
@@ -89,7 +91,7 @@ fun BookReadingApp(
         },
         bottomBar = {
             // Show a bottom navigation bar if the current mode supports it
-            if (!bookViewModel.isReadingMode.value && adaptiveNavigationType == AdaptiveNavigationType.BOTTOM_NAVIGATION) {
+            if (currentRoute != NavRoutes.ContentScreen.route && !bookViewModel.isReadingMode.value && adaptiveNavigationType == AdaptiveNavigationType.BOTTOM_NAVIGATION) {
                 BottomNavigationBar(navController = navController)
             }
         }
@@ -99,7 +101,10 @@ fun BookReadingApp(
             navController = navController,
             bookViewModel = bookViewModel,
             adaptiveNavigationType = adaptiveNavigationType,
+            startDestination = startDestination,
+            onResetLastAccessed = onResetLastAccessed,
             dbViewModel = dbViewModel
+
         )
 
     }
@@ -118,6 +123,8 @@ fun AdaptiveNavigationBars(
     adaptiveNavigationType: AdaptiveNavigationType,
     dbViewModel: DatabaseViewModel,
     modifier: Modifier = Modifier,
+    startDestination: String,
+    onResetLastAccessed: () -> Unit
 ) {
     when (adaptiveNavigationType) {
         AdaptiveNavigationType.PERMANENT_NAVIGATION_DRAWER -> {
@@ -126,6 +133,8 @@ fun AdaptiveNavigationBars(
                     navController = navController,
                     bookViewModel = bookViewModel,
                     adaptiveNavType = adaptiveNavigationType,
+                    startDestination = startDestination,
+                    onResetLastAccessed = onResetLastAccessed,
                     dbViewModel = dbViewModel
                 )
             }
@@ -144,7 +153,10 @@ fun AdaptiveNavigationBars(
                     modifier = modifier,
                     padding = paddingVal,
                     adaptiveNavType = adaptiveNavigationType,
+                    startDestination = startDestination,
+                    onResetLastAccessed = onResetLastAccessed,
                     dbViewModel = dbViewModel
+
                 )
             }
             if (adaptiveNavigationType == AdaptiveNavigationType.NAVIGATION_RAIL) {
@@ -197,6 +209,8 @@ fun PermanentNavigationDrawerComponent(
     navController: NavHostController,
     bookViewModel: BookViewModel,
     adaptiveNavType: AdaptiveNavigationType,
+    startDestination: String,
+    onResetLastAccessed: () -> Unit,
     dbViewModel: DatabaseViewModel
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
@@ -231,6 +245,8 @@ fun PermanentNavigationDrawerComponent(
                 modifier = Modifier,
                 padding = PaddingValues(dimensionResource(R.dimen.zero_padding)),
                 adaptiveNavType = adaptiveNavType,
+                startDestination = startDestination,
+                onResetLastAccessed = onResetLastAccessed,
                 dbViewModel = dbViewModel
             )
         }
@@ -300,19 +316,21 @@ fun NavigationHost(
     modifier: Modifier = Modifier,
     padding: PaddingValues,
     adaptiveNavType: AdaptiveNavigationType,
+    startDestination: String,
+    onResetLastAccessed: () -> Unit,
     dbViewModel: DatabaseViewModel
 ) {
     val books = bookViewModel.bookList
     NavHost(
         navController = navController,
-        startDestination = NavRoutes.HomeScreen.route,
+        startDestination = startDestination,
         modifier = Modifier.fillMaxSize()
     ) {
         composable(route = NavRoutes.HomeScreen.route) {
             HomeScreen(navController = navController, modifier, padding)
         }
         composable(route = NavRoutes.LibraryScreen.route) {
-            LibraryScreen(navController = navController, modifier, padding, books = books, viewModel = bookViewModel, dbViewModel = dbViewModel)
+            LibraryScreen(navController = navController, modifier, padding, books = books, viewModel = bookViewModel, onResetLastAccessed = onResetLastAccessed, dbViewModel = dbViewModel)
         }
         composable(route = NavRoutes.SearchScreen.route) {
             SearchScreen(navController = navController, modifier, viewModel = bookViewModel, books = books, padding)
@@ -320,7 +338,7 @@ fun NavigationHost(
         composable(route = NavRoutes.ContentScreen.route, arguments = listOf(navArgument("bookIndex") { type = NavType.IntType })) {
                 backStackEntry ->
             val bookIndex = backStackEntry.arguments?.getInt("bookIndex") ?: 0
-            ContentScreen(navController = navController, modifier, padding, bookViewModel, books = books, bookIndex = bookIndex)
+            ContentScreen(navController = navController, modifier, padding, bookViewModel, books = books, bookIndex = bookIndex, onResetLastAccessed = onResetLastAccessed)
         }
         composable(route = NavRoutes.ReadingScreen.route, arguments = listOf(navArgument("chapterIndex") { type = NavType.StringType }, navArgument("bookIndex") { type = NavType.IntType })) {
                 backStackEntry ->
