@@ -153,12 +153,12 @@ fun SearchScreen(
                         .fillMaxWidth()
                         .padding(8.dp) // Add padding around each result
                         .clickable {
-                            /*navController.navigate(
+                            navController.navigate(
                                 NavRoutes.ReadingScreen.createRoute(
+                                    selectedId,
                                     result.chapterId,
-                                    result.contentId
                                 )
-                            )*/
+                            )
                         }
                         .background(MaterialTheme.colorScheme.surface)
                         .padding(16.dp)
