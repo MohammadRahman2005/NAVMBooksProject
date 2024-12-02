@@ -53,7 +53,7 @@ class AppTestsCompact {
         // Set content for the test, forcing a specific window size class
         scenario.onActivity { activity ->
             activity.setContent {
-                val sharedPreferences = getSharedPreferences("book_preferences", Context.MODE_PRIVATE)
+                val sharedPreferences = activity.getSharedPreferences("book_preferences", Context.MODE_PRIVATE)
                 val dbViewModel = DatabaseViewModel(activity.application)
                 NAVMBooksTheme {
                     BookReadingApp(
@@ -74,7 +74,9 @@ class AppTestsCompact {
             clear() // Clear all saved data
             apply()
         }
-        Toast.makeText(this, "Last accessed chapter reset successfully", Toast.LENGTH_SHORT).show()
+        scenario.onActivity { activity ->
+            Toast.makeText(activity, "Last accessed chapter reset successfully", Toast.LENGTH_SHORT).show()
+        }
     }
 
     // Verifies that the top bar elements (title, logo, back button) are rendered correctly.
