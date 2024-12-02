@@ -106,17 +106,14 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
                             when (content.contentType) {
 
                                 "Text" -> {
-                                    Log.d("content", content.chapterContent)
                                     val textItem = TextItem(content.chapterContent)
                                     modelChapter.content.add(textItem)
                                 }
                                 "Image" -> {
-                                    Log.d("content", content.chapterContent)
                                     val imageItem = ImageItem(content.chapterContent)
                                     modelChapter.content.add(imageItem)
                                 }
                                 "Table" -> {
-                                    Log.d("content", content.chapterContent)
                                     val tableItem = TableItem(content.chapterContent)
                                     modelChapter.content.add(tableItem)
                                 }
