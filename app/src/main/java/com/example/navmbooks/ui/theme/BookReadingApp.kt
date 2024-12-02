@@ -307,7 +307,7 @@ fun NavigationHost(
             LibraryScreen(navController = navController, modifier, padding, books = books, viewModel = bookViewModel)
         }
         composable(route = NavRoutes.SearchScreen.route) {
-            SearchScreen(navController = navController, modifier, padding)
+            SearchScreen(navController = navController, modifier, viewModel = bookViewModel, books = books, padding)
         }
         composable(route = NavRoutes.ContentScreen.route, arguments = listOf(navArgument("bookIndex") { type = NavType.IntType })) {
                 backStackEntry ->
@@ -325,7 +325,8 @@ fun NavigationHost(
                     modifier = modifier,
                     padding = padding,
                     it,
-                    adaptiveNavType = adaptiveNavType
+                    adaptiveNavType = adaptiveNavType,
+                    bookIndex = bookIndex
                 )
             }
         }

@@ -15,6 +15,7 @@ import com.example.navmbooks.data.ImageItem
 import com.example.navmbooks.data.TableItem
 import com.example.navmbooks.data.TextItem
 import com.example.navmbooks.data.UnzipUtils
+import com.example.navmbooks.database.ContentWithChapterInfo
 import com.example.navmbooks.database.DatabaseViewModel
 import com.example.navmbooks.database.entities.Author
 import com.example.navmbooks.database.entities.Content
@@ -110,17 +111,14 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
                             when (content.contentType) {
 
                                 "Text" -> {
-                                    Log.d("content", content.chapterContent)
                                     val textItem = TextItem(content.chapterContent)
                                     modelChapter.content.add(textItem)
                                 }
                                 "Image" -> {
-                                    Log.d("content", content.chapterContent)
                                     val imageItem = ImageItem(content.chapterContent)
                                     modelChapter.content.add(imageItem)
                                 }
                                 "Table" -> {
-                                    Log.d("content", content.chapterContent)
                                     val tableItem = TableItem(content.chapterContent)
                                     modelChapter.content.add(tableItem)
                                 }
@@ -206,5 +204,27 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
 
     fun toggleReadingMode(isEnabled: Boolean) {
         isReadingMode.value = isEnabled
+    }
+
+    private val _selectedId = MutableLiveData<Int>()
+    val selectedId: LiveData<Int> = _selectedId
+
+    private val _searchResults = MutableLiveData<List<ContentWithChapterInfo>>(emptyList())
+    val searchResults: LiveData<List<ContentWithChapterInfo>> = _searchResults
+
+    fun updateSelectedIdByTitle(title: String) {
+        viewModelScope.launch {
+            _selectedId.value = dbViewModel.getBookIDByTitle(title)
+        }
+    }
+
+    fun performSearch(query: String) {
+        viewModelScope.launch {
+            if (query.isNotEmpty()) {
+                _searchResults.value = dbViewModel.searchContentInBook(_selectedId.value ?: 0, query)
+            } else {
+                _searchResults.value = emptyList()
+            }
+        }
     }
 }
