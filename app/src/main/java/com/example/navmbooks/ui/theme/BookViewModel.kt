@@ -122,7 +122,7 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
                                 }
                             }
                         }
-                        modelChapters.add(Chapter(chapter.chapterTitle, chapter.chapterNumber))
+                        modelChapters.add(modelChapter)
                     }
                     val image = dbViewModel.getBookById(book.bookId)
                     val modelBook = Book(book.title, author.authorName, modelChapters, modelContents, image.imagePath)
