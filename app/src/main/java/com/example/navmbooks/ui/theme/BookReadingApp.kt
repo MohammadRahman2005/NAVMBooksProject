@@ -90,7 +90,7 @@ fun BookReadingApp(
         },
         bottomBar = {
             // Show a bottom navigation bar if the current mode supports it
-            if (!bookViewModel.isReadingMode.value && adaptiveNavigationType == AdaptiveNavigationType.BOTTOM_NAVIGATION) {
+            if (currentRoute != NavRoutes.ContentScreen.route && !bookViewModel.isReadingMode.value && adaptiveNavigationType == AdaptiveNavigationType.BOTTOM_NAVIGATION) {
                 BottomNavigationBar(navController = navController)
             }
         }
