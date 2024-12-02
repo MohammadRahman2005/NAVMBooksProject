@@ -11,6 +11,8 @@ import com.example.navmbooks.database.repository.AuthorRepository
 import com.example.navmbooks.database.repository.BookRepository
 import com.example.navmbooks.database.repository.ChapterRepository
 import com.example.navmbooks.database.repository.ContentRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 
 class DatabaseViewModel(application: Application) : AndroidViewModel(application) {
@@ -56,6 +58,12 @@ class DatabaseViewModel(application: Application) : AndroidViewModel(application
         return book
     }
 
+    suspend fun getBookIDByTitle(title: String): Int {
+        val book = bookRepository.getBookIdByTitle(title)
+        return book
+    }
+
+
     suspend fun insertChapters(chapters: Chapter): Int
     {
         return chapterRepository.insertChapters(chapters)
@@ -76,9 +84,10 @@ class DatabaseViewModel(application: Application) : AndroidViewModel(application
         return chapterContents
     }
 
-    fun searchContentInBook(bookId: Int, keyword: String): List<ContentWithChapterInfo> {
-        return contentRepository.searchContentInBook(bookId, keyword)
-
+    suspend fun searchContentInBook(bookId: Int, keyword: String): List<ContentWithChapterInfo> {
+        return withContext(Dispatchers.IO) {
+            contentRepository.searchContentInBook(bookId, keyword)
+        }
     }
 
     fun getAllBooks(): List<Book>? {

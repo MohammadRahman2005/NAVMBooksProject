@@ -29,4 +29,10 @@ class BookRepository(private val bookDao: BookDao) {
     fun getAllBooks(): List<Book> {
         return bookDao.getAllBooks()
     }
+
+    // Get bookId by title
+    suspend fun getBookIdByTitle(title: String): Int {
+        return bookDao.getBookIdByTitle(title)
+    }
+
 }
