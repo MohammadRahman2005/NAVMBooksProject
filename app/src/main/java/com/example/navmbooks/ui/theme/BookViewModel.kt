@@ -22,6 +22,7 @@ import com.example.navmbooks.ui.theme.Book
 import com.example.navmbooks.ui.theme.Chapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.IOException
 import com.example.navmbooks.database.entities.Book as dbBook
@@ -52,8 +53,8 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
 
     private var currentBookDirectory: String? = null
 
-    fun setupDownload(url: String) {
-        viewModelScope.launch(Dispatchers.IO) {
+    suspend fun setupDownload(url: String): Boolean {
+        return withContext(Dispatchers.IO) {
             val fileName = url.substringAfterLast("/")
             val destDir = "DownloadedFiles"
 
@@ -65,11 +66,14 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
                     val destDirFile = repository.createFile(destDir, fileName.substringBeforeLast("."))
                     currentBookDirectory = destDirFile.absolutePath
                     UnzipUtils.unzip(file, destDirFile.absolutePath)
+                    true
                 } else {
                     Log.e("DownloadViewModel", "File is empty or does not exist.")
+                    false
                 }
             } else {
                 Log.e("DownloadViewModel", "Failed to download file")
+                false
             }
         }
     }
@@ -168,14 +172,17 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
     fun addBookToBookList(url: String, filePath: String, imagePath: String) {
         viewModelScope.launch {
             val book = processSingleBook(url, filePath, imagePath)
-            bookList = bookList + book
+            if (book != null) {
+                bookList = bookList + book
+            }
         }
     }
 
 
-    private fun processSingleBook(url: String, filePath: String, imagePath: String): Book? {
+    private suspend fun processSingleBook(url: String, filePath: String, imagePath: String): Book? {
         return try {
-            setupDownload(url)
+            val success = setupDownload(url)
+            if (!success) return null
 
             val htmlFile = File(repository.context.getExternalFilesDir(null), filePath)
             val coverImage = File(repository.context.getExternalFilesDir(null), imagePath)
