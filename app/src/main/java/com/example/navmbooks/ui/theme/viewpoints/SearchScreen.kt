@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenuItem
@@ -60,21 +61,7 @@ fun SearchScreen(
     var selectedTitle by rememberSaveable { mutableStateOf("") }
     var searchQuery by remember { mutableStateOf(TextFieldValue("")) }
     val selectedId by viewModel.selectedId.observeAsState(0)
-    val searchResults = remember(searchQuery.text) {
-        mutableStateOf<List<ContentWithChapterInfo>>(emptyList())
-    }
-
-    /*LaunchedEffect(searchQuery.text) {
-        if (searchQuery.text.isNotEmpty()) {
-            // Search content in the book
-            searchResults.value = dataViewModel.searchContentInBook(selectedId, searchQuery.text)
-        } else {
-            // Reset search results if query is empty
-            searchResults.value = emptyList()
-        }
-    }*/
-
-    val titles = viewModel.titles
+    val searchResults by viewModel.searchResults.observeAsState(emptyList())
 
     Column(
         modifier = modifier
@@ -85,14 +72,13 @@ fun SearchScreen(
         ExposedDropdownMenuBox(
             expanded = expanded,
             onExpandedChange = { expanded = !expanded },
-            modifier = Modifier
-                .fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()
         ) {
             OutlinedTextField(
                 readOnly = true,
                 value = selectedTitle,
                 onValueChange = { },
-                label = { Text(text = stringResource(id = R.string.search_book)) }, // Wrap stringResource in Text
+                label = { Text(text = stringResource(id = R.string.search_book)) },
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                 colors = OutlinedTextFieldDefaults.colors(),
                 modifier = Modifier
@@ -108,7 +94,7 @@ fun SearchScreen(
                     DropdownMenuItem(
                         text = { Text(book?.title.orEmpty()) },
                         onClick = {
-                            selectedTitle = book?.title.orEmpty() // Update selected title
+                            selectedTitle = book?.title.orEmpty()
                             expanded = false
                             viewModel.updateSelectedIdByTitle(dataViewModel, selectedTitle)
                         }
@@ -137,7 +123,7 @@ fun SearchScreen(
 
         Button(
             onClick = {
-
+                viewModel.performSearch(dataViewModel, searchQuery.text)
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
@@ -154,29 +140,26 @@ fun SearchScreen(
         LazyColumn(
             modifier = Modifier.fillMaxWidth()
         ) {
-            searchResults.value.forEach { result ->
-                item {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                navController.navigate(
-                                    NavRoutes.ReadingScreen.createRoute(
-                                        result.chapterId,
-                                        result.contentId
-                                    )
+            items(searchResults) { result ->
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            /*navController.navigate(
+                                NavRoutes.ReadingScreen.createRoute(
+                                    result.chapterId,
+                                    result.contentId
                                 )
-                            }
-                            .padding(vertical = 8.dp)
-                    ) {
-                        Text(
-                            text = result.chapterContent,
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                    }
+                            )*/
+                        }
+                        .padding(vertical = 8.dp)
+                ) {
+                    Text(
+                        text = result.chapterContent,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
                 }
             }
         }
     }
 }
-

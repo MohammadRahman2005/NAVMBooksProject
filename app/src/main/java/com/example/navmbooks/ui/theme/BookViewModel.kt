@@ -15,6 +15,7 @@ import com.example.navmbooks.data.ImageItem
 import com.example.navmbooks.data.TableItem
 import com.example.navmbooks.data.TextItem
 import com.example.navmbooks.data.UnzipUtils
+import com.example.navmbooks.database.ContentWithChapterInfo
 import com.example.navmbooks.database.DatabaseViewModel
 import com.example.navmbooks.database.entities.Author
 import com.example.navmbooks.database.entities.Content
@@ -204,9 +205,22 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
     private val _selectedId = MutableLiveData<Int>()
     val selectedId: LiveData<Int> = _selectedId
 
+    private val _searchResults = MutableLiveData<List<ContentWithChapterInfo>>(emptyList())
+    val searchResults: LiveData<List<ContentWithChapterInfo>> = _searchResults
+
     fun updateSelectedIdByTitle(dataViewModel: DatabaseViewModel, title: String) {
         viewModelScope.launch {
             _selectedId.value = dbViewModel.getBookIDByTitle(title)
+        }
+    }
+
+    fun performSearch(dataViewModel: DatabaseViewModel, query: String) {
+        viewModelScope.launch {
+            if (query.isNotEmpty()) {
+                _searchResults.value = dataViewModel.searchContentInBook(_selectedId.value ?: 0, query)
+            } else {
+                _searchResults.value = emptyList()
+            }
         }
     }
 }
