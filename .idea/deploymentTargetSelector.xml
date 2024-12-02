@@ -2,12 +2,12 @@
 <project version="4">
   <component name="deploymentTargetSelector">
     <selectionStates>
-      <SelectionState runConfigName="app">
+      <SelectionState runConfigName="MainActivity">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-12-02T14:07:09.842929900Z">
+        <DropdownSelection timestamp="2024-12-02T17:08:17.767368300Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\rahma\.android\avd\Resizable_Experimental_API_35.avd" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Aman Sood\.android\avd\Resizable_Experimental_API_VanillaIceCream.avd" />
             </handle>
           </Target>
         </DropdownSelection>

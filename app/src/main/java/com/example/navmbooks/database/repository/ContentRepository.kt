@@ -1,6 +1,5 @@
 package com.example.navmbooks.database.repository
 
-import androidx.lifecycle.LiveData
 import com.example.navmbooks.database.ContentWithChapterInfo
 import com.example.navmbooks.database.dao.ContentDao
 import com.example.navmbooks.database.entities.Content

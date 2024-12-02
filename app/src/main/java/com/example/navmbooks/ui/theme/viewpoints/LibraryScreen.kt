@@ -2,6 +2,10 @@ package com.example.navmbooks.ui.theme.viewpoints
 
 import android.graphics.BitmapFactory
 import android.util.Log
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -22,6 +26,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
@@ -45,7 +53,8 @@ fun LibraryScreen(
     modifier: Modifier = Modifier,
     padding: PaddingValues,
     books: List<Book?>,
-    viewModel: BookViewModel
+    viewModel: BookViewModel,
+    dbViewModel: DatabaseViewModel
 ) {
     val titles = viewModel.titles
     val urls = viewModel.urls
@@ -108,25 +117,29 @@ fun LibraryScreen(
                 val url = urls.getOrNull(index)
                 val filePath = files.getOrNull(index)
                 val imagePath = images.getOrNull(index)
-                Column {
-                    Button(
-                        onClick = {
-                            if (url != null && filePath != null && imagePath != null) {
-                                viewModel.addBookToBookList(url, filePath, imagePath)
-                                viewModel.removeBookAt(index)
-                            } else {
-                                Log.e("LibraryScreen", "Invalid data at index $index: url=$url, filePath=$filePath, imagePath=$imagePath")
-                            }
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                            contentColor = MaterialTheme.colorScheme.primary
-                        ),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = dimensionResource(R.dimen.tiny_padding))
-                    ) {
-                        Text(text = "Download $title")
+                Log.d("Download Button", "Title: $title")
+                val bookExists = viewModel.bookList.any { it?.title?.uppercase()  == title.uppercase()}
+                if (!bookExists) {
+                    Column {
+                        Button(
+                            onClick = {
+                                if (url != null && filePath != null && imagePath != null) {
+                                    viewModel.addBookToBookList(title, url, filePath, imagePath)
+                                    viewModel.removeBookAt(index)
+                                } else {
+                                    Log.e("LibraryScreen", "Invalid data at index $index: url=$url, filePath=$filePath, imagePath=$imagePath")
+                                }
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                                contentColor = MaterialTheme.colorScheme.primary
+                            ),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = dimensionResource(R.dimen.tiny_padding))
+                        ) {
+                            Text(text = "Download $title")
+                        }
                     }
                 }
             }
