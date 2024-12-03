@@ -290,7 +290,7 @@ fun Logo(modifier: Modifier = Modifier) {
     Image(
         painter = painterResource(R.drawable.navm),
         contentDescription = stringResource(R.string.logo_desc),
-        modifier = modifier,
+        modifier = modifier.testTag("TopLogo"),
         contentScale = ContentScale.Crop
     )
 }
