@@ -43,4 +43,7 @@
     <string name="next_chapter">Chapitre suivant</string>
 
     <string name="download_title">Télécharger %s</string>
+
+    <string name="downloading">Téléchargement du Livre!</string>
+    <string name="parsing">Livre est en cours d\analyse</string>
 </resources>

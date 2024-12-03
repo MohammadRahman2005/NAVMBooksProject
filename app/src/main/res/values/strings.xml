@@ -49,6 +49,10 @@
     
     <string name="download_title">Download %s</string>
 
+    <string name="downloading">Downloading Book!</string>
+    <string name="parsing">Parsing Book!</string>
+
+
     <string-array name="booksUrl">
         <item>https://www.gutenberg.org/cache/epub/67098/pg67098-h.zip</item>
         <item>https://www.gutenberg.org/cache/epub/74675/pg74675-h.zip</item>

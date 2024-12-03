@@ -52,6 +52,7 @@ fun LibraryScreen(
     val urls = viewModel.urls
     val files = viewModel.files
     val images = viewModel.images
+    var loadingProgress = viewModel.loadingTimes
 
     Image(
         painter = painterResource(R.drawable.app_bg),
@@ -126,17 +127,17 @@ fun LibraryScreen(
                 val url = urls.getOrNull(index)
                 val filePath = files.getOrNull(index)
                 val imagePath = images.getOrNull(index)
-                Log.d("Download Button", "Title: $title")
                 val bookExists = viewModel.bookList.any { it?.title?.uppercase()  == title.uppercase()}
                 if (!bookExists) {
                     Column {
                         Button(
                             onClick = {
-                                if (url != null && filePath != null && imagePath != null) {
-                                    viewModel.addBookToBookList(title, url, filePath, imagePath)
-                                    viewModel.removeBookAt(index)
-                                } else {
-                                    Log.e("LibraryScreen", "Invalid data at index $index: url=$url, filePath=$filePath, imagePath=$imagePath")
+                                if (loadingProgress[index]==0){
+                                    if (url != null && filePath != null && imagePath != null) {
+                                        viewModel.addBookToBookList(title, url, filePath, imagePath, index)
+                                    } else {
+                                        Log.e("LibraryScreen", "Invalid data at index $index: url=$url, filePath=$filePath, imagePath=$imagePath")
+                                    }
                                 }
                             },
                             colors = ButtonDefaults.buttonColors(
@@ -148,8 +149,15 @@ fun LibraryScreen(
                                 .testTag("DownloadButton")
                                 .padding(vertical = dimensionResource(R.dimen.tiny_padding))
                         ) {
-                            Text(text = stringResource(R.string.download_title, title))
+                            if(loadingProgress[index]==0){
+                                Text(text = stringResource(R.string.download_title, title))
+                            }else if (loadingProgress[index]==1){
+                                Text(text= stringResource(R.string.downloading))
+                            }else if(loadingProgress[index]==2){
+                                Text (text = stringResource(R.string.parsing))
+                            }
                         }
+
                     }
                 }
             }

@@ -1,5 +1,8 @@
 package com.example.navmbooks.ui.theme
 
+/**
+ *Class that describes navRoutes
+ */
 sealed class NavRoutes (val route: String) {
     data object HomeScreen : NavRoutes("home_screen")
     data object LibraryScreen : NavRoutes("library_screen")

@@ -40,6 +40,11 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
 
     var images = repository.context.resources.getStringArray(R.array.DownloadedBooksCover).toList()
 
+    var loadingTimes by mutableStateOf<List<Int>>(emptyList())
+
+    /**
+     * This function removes the data about a particular book at a specific index
+     */
     fun removeBookAt(index: Int) {
         titles = titles.toMutableList().apply { removeAt(index) }
         urls = urls.toMutableList().apply { removeAt(index) }
@@ -52,6 +57,10 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
 
     private var currentBookDirectory: String? = null
 
+
+    /**
+     * This function prepares the downloading of books from a zip file
+     */
     suspend fun setupDownload(url: String): Boolean {
         return withContext(Dispatchers.IO) {
             val fileName = url.substringAfterLast("/")
@@ -77,21 +86,24 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
         }
     }
 
+    /**
+     * this function updates the directory content
+     */
     private fun updateDirectoryContents(directoryName: String) {
         val contents = repository.listDirectoryContents(directoryName)
         _directoryContents.postValue(contents)
     }
 
-    fun confirmDeletion(directoryName: String) {
-        repository.deleteDirectoryContents(directoryName)
-        updateDirectoryContents(directoryName)
-    }
-
     var bookList by mutableStateOf<List<Book?>>(emptyList())
         private set
     init {
-       getBooks(urls = repository.context.resources.getStringArray(R.array.booksUrl), files = repository.context.resources.getStringArray(R.array.booksFile), images = repository.context.resources.getStringArray(R.array.booksCover))
+        loadingTimes = loadingTimes.toMutableList().apply { addAll(listOf(0,0,0)) }
+        getBooks(urls = repository.context.resources.getStringArray(R.array.booksUrl), files = repository.context.resources.getStringArray(R.array.booksFile), images = repository.context.resources.getStringArray(R.array.booksCover))
     }
+
+    /**
+     * This function parses the books
+     */
     private fun getBooks(urls: Array<String>, files: Array<String>, images: Array<String>) {
         viewModelScope.launch(Dispatchers.IO) {
             val dbBooksList = dbViewModel.getAllBooks()
@@ -120,6 +132,9 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
         }
     }
 
+    /**
+     * This function gets the book and its data from the database.
+     */
     private suspend fun getBookFromDatabase(book: dbBook): Book {
         val author = dbViewModel.getAuthorById(book.authorId)
         val chapters = dbViewModel.getChaptersByBook(bookId = book.bookId)
@@ -151,6 +166,9 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
         return Book(book.title, author.authorName, modelChapters, modelContents, image.imagePath)
     }
 
+    /**
+     * this function adds each book to the database
+     */
     private suspend fun addBookListToDatabase(book: Book) {
         val bookCheck = dbViewModel.getBookIDByTitle(book.title.uppercase())
 
@@ -179,12 +197,24 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
         }
     }
 
-    fun addBookToBookList(title: String, url: String, filePath: String, imagePath: String) {
+    /**
+     * this function adds a book to the bookList which is shown on the ui
+     */
+    fun addBookToBookList(
+        title: String,
+        url: String,
+        filePath: String,
+        imagePath: String,
+        index: Int
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
+            loadingTimes = loadingTimes.toMutableList().apply { set(index, 1) }
             val databaseBookId = dbViewModel.getBookIDByTitle(title.uppercase())
             Log.d("Database", "BOOK ID: $databaseBookId")
             if (databaseBookId == null) {
+                loadingTimes = loadingTimes.toMutableList().apply { set(index, 2) }
                 val book = processSingleBook(url, filePath, imagePath)
+                removeBookAt(index)
                 if (book != null) {
                     bookList = bookList + book
                     addBookListToDatabase(book)
@@ -193,9 +223,13 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
             } else {
                 Log.d("Database", "BOOK ALREADY EXISTS")
             }
+            loadingTimes = loadingTimes.toMutableList().apply { removeAt(index) }
         }
     }
 
+    /**
+     * this function processes the parsing of a single book
+     */
     private suspend fun processSingleBook(url: String, filePath: String, imagePath: String): Book? {
         return try {
             val success = setupDownload(url)
@@ -231,12 +265,18 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
     private val _searchResults = MutableLiveData<List<ContentWithChapterInfo>>(emptyList())
     val searchResults: LiveData<List<ContentWithChapterInfo>> = _searchResults
 
+    /**
+     * updates the selected id by the title passed in
+     */
     fun updateSelectedIdByTitle(title: String) {
         viewModelScope.launch {
             _selectedId.value = dbViewModel.getBookIDByTitle(title)
         }
     }
 
+    /**
+     * this function finds the string in a book
+     */
     fun performSearch(query: String) {
         viewModelScope.launch {
             if (query.isNotEmpty()) {
