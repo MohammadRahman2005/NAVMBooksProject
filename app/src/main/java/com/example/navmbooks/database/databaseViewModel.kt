@@ -2,11 +2,10 @@ package com.example.navmbooks.database
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import com.example.navmbooks.database.entities.Author
+import com.example.navmbooks.database.entities.Book
 import com.example.navmbooks.database.entities.Chapter
 import com.example.navmbooks.database.entities.Content
-import com.example.navmbooks.database.entities.Book
 import com.example.navmbooks.database.repository.AuthorRepository
 import com.example.navmbooks.database.repository.BookRepository
 import com.example.navmbooks.database.repository.ChapterRepository

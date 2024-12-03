@@ -3,6 +3,7 @@ package com.example.navmbooks.ui.theme.viewpoints
 import android.content.Context
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,7 +16,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Button
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,10 +28,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -54,6 +60,13 @@ fun ReadingScreen(
     bookIndex: Int
     ) {
 
+    Image(
+        painter = painterResource(R.drawable.app_bg),
+        contentDescription = null,
+        modifier = Modifier.fillMaxSize(),
+        contentScale = ContentScale.Crop
+    )
+
     val context = LocalContext.current
     val configuration = LocalConfiguration.current
 
@@ -61,7 +74,8 @@ fun ReadingScreen(
 
     // Save last accessed chapter
     LaunchedEffect(chapter.chapNum) {
-        val sharedPreferences = context.getSharedPreferences("book_preferences", Context.MODE_PRIVATE)
+        val sharedPreferences =
+            context.getSharedPreferences("book_preferences", Context.MODE_PRIVATE)
         with(sharedPreferences.edit()) {
             putInt("last_accessed_chapter_$bookIndex", chapter.chapNum)
             putInt("last_accessed_book", bookIndex) // Save the book index
@@ -76,7 +90,8 @@ fun ReadingScreen(
             else -> chapter.content.chunked(1)
         }
     }
-
+    val lazyListState = rememberLazyListState()
+    val snapFlingBehavior = rememberSnapFlingBehavior(lazyListState = lazyListState)
     Box(modifier = Modifier.fillMaxSize().padding(padding).testTag("Content")) {
         Column(
             modifier = modifier
@@ -104,6 +119,8 @@ fun ReadingScreen(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth(),
+                state = lazyListState,
+                flingBehavior = snapFlingBehavior
             ) {
                 items(chunkedContent) { chunk ->
                     Column(
@@ -145,23 +162,44 @@ fun ReadingScreen(
                     .padding(dimensionResource(R.dimen.medium_padding)),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Button(modifier = modifier.testTag("Previous"),onClick = {
-                    navController.navigate(NavRoutes.ReadingScreen.createRoute(bookIndex,chapter.chapNum-2))
-                },
-                    enabled = chapter.chapNum-1 > 0
+                Button(
+                    modifier = modifier.testTag("Previous"),
+                    onClick = {
+                        navController.navigate(
+                            NavRoutes.ReadingScreen.createRoute(
+                                bookIndex,
+                                chapter.chapNum - 2
+                            )
+                        )
+                    },
+                    enabled = chapter.chapNum - 1 > 0,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = colorScheme.secondaryContainer,
+                        contentColor = colorScheme.primary
+                    ),
                 ) {
-                    Text("Previous Chapter")
+                    Text(stringResource(R.string.previous_chapter))
                 }
-                Button(modifier = modifier.testTag("Next"),onClick = {
-                    navController.navigate(NavRoutes.ReadingScreen.createRoute(bookIndex,chapter.chapNum))
-                },
+                Button(
+                    modifier = modifier.testTag("Next"),
+                    onClick = {
+                        navController.navigate(
+                            NavRoutes.ReadingScreen.createRoute(
+                                bookIndex,
+                                chapter.chapNum
+                            )
+                        )
+                    },
                     enabled = chapter.chapNum < (bookViewModel.bookList[bookIndex]?.chapters?.size
-                        ?: 0)
+                        ?: 0),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = colorScheme.secondaryContainer,
+                        contentColor = colorScheme.primary
+                    ),
                 ) {
-                    Text("Next Chapter")
+                    Text(stringResource(R.string.next_chapter))
                 }
             }
         }
-
     }
 }

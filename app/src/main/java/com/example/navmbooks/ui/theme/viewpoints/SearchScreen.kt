@@ -1,11 +1,12 @@
 package com.example.navmbooks.ui.theme.viewpoints
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -23,7 +24,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -33,8 +33,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -45,12 +47,9 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.navmbooks.R
-import com.example.navmbooks.database.ContentWithChapterInfo
-import com.example.navmbooks.database.DatabaseViewModel
 import com.example.navmbooks.ui.theme.Book
 import com.example.navmbooks.ui.theme.BookViewModel
 import com.example.navmbooks.ui.theme.NavRoutes
-import androidx.lifecycle.viewModelScope
 
 
 /**
@@ -71,6 +70,13 @@ fun SearchScreen(
     val selectedId by viewModel.selectedId.observeAsState(0)
     val searchResults by viewModel.searchResults.observeAsState(emptyList())
 
+    Image(
+        painter = painterResource(R.drawable.app_bg),
+        contentDescription = null,
+        modifier = Modifier.fillMaxSize(),
+        contentScale = ContentScale.Crop
+    )
+
     Column(
         modifier = modifier
             .padding(padding)
@@ -90,7 +96,10 @@ fun SearchScreen(
                 onValueChange = { },
                 label = { Text(text = stringResource(id = R.string.search_book)) },
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                colors = OutlinedTextFieldDefaults.colors(),
+                colors = OutlinedTextFieldDefaults.colors(
+                    unfocusedBorderColor = Color.Black,
+                    focusedBorderColor = Color.Black
+                ),
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable { expanded = true }
@@ -120,7 +129,11 @@ fun SearchScreen(
             value = searchQuery,
             onValueChange = { searchQuery = it },
             label = { Text(text = stringResource(R.string.enter_keyword)) },
-            modifier = Modifier.fillMaxWidth().testTag("SearchField")
+            modifier = Modifier.fillMaxWidth().testTag("SearchField"),
+            colors = OutlinedTextFieldDefaults.colors(
+                unfocusedBorderColor = Color.Black,
+                focusedBorderColor = Color.Black
+            )
         )
 
         Spacer(modifier = Modifier.height(dimensionResource(R.dimen.medium_padding)))
@@ -165,9 +178,9 @@ fun SearchScreen(
                 ) {
                     Text(
                         text = stringResource(R.string.click_to_navigate),
-                        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = androidx.compose.ui.text.font.FontWeight.Bold),
+                        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
                         color = MaterialTheme.colorScheme.onSurface, // Dark color
-                        modifier = Modifier.padding(bottom = dimensionResource(R.dimen.big_padding))
+                        modifier = Modifier.padding(bottom = dimensionResource(R.dimen.medium_padding))
                     )
                     val highlightedText = highlightKeyword(result.chapterContent, searchQuery.text)
 
@@ -179,7 +192,7 @@ fun SearchScreen(
                     )
                     // Add metadata or additional info if needed
                     Text(
-                        text = "Chapter: ${result.chapterId}",
+                        text = "Chapter: ${result.chapterNumber}",
                         style = MaterialTheme.typography.bodySmall.copy(fontWeight = androidx.compose.ui.text.font.FontWeight.Bold),
                         color = MaterialTheme.colorScheme.onSurface // Dark color
                     )

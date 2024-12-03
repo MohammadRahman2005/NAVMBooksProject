@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.text.toUpperCase
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,14 +19,11 @@ import com.example.navmbooks.database.ContentWithChapterInfo
 import com.example.navmbooks.database.DatabaseViewModel
 import com.example.navmbooks.database.entities.Author
 import com.example.navmbooks.database.entities.Content
-import com.example.navmbooks.ui.theme.Book
-import com.example.navmbooks.ui.theme.Chapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.IOException
-import java.util.Locale
 import com.example.navmbooks.database.entities.Book as dbBook
 import com.example.navmbooks.database.entities.Chapter as dbChapter
 
@@ -99,7 +95,6 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
     private fun getBooks(urls: Array<String>, files: Array<String>, images: Array<String>) {
         viewModelScope.launch(Dispatchers.IO) {
             val dbBooksList = dbViewModel.getAllBooks()
-            Log.d("Database", "$dbBooksList")
             if (!dbBooksList.isNullOrEmpty()) {
                 dbBooksList.forEach { book->
 
@@ -157,9 +152,9 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
     }
 
     private suspend fun addBookListToDatabase(book: Book) {
-        val bookcheck = dbViewModel.getBookIDByTitle(book.title.uppercase())
+        val bookCheck = dbViewModel.getBookIDByTitle(book.title.uppercase())
 
-        if (bookcheck == null) {
+        if (bookCheck == null) {
 
             val authorId = dbViewModel.insertAuthor(Author(authorName = book.author))
             Log.d("Database", "INSERT AUTHOR ${book.author}")

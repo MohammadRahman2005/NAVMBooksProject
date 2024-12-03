@@ -6,6 +6,9 @@
     <string name="welcome_title">Welcome to NAVMBooks</string>
     <string name="welcome_description">Discover, read, and enjoy our library of books!</string>
     <string name="get_started">Get Started</string>
+    <string name="app_description">Explore a curated library of free textbooks, tables, and images beautifully displayed in a book-like layout.</string>
+    <string name="team_members">Team Members:</string>
+    <string name="team_names">Mohammad Mahbub Rahman, Aman Sood, Noah Gélinas, Vinson Chiu</string>
 
     <string name="search_book">Search Book</string>
     <string name="enter_keyword">Enter Keyword</string>
@@ -40,6 +43,11 @@
     <string name="reading_button">Reading Mode</string>
 
     <string name="loading_book">Loading book…</string>
+
+    <string name="previous_chapter">Previous Chapter</string>
+    <string name="next_chapter">Next Chapter</string>
+    
+    <string name="download_title">Download %s</string>
 
     <string-array name="booksUrl">
         <item>https://www.gutenberg.org/cache/epub/67098/pg67098-h.zip</item>
