@@ -3,8 +3,6 @@ package com.example.navmbooks.ui.theme.viewpoints
 import android.content.Context
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,7 +13,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,10 +21,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
+import com.example.navmbooks.R
 import com.example.navmbooks.ui.theme.Book
 import com.example.navmbooks.ui.theme.BookViewModel
 import com.example.navmbooks.ui.theme.NavRoutes
-import com.example.navmbooks.R
 
 /**
  * This screen shows the chapters for a chosen book from library
@@ -36,7 +33,6 @@ import com.example.navmbooks.R
 fun ContentScreen(
     navController: NavController,
     modifier: Modifier = Modifier,
-    padding: PaddingValues,
     viewModel: BookViewModel,
     bookIndex: Int,
     books: List<Book?>,

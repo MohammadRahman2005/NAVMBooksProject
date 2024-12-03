@@ -15,7 +15,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Button
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -148,17 +150,25 @@ fun ReadingScreen(
                 Button(modifier = modifier.testTag("Previous"),onClick = {
                     navController.navigate(NavRoutes.ReadingScreen.createRoute(bookIndex,chapter.chapNum-2))
                 },
-                    enabled = chapter.chapNum-1 > 0
+                    enabled = chapter.chapNum-1 > 0,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                        contentColor = MaterialTheme.colorScheme.primary
+                    ),
                 ) {
-                    Text("Previous Chapter")
+                    Text(stringResource(R.string.previous_chapter))
                 }
                 Button(modifier = modifier.testTag("Next"),onClick = {
                     navController.navigate(NavRoutes.ReadingScreen.createRoute(bookIndex,chapter.chapNum))
                 },
                     enabled = chapter.chapNum < (bookViewModel.bookList[bookIndex]?.chapters?.size
-                        ?: 0)
+                        ?: 0),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                        contentColor = MaterialTheme.colorScheme.primary
+                    ),
                 ) {
-                    Text("Next Chapter")
+                    Text(stringResource(R.string.next_chapter))
                 }
             }
         }
