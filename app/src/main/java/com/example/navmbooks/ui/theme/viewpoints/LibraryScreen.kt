@@ -2,10 +2,6 @@ package com.example.navmbooks.ui.theme.viewpoints
 
 import android.graphics.BitmapFactory
 import android.util.Log
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -25,11 +21,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
@@ -40,11 +31,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.navmbooks.ui.theme.Book
-import com.example.navmbooks.ui.theme.NavRoutes
 import com.example.navmbooks.R
 import com.example.navmbooks.database.DatabaseViewModel
+import com.example.navmbooks.ui.theme.Book
 import com.example.navmbooks.ui.theme.BookViewModel
+import com.example.navmbooks.ui.theme.NavRoutes
 
 /**
  * This is the library screen where we show the books
@@ -56,8 +47,7 @@ fun LibraryScreen(
     padding: PaddingValues,
     books: List<Book?>,
     viewModel: BookViewModel,
-    onResetLastAccessed: () -> Unit,
-    dbViewModel: DatabaseViewModel
+    onResetLastAccessed: () -> Unit
 ) {
     val titles = viewModel.titles
     val urls = viewModel.urls
@@ -159,7 +149,7 @@ fun LibraryScreen(
                                 .testTag("DownloadButton")
                                 .padding(vertical = dimensionResource(R.dimen.tiny_padding))
                         ) {
-                            Text(text = "Download $title")
+                            Text(text = stringResource(R.string.download_title, title))
                         }
                     }
                 }

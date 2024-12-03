@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,7 +24,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -49,12 +47,9 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.navmbooks.R
-import com.example.navmbooks.database.ContentWithChapterInfo
-import com.example.navmbooks.database.DatabaseViewModel
 import com.example.navmbooks.ui.theme.Book
 import com.example.navmbooks.ui.theme.BookViewModel
 import com.example.navmbooks.ui.theme.NavRoutes
-import androidx.lifecycle.viewModelScope
 
 
 /**
@@ -176,9 +171,9 @@ fun SearchScreen(
                 ) {
                     Text(
                         text = stringResource(R.string.click_to_navigate),
-                        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = androidx.compose.ui.text.font.FontWeight.Bold),
+                        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
                         color = MaterialTheme.colorScheme.onSurface, // Dark color
-                        modifier = Modifier.padding(bottom = dimensionResource(R.dimen.big_padding))
+                        modifier = Modifier.padding(bottom = dimensionResource(R.dimen.medium_padding))
                     )
                     val highlightedText = highlightKeyword(result.chapterContent, searchQuery.text)
 

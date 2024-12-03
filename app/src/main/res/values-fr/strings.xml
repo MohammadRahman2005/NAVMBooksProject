@@ -38,4 +38,9 @@
     <string name="reading_button">Mode Lecture</string>
 
     <string name="loading_book">Chargement de Livre…</string>
+
+    <string name="previous_chapter">Chapitre précédent</string>
+    <string name="next_chapter">Chapitre suivant</string>
+
+    <string name="download_title">Télécharger %s</string>
 </resources>
