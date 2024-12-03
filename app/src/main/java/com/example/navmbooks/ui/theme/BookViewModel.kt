@@ -40,6 +40,7 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
 
     var images = repository.context.resources.getStringArray(R.array.DownloadedBooksCover).toList()
 
+    var loadingTimes by mutableStateOf<List<Int>>(emptyList())
     fun removeBookAt(index: Int) {
         titles = titles.toMutableList().apply { removeAt(index) }
         urls = urls.toMutableList().apply { removeAt(index) }
@@ -90,7 +91,8 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
     var bookList by mutableStateOf<List<Book?>>(emptyList())
         private set
     init {
-       getBooks(urls = repository.context.resources.getStringArray(R.array.booksUrl), files = repository.context.resources.getStringArray(R.array.booksFile), images = repository.context.resources.getStringArray(R.array.booksCover))
+        loadingTimes = loadingTimes.toMutableList().apply { addAll(listOf(0,0,0)) }
+        getBooks(urls = repository.context.resources.getStringArray(R.array.booksUrl), files = repository.context.resources.getStringArray(R.array.booksFile), images = repository.context.resources.getStringArray(R.array.booksCover))
     }
     private fun getBooks(urls: Array<String>, files: Array<String>, images: Array<String>) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -179,12 +181,20 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
         }
     }
 
-    fun addBookToBookList(title: String, url: String, filePath: String, imagePath: String) {
+    fun addBookToBookList(
+        title: String,
+        url: String,
+        filePath: String,
+        imagePath: String,
+        index: Int
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
+            loadingTimes = loadingTimes.toMutableList().apply { set(index, 1) }
             val databaseBookId = dbViewModel.getBookIDByTitle(title.uppercase())
             Log.d("Database", "BOOK ID: $databaseBookId")
             if (databaseBookId == null) {
                 val book = processSingleBook(url, filePath, imagePath)
+                loadingTimes = loadingTimes.toMutableList().apply { set(index, 2) }
                 if (book != null) {
                     bookList = bookList + book
                     addBookListToDatabase(book)
@@ -193,6 +203,7 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
             } else {
                 Log.d("Database", "BOOK ALREADY EXISTS")
             }
+            removeBookAt(index)
         }
     }
 

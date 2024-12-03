@@ -30,7 +30,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.navmbooks.R
-import com.example.navmbooks.database.DatabaseViewModel
 import com.example.navmbooks.ui.theme.Book
 import com.example.navmbooks.ui.theme.BookViewModel
 import com.example.navmbooks.ui.theme.NavRoutes
@@ -51,6 +50,7 @@ fun LibraryScreen(
     val urls = viewModel.urls
     val files = viewModel.files
     val images = viewModel.images
+    var loadingProgress = viewModel.loadingTimes
 
     Column(
         modifier = Modifier
@@ -118,15 +118,14 @@ fun LibraryScreen(
                 val url = urls.getOrNull(index)
                 val filePath = files.getOrNull(index)
                 val imagePath = images.getOrNull(index)
-                Log.d("Download Button", "Title: $title")
                 val bookExists = viewModel.bookList.any { it?.title?.uppercase()  == title.uppercase()}
                 if (!bookExists) {
                     Column {
                         Button(
                             onClick = {
                                 if (url != null && filePath != null && imagePath != null) {
-                                    viewModel.addBookToBookList(title, url, filePath, imagePath)
-                                    viewModel.removeBookAt(index)
+                                    viewModel.addBookToBookList(title, url, filePath, imagePath, index)
+
                                 } else {
                                     Log.e("LibraryScreen", "Invalid data at index $index: url=$url, filePath=$filePath, imagePath=$imagePath")
                                 }
@@ -140,8 +139,15 @@ fun LibraryScreen(
                                 .testTag("DownloadButton")
                                 .padding(vertical = dimensionResource(R.dimen.tiny_padding))
                         ) {
-                            Text(text = stringResource(R.string.download_title, title))
+                            if(loadingProgress[index]==0){
+                                Text(text = stringResource(R.string.download_title, title))
+                            }else if (loadingProgress[index]==1){
+                                Text(text= stringResource(R.string.downloading))
+                            }else if(loadingProgress[index]==2){
+                                Text (text = stringResource(R.string.parsing))
+                            }
                         }
+
                     }
                 }
             }
