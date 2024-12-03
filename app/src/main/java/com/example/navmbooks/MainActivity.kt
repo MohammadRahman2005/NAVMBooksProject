@@ -58,6 +58,9 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    /**
+     * This function resets the last accessed page
+     */
     private fun resetLastAccessed(sharedPreferences: SharedPreferences) {
         with(sharedPreferences.edit()) {
             clear() // Clear all saved data
