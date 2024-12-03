@@ -1,6 +1,7 @@
 package com.example.navmbooks.ui.theme.viewpoints
 
 import android.content.Context
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,8 +21,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.example.navmbooks.ui.theme.Book
@@ -42,6 +45,12 @@ fun ContentScreen(
     books: List<Book?>,
     onResetLastAccessed: () -> Unit
 ) {
+    Image(
+        painter = painterResource(R.drawable.app_bg),
+        contentDescription = null,
+        modifier = Modifier.fillMaxSize(),
+        contentScale = ContentScale.Crop
+    )
     val book = books[bookIndex]
     val context = LocalContext.current
 

@@ -7,6 +7,9 @@
     <string name="welcome_title">Bienvenue sur NAVMBooks</string>
     <string name="welcome_description">Découvrez, lisez et profitez de notre bibliothèque de livres !</string>
     <string name="get_started">Commencer</string>
+    <string name="app_description">Explorez une bibliothèque organisée de manuels, de tableaux et d\'images gratuits magnifiquement affichés dans une mise en page semblable à un livre.</string>
+    <string name="team_members">Membres de L\'équipe:</string>
+    <string name="team_names">Mohammad Mahbub Rahman, Aman Sood, Noah Gélinas, Vinson Chui</string>
 
     <string name="search_book">Rechercher Un Livre</string>
     <string name="enter_keyword">Entrez Le Mot-Clé</string>
