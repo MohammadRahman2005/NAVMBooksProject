@@ -78,7 +78,7 @@ class AppTestsMedium {
     fun testTopBarRenders() {
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithText("NAVM Books").assertIsDisplayed()
-        composeTestRule.onNodeWithContentDescription("App Logo").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("TopLogo").assertIsDisplayed()
         composeTestRule.onNodeWithTag("backButton").assertIsDisplayed()
     }
 
