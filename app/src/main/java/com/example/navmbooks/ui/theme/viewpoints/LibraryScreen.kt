@@ -132,11 +132,12 @@ fun LibraryScreen(
                     Column {
                         Button(
                             onClick = {
-                                if (url != null && filePath != null && imagePath != null) {
-                                    viewModel.addBookToBookList(title, url, filePath, imagePath, index)
-
-                                } else {
-                                    Log.e("LibraryScreen", "Invalid data at index $index: url=$url, filePath=$filePath, imagePath=$imagePath")
+                                if (loadingProgress[index]==0){
+                                    if (url != null && filePath != null && imagePath != null) {
+                                        viewModel.addBookToBookList(title, url, filePath, imagePath, index)
+                                    } else {
+                                        Log.e("LibraryScreen", "Invalid data at index $index: url=$url, filePath=$filePath, imagePath=$imagePath")
+                                    }
                                 }
                             },
                             colors = ButtonDefaults.buttonColors(

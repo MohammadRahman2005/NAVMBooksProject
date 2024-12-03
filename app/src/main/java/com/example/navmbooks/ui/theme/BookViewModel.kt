@@ -193,8 +193,9 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
             val databaseBookId = dbViewModel.getBookIDByTitle(title.uppercase())
             Log.d("Database", "BOOK ID: $databaseBookId")
             if (databaseBookId == null) {
-                val book = processSingleBook(url, filePath, imagePath)
                 loadingTimes = loadingTimes.toMutableList().apply { set(index, 2) }
+                val book = processSingleBook(url, filePath, imagePath)
+                removeBookAt(index)
                 if (book != null) {
                     bookList = bookList + book
                     addBookListToDatabase(book)
@@ -203,7 +204,7 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
             } else {
                 Log.d("Database", "BOOK ALREADY EXISTS")
             }
-            removeBookAt(index)
+            loadingTimes = loadingTimes.toMutableList().apply { removeAt(index) }
         }
     }
 
