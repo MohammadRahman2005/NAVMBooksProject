@@ -82,6 +82,7 @@ dependencies {
     implementation(libs.coil.compose)
     implementation("androidx.compose.material3:material3-window-size-class")
     implementation ("org.jsoup:jsoup:1.10.3")
+    implementation ("androidx.compose.foundation:foundation:1.7.5")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
 
     implementation(libs.androidx.room.runtime.v250)

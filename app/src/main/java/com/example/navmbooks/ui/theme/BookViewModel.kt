@@ -95,7 +95,6 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
     private fun getBooks(urls: Array<String>, files: Array<String>, images: Array<String>) {
         viewModelScope.launch(Dispatchers.IO) {
             val dbBooksList = dbViewModel.getAllBooks()
-            Log.d("Database", "$dbBooksList")
             if (!dbBooksList.isNullOrEmpty()) {
                 dbBooksList.forEach { book->
 
