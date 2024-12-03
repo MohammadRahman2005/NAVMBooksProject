@@ -17,7 +17,9 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.Button
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -63,7 +65,8 @@ fun ReadingScreen(
 
     // Save last accessed chapter
     LaunchedEffect(chapter.chapNum) {
-        val sharedPreferences = context.getSharedPreferences("book_preferences", Context.MODE_PRIVATE)
+        val sharedPreferences =
+            context.getSharedPreferences("book_preferences", Context.MODE_PRIVATE)
         with(sharedPreferences.edit()) {
             putInt("last_accessed_chapter_$bookIndex", chapter.chapNum)
             putInt("last_accessed_book", bookIndex) // Save the book index
@@ -107,8 +110,8 @@ fun ReadingScreen(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth(),
-                    state=lazyListState,
-                    flingBehavior = snapFlingBehavior
+                state = lazyListState,
+                flingBehavior = snapFlingBehavior
             ) {
                 items(chunkedContent) { chunk ->
                     Column(
@@ -150,23 +153,44 @@ fun ReadingScreen(
                     .padding(dimensionResource(R.dimen.medium_padding)),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Button(modifier = modifier.testTag("Previous"),onClick = {
-                    navController.navigate(NavRoutes.ReadingScreen.createRoute(bookIndex,chapter.chapNum-2))
-                },
-                    enabled = chapter.chapNum-1 > 0
+                Button(
+                    modifier = modifier.testTag("Previous"),
+                    onClick = {
+                        navController.navigate(
+                            NavRoutes.ReadingScreen.createRoute(
+                                bookIndex,
+                                chapter.chapNum - 2
+                            )
+                        )
+                    },
+                    enabled = chapter.chapNum - 1 > 0,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = colorScheme.secondaryContainer,
+                        contentColor = colorScheme.primary
+                    ),
                 ) {
-                    Text("Previous Chapter")
+                    Text(stringResource(R.string.previous_chapter))
                 }
-                Button(modifier = modifier.testTag("Next"),onClick = {
-                    navController.navigate(NavRoutes.ReadingScreen.createRoute(bookIndex,chapter.chapNum))
-                },
+                Button(
+                    modifier = modifier.testTag("Next"),
+                    onClick = {
+                        navController.navigate(
+                            NavRoutes.ReadingScreen.createRoute(
+                                bookIndex,
+                                chapter.chapNum
+                            )
+                        )
+                    },
                     enabled = chapter.chapNum < (bookViewModel.bookList[bookIndex]?.chapters?.size
-                        ?: 0)
+                        ?: 0),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = colorScheme.secondaryContainer,
+                        contentColor = colorScheme.primary
+                    ),
                 ) {
-                    Text("Next Chapter")
+                    Text(stringResource(R.string.next_chapter))
                 }
             }
         }
-
     }
 }
