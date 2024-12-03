@@ -3,6 +3,7 @@ package com.example.navmbooks.ui.theme.viewpoints
 import android.content.Context
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Button
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -76,7 +78,8 @@ fun ReadingScreen(
             else -> chapter.content.chunked(1)
         }
     }
-
+    val lazyListState = rememberLazyListState()
+    val snapFlingBehavior = rememberSnapFlingBehavior(lazyListState = lazyListState)
     Box(modifier = Modifier.fillMaxSize().padding(padding).testTag("Content")) {
         Column(
             modifier = modifier
@@ -99,11 +102,12 @@ fun ReadingScreen(
                     )
                 }
             }
-
             LazyRow(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth(),
+                    state=lazyListState,
+                    flingBehavior = snapFlingBehavior
             ) {
                 items(chunkedContent) { chunk ->
                     Column(
