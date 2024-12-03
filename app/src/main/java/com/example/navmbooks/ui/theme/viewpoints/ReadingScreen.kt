@@ -102,6 +102,7 @@ fun ReadingScreen(
                     )
                 }
             }
+
             LazyRow(
                 modifier = Modifier
                     .weight(1f)
