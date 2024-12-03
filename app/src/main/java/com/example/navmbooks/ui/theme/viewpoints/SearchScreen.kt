@@ -96,7 +96,10 @@ fun SearchScreen(
                 onValueChange = { },
                 label = { Text(text = stringResource(id = R.string.search_book)) },
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                colors = OutlinedTextFieldDefaults.colors(),
+                colors = OutlinedTextFieldDefaults.colors(
+                    unfocusedBorderColor = Color.Black,
+                    focusedBorderColor = Color.Black
+                ),
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable { expanded = true }
@@ -126,7 +129,11 @@ fun SearchScreen(
             value = searchQuery,
             onValueChange = { searchQuery = it },
             label = { Text(text = stringResource(R.string.enter_keyword)) },
-            modifier = Modifier.fillMaxWidth().testTag("SearchField")
+            modifier = Modifier.fillMaxWidth().testTag("SearchField"),
+            colors = OutlinedTextFieldDefaults.colors(
+                unfocusedBorderColor = Color.Black,
+                focusedBorderColor = Color.Black
+            )
         )
 
         Spacer(modifier = Modifier.height(dimensionResource(R.dimen.medium_padding)))
@@ -185,7 +192,7 @@ fun SearchScreen(
                     )
                     // Add metadata or additional info if needed
                     Text(
-                        text = "Chapter: ${result.chapterId}",
+                        text = "Chapter: ${result.chapterNumber}",
                         style = MaterialTheme.typography.bodySmall.copy(fontWeight = androidx.compose.ui.text.font.FontWeight.Bold),
                         color = MaterialTheme.colorScheme.onSurface // Dark color
                     )

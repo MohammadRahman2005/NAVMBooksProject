@@ -258,7 +258,7 @@ fun NAVMAppBar(
             Text(
                 stringResource(R.string.app_name),
                 style = MaterialTheme.typography.displaySmall,
-                modifier = Modifier.padding(top = dimensionResource(R.dimen.small_padding), start = dimensionResource(R.dimen.large_padding)),
+                modifier = Modifier.padding(top = dimensionResource(R.dimen.small_padding), start = dimensionResource(R.dimen.larger_padding)),
                 color = MaterialTheme.colorScheme.primary
             )
         },

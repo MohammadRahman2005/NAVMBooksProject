@@ -32,7 +32,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.navmbooks.R
-import com.example.navmbooks.database.DatabaseViewModel
 import com.example.navmbooks.ui.theme.Book
 import com.example.navmbooks.ui.theme.BookViewModel
 import com.example.navmbooks.ui.theme.NavRoutes
@@ -86,10 +85,10 @@ fun LibraryScreen(
             }
             Spacer(modifier = Modifier.height(dimensionResource(R.dimen.big_padding)))
             Button(
-                onClick = {onResetLastAccessed()},
+                onClick = { onResetLastAccessed() },
                 modifier = Modifier
-                    .padding(vertical = dimensionResource(R.dimen.tiny_padding))
-                    .fillMaxWidth()
+                    .padding(vertical = dimensionResource(R.dimen.small_padding))
+                    .fillMaxWidth(0.8f)
             ) {
                 Text(text = stringResource(R.string.reset_reading))
             }

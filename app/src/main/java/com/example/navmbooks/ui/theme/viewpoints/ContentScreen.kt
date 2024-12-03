@@ -23,6 +23,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavController
 import com.example.navmbooks.R
 import com.example.navmbooks.ui.theme.Book
@@ -65,7 +66,17 @@ fun ContentScreen(
                 Text(text = stringResource(R.string.content_label))
             }
         } else {
-            Text(text = stringResource(R.string.select_chapter))
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = dimensionResource(R.dimen.medium_padding)),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(R.string.select_chapter),
+                    style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold)
+                )
+            }
             Spacer(modifier = Modifier.height(dimensionResource(R.dimen.medium_padding)))
 
             // Button to resume reading if there's a last accessed chapter
