@@ -60,7 +60,6 @@ class AppTestsCompact {
                         locale = Locale.US,
                         windowSizeClass = WindowWidthSizeClass.Compact,
                         factory = BookViewModelFactory(activity.applicationContext, dbViewModel),
-                        dbViewModel = dbViewModel,
                         startDestination = NavRoutes.HomeScreen.route,
                         onResetLastAccessed = {resetLastAccessed(sharedPreferences)}
                     )

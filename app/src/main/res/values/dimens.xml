@@ -6,6 +6,7 @@
     <dimen name="medium_padding">16dp</dimen>
     <dimen name="big_padding">32dp</dimen>
     <dimen name="large_padding">50dp</dimen>
+    <dimen name="larger_padding">70dp</dimen>
     <dimen name="large_size">50dp</dimen>
     <dimen name="extra_large_size">200dp</dimen>
     <dimen name="extra_large_text">200sp</dimen>
