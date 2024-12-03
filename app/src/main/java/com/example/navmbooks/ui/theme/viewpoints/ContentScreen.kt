@@ -1,6 +1,7 @@
 package com.example.navmbooks.ui.theme.viewpoints
 
 import android.content.Context
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -17,9 +18,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavController
 import com.example.navmbooks.R
 import com.example.navmbooks.ui.theme.Book
@@ -35,9 +39,14 @@ fun ContentScreen(
     modifier: Modifier = Modifier,
     viewModel: BookViewModel,
     bookIndex: Int,
-    books: List<Book?>,
-    onResetLastAccessed: () -> Unit
+    books: List<Book?>
 ) {
+    Image(
+        painter = painterResource(R.drawable.app_bg),
+        contentDescription = null,
+        modifier = Modifier.fillMaxSize(),
+        contentScale = ContentScale.Crop
+    )
     val book = books[bookIndex]
     val context = LocalContext.current
 
@@ -57,7 +66,17 @@ fun ContentScreen(
                 Text(text = stringResource(R.string.content_label))
             }
         } else {
-            Text(text = stringResource(R.string.select_chapter))
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = dimensionResource(R.dimen.medium_padding)),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(R.string.select_chapter),
+                    style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold)
+                )
+            }
             Spacer(modifier = Modifier.height(dimensionResource(R.dimen.medium_padding)))
 
             // Button to resume reading if there's a last accessed chapter

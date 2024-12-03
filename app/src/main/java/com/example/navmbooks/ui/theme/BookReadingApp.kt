@@ -258,7 +258,7 @@ fun NAVMAppBar(
             Text(
                 stringResource(R.string.app_name),
                 style = MaterialTheme.typography.displaySmall,
-                modifier = Modifier.padding(top = dimensionResource(R.dimen.small_padding), start = dimensionResource(R.dimen.large_padding)),
+                modifier = Modifier.padding(top = dimensionResource(R.dimen.small_padding), start = dimensionResource(R.dimen.larger_padding)),
                 color = MaterialTheme.colorScheme.primary
             )
         },
@@ -290,7 +290,7 @@ fun Logo(modifier: Modifier = Modifier) {
     Image(
         painter = painterResource(R.drawable.navm),
         contentDescription = stringResource(R.string.logo_desc),
-        modifier = modifier,
+        modifier = modifier.testTag("TopLogo"),
         contentScale = ContentScale.Crop
     )
 }
@@ -327,7 +327,7 @@ fun NavigationHost(
         composable(route = NavRoutes.ContentScreen.route, arguments = listOf(navArgument("bookIndex") { type = NavType.IntType })) {
                 backStackEntry ->
             val bookIndex = backStackEntry.arguments?.getInt("bookIndex") ?: 0
-            ContentScreen(navController = navController, modifier, bookViewModel, books = books, bookIndex = bookIndex, onResetLastAccessed = onResetLastAccessed)
+            ContentScreen(navController = navController, modifier, bookViewModel, books = books, bookIndex = bookIndex)
         }
         composable(
             route = NavRoutes.ReadingScreen.route,
