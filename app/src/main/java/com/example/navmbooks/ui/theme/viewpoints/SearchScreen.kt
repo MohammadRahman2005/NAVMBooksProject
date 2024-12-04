@@ -24,6 +24,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -69,6 +70,12 @@ fun SearchScreen(
     var searchQuery by remember { mutableStateOf(TextFieldValue("")) }
     val selectedId by viewModel.selectedId.observeAsState(0)
     val searchResults by viewModel.searchResults.observeAsState(emptyList())
+
+    DisposableEffect(Unit) {
+        onDispose {
+            viewModel.clearSearchResults()
+        }
+    }
 
     Image(
         painter = painterResource(R.drawable.app_bg),

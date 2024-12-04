@@ -286,4 +286,11 @@ class BookViewModel(private val repository: FileRepository, private val dbViewMo
             }
         }
     }
+
+    /**
+     * resets the search results value
+     */
+    fun clearSearchResults() {
+        _searchResults.value = emptyList()
+    }
 }
