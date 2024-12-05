@@ -6,6 +6,15 @@
     <string name="welcome_title">Welcome to NAVMBooks</string>
     <string name="welcome_description">Discover, read, and enjoy our library of books!</string>
     <string name="get_started">Get Started</string>
+    <string name="app_description">Explore a curated library of free textbooks, tables, and images beautifully displayed in a book-like layout.</string>
+    <string name="team_members">Team Members:</string>
+    <string name="team_names">Mohammad Mahbub Rahman, Aman Sood, Noah Gélinas, Vinson Chiu</string>
+
+    <string name="search_book">Search Book</string>
+    <string name="enter_keyword">Enter Keyword</string>
+    <string name="click_to_navigate">Click on the paragraph to navigate</string>
+    <string name="resume_reading">Resume Reading</string>
+    <string name="reset_reading">Reset Reading</string>
 
     <string name="home">Home</string>
     <string name="library">Library</string>
@@ -35,36 +44,50 @@
 
     <string name="loading_book">Loading book…</string>
 
+    <string name="previous_chapter">Previous Chapter</string>
+    <string name="next_chapter">Next Chapter</string>
+    
+    <string name="download_title">Download %s</string>
+
+    <string name="downloading">Downloading Book!</string>
+    <string name="parsing">Parsing Book!</string>
+
+
     <string-array name="booksUrl">
-        <item>https://www.gutenberg.org/cache/epub/345/pg345-h.zip</item>
-        <item>https://www.gutenberg.org/cache/epub/20195/pg20195-h.zip</item>
+        <item>https://www.gutenberg.org/cache/epub/67098/pg67098-h.zip</item>
+        <item>https://www.gutenberg.org/cache/epub/74675/pg74675-h.zip</item>
         <item>https://www.gutenberg.org/cache/epub/40367/pg40367-h.zip</item>
 
     </string-array>
     <string-array name="booksFile">
-        <item>Download/DownloadedFiles/pg345-h/pg345-images.html</item>
-        <item>Download/DownloadedFiles/pg20195-h/pg20195-images.html</item>
+        <item>Download/DownloadedFiles/pg67098-h/pg67098-images.html</item>
+        <item>Download/DownloadedFiles/pg74675-h/pg74675-images.html</item>
         <item>Download/DownloadedFiles/pg40367-h/pg40367-images.html</item>
     </string-array>
     <string-array name="booksCover">
-        <item>Download/DownloadedFiles/pg345-h/images/cover.jpg</item>
-        <item>Download/DownloadedFiles/pg20195-h/20195-cover.png</item>
+        <item>Download/DownloadedFiles/pg67098-h/images/cover.jpg</item>
+        <item>Download/DownloadedFiles/pg74675-h/images/cover.jpg</item>
         <item>Download/DownloadedFiles/pg40367-h/images/title.jpg</item>
     </string-array>
 
     <string-array name="DownloadableBooksUrl">
         <item>https://www.gutenberg.org/cache/epub/74757/pg74757-h.zip</item>
-        <item>https://www.gutenberg.org/cache/epub/74675/pg74675-h.zip</item>
+        <item>https://www.gutenberg.org/cache/epub/20195/pg20195-h.zip</item>
         <item>https://www.gutenberg.org/cache/epub/8710/pg8710-h.zip</item>
     </string-array>
     <string-array name="DownloadableBooksFile">
         <item>Download/DownloadedFiles/pg74757-h/pg74757-images.html</item>
-        <item>Download/DownloadedFiles/pg74675-h/pg74675-images.html</item>
+        <item>Download/DownloadedFiles/pg20195-h/pg20195-images.html</item>
         <item>Download/DownloadedFiles/pg8710-h/pg8710-images.html</item>
     </string-array>
     <string-array name="DownloadedBooksCover">
         <item>Download/DownloadedFiles/pg74757-h/images/cover.jpg</item>
-        <item>Download/DownloadedFiles/pg74675-h/images/cover.jpg</item>
+        <item>Download/DownloadedFiles/pg20195-h/20195-cover.png</item>
         <item>Download/DownloadedFiles/pg8710-h/images/cover.jpg</item>
+    </string-array>
+    <string-array name="DownloadedBooksTitle">
+        <item>Viennese Medley</item>
+        <item>Wood-Block Printing</item>
+        <item>THE DORE GALLERY OF BIBLE ILLUSTRATIONS</item>
     </string-array>
 </resources>

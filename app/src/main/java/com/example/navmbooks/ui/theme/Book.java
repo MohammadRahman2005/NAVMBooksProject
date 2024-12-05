@@ -1,8 +1,7 @@
-package com.example.navmbooks;
-
-import android.util.Log;
+package com.example.navmbooks.ui.theme;
 
 import com.example.navmbooks.data.ImageItem;
+import com.example.navmbooks.data.TableItem;
 import com.example.navmbooks.data.TextItem;
 
 import org.jsoup.Jsoup;
@@ -23,16 +22,17 @@ public class Book {
     private final String author;
     private final ArrayList<Chapter> chapters;
     private final String allContent;
-    private final File coverImage;
+    private final String coverImage;
     public String getTitle(){
         return title;
     }
+    public String getAuthor() { return author; }
     public ArrayList<Chapter> getChapters(){
         return chapters;
     }
-    public File getCoverImage() {return coverImage; }
+    public String getCoverImage() {return coverImage; }
 
-    private Book(String title, String author, ArrayList<Chapter> chapters, StringBuilder allContent, File coverImage){
+    public Book(String title, String author, ArrayList<Chapter> chapters, StringBuilder allContent, String coverImage){
         this.title=title;
         this.author=author;
         this.chapters=chapters;
@@ -68,18 +68,46 @@ public class Book {
                     for (Element child : e.children()) {
                         if (child.tagName().equals("img")) {
                             String imgSrc = bookDirectory + File.separator + child.attr("src");
-                            allContent.append("image here").append("\n");
                             if (chapter != null) chapter.addContent(new ImageItem(imgSrc));
                         }
                     }
                     if (e.child(0).tagName().equals("table")) {
-                        allContent.append("table here").append("\n");
-                        if (chapter != null) chapter.addContent(new TextItem("Table here"));
+                        StringBuilder tableContent = new StringBuilder();
+                        if (e.child(0).tagName().equals("tbody")){
+                            for (Element row : e.child(0).children()){
+                                StringBuilder rowContent = new StringBuilder();
+                                for (Element cell : row.children()) {
+                                    if (rowContent.length() > 0) {
+                                        rowContent.append(" | ");
+                                    }
+                                    rowContent.append(cell.text());
+                                }
+                                tableContent.append("| ").append(rowContent).append(" |\n");
+                                tableContent.append("-".repeat(rowContent.length() + 4)).append("\n");
+                            }
+                        }
+                        TableItem tableItem = new TableItem(tableContent.toString());
+                        if (chapter != null) chapter.addContent(tableItem);
                     }
                 }
             }
             if(e.tagName().equals("table")) {
-                allContent.append("table here").append("\n");
+                StringBuilder tableContent = new StringBuilder();
+                if (e.child(0).tagName().equals("tbody")){
+                    for (Element row : e.child(0).children()){
+                        StringBuilder rowContent = new StringBuilder();
+                        for (Element cell : row.children()) {
+                            if (rowContent.length() > 0) {
+                                rowContent.append(" | ");
+                            }
+                            rowContent.append(cell.text());
+                        }
+                        tableContent.append("| ").append(rowContent).append(" |\n");
+                        tableContent.append("-".repeat(rowContent.length() + 4)).append("\n");
+                    }
+                }
+                TableItem tableItem = new TableItem(tableContent.toString());
+                if (chapter != null) chapter.addContent(tableItem);
             }
             if(e.tagName().equals("div") && e.className().equals("chapter")){
                 for (Element child : e.children()){
@@ -108,7 +136,7 @@ public class Book {
                 chapter.addContent(new TextItem(e.text()));
             }
         }
-        return new Book(title, author, chapters, allContent, cover);
+        return new Book(title, author, chapters, allContent, cover.getAbsolutePath());
     }
     @Override
     public String toString(){

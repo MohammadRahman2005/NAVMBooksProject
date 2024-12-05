@@ -1,11 +1,11 @@
-package com.example.navmbooks;
+package com.example.navmbooks.ui.theme;
 
 import com.example.navmbooks.data.ImageItem;
+import com.example.navmbooks.data.TableItem;
 import com.example.navmbooks.data.TextItem;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * This class creates chapter objects.
@@ -48,6 +48,8 @@ public class Chapter {
                 result.append(((TextItem) item).getText()).append("\n");
             } else if (item instanceof ImageItem) {
                 result.append("Image: ").append(((ImageItem) item).getImagePath()).append("\n");
+            } else if (item instanceof TableItem){
+                result.append("Table: ").append(((TableItem) item).getText()).append("\n");
             }
         }
         return result.toString();
