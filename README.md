@@ -11,6 +11,6 @@
 git clone https://gitlab.com/dawson-csy3-24-25/511/section2/Noah-Vinson-Mohammad-Aman/mobile-project 
 ```
 
-2. Build project on Android Studio (make sure build.gradle is completly synchronized)
+2. Build project on Android Studio (make sure build.gradle is completely synchronized)
 
 3. Run on an emulator or physical device of your choice.
